@@ -1,3 +1,7 @@
+//
+//  tests con e < 1e^-4, deben ejecutar en <= 1e^-4 s
+//
+
 #include "gtest-1.8.1/gtest.h"
 
 TEST(tests_base, test_aleatorio) {}

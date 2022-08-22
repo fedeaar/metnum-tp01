@@ -14,8 +14,9 @@ set(SOURCE_FILES main.cpp
                  src/IO.h)
 
 add_executable(TESTS tests/tests.cpp ${SOURCE_FILES})
-
-target_link_libraries(TESTS gtest gtest_main)
-
 add_custom_target(TESTS_valgrind
         valgrind --leak-check=full -v TESTS)
+        
+add_executable(PageRank ${SOURCE_FILES})
+
+target_link_libraries(TESTS gtest gtest_main)

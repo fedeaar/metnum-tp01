@@ -1,5 +1,5 @@
 //
-// Manejo de I/O.
+// Manejo de I/O
 //
 
 #ifndef IMPLEMENTACION_IO_H
