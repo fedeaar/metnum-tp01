@@ -1,0 +1,8 @@
+//
+// Implementación de PageRank
+//
+
+#ifndef IMPLEMENTACION_PAGERANK_H
+#define IMPLEMENTACION_PAGERANK_H
+
+#endif //IMPLEMENTACION_PAGERANK_H
