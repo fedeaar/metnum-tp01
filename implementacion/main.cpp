@@ -1,3 +1,4 @@
+using namespace std;
 #include <iostream>
 #include "./src/Matriz.h"
 
@@ -29,8 +30,6 @@ int main() {
     c = Matriz<4, 4, int>(_c);
     d = Matriz<4, 4, int>(_d);
 
-    std::cout << a;
-    std::cout << b;
-    std::cout << c;
-    std::cout << d;
+    cout << a;
+    cout << a.sum(3, 1, 2);
 }
