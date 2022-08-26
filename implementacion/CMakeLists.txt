@@ -10,13 +10,16 @@ add_library(gtest_main STATIC tests/gtest-1.8.1/gtest_main.cc)
 set(SOURCE_FILES main.cpp
                  src/EG.h
                  src/Matriz.h
+                 src/impl/Matriz.hpp
                  src/PageRank.h
                  src/IO.h)
 
-add_executable(TESTS tests/tests.cpp ${SOURCE_FILES})
+add_executable(TESTS ${SOURCE_FILES} tests/Matriz-test.cpp)
 add_custom_target(TESTS_valgrind
         valgrind --leak-check=full -v TESTS)
         
-add_executable(PageRank ${SOURCE_FILES})
+# add_executable(PageRank ${SOURCE_FILES})
+
+add_executable(main ${SOURCE_FILES})
 
 target_link_libraries(TESTS gtest gtest_main)
