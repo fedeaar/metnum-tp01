@@ -14,7 +14,7 @@ set(SOURCE_FILES    src/Matriz.h
                     src/PageRank.h
                     src/IO.h
                     src/MatrizCSR.h
-                    src/impl/MatrizCSR.hpp)
+                    src/impl/MatrizCSR.hpp src/MatrizALT.h)
 
 add_executable(TESTS-matriz ${SOURCE_FILES} tests/Matriz-test.cpp)
 # add_custom_target(TESTS_valgrind valgrind --leak-check=full -v TESTS)
