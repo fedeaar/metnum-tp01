@@ -239,7 +239,7 @@ public:
 
     /**
      ELIMINACION GAUSSIANA
-     * pre: n = m && M_ii != 0 para i: 0 ... N.
+     * pre: M_ii != 0 para i: 0 ... N.
      * @return una matriz triangular superior equivalente a la actual.
      */
     Matriz gauss_elim() const; // TODO
