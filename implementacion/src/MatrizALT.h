@@ -25,11 +25,17 @@ private:
         int col;
         T val;
     }
+
+    struct cache {
+        int from = 0;
+        int to = m;
+        int next = m;
+        int pos = 0;
+    }
     std::array<std::vector<elem, m>, n> _m;
-    std::array<pair<int, int>, n> _last;
-    std::array<pair<int, int>, n> _permFilas;
-    std::array<pair<int, int>, n> _permColumnas;
-    
+    std::array<cache, n> _last;
+    int search(size_t row, size_t col);
+    void updateLast(size_t row, size_t pos);
 public:
     /**
      CONSTRUCTORES
@@ -64,7 +70,6 @@ public:
      */
     T at(size_t row, size_t col) const;
 
-    int search(size_t row, size_t col);
 };
 
 #include "./impl/MatrizALT.hpp"
