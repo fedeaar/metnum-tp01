@@ -13,7 +13,7 @@
  * Una matriz con estructura alternativa.
  * @tparam n > 0, cantidad de filas.
  * @tparam m > 0, cantidad de columnas.
- * @tparam T implementa operadores =, <, >, +, -, *. <<, /
+ * @tparam T implementa operadores =, <, >, +, -, *, /, <<
  */
 template<size_t n, size_t m, class T>
 class MatrizALT : public Matriz<n, m, T> {

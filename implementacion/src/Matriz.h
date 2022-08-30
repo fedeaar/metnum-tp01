@@ -31,6 +31,7 @@
 #include <cassert>
 #include <array>
 #include <numeric>
+#include <iostream>
 
 using namespace std;
 
@@ -39,7 +40,7 @@ using namespace std;
  * Una matriz.
  * @tparam n > 0, cantidad de filas.
  * @tparam m > 0, cantidad de columnas.
- * @tparam T implementa: =, <, +, -, *. <<.
+ * @tparam T implementa: =, <, +, -, *, /, <<.
  ===================================================== */
 template<size_t n, size_t m, class T>
 class Matriz {

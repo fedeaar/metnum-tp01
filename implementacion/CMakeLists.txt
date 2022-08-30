@@ -12,13 +12,16 @@ set(SOURCE_FILES    src/Matriz.h
                     src/impl/Matriz-iteradores.hpp
                     src/impl/Matriz-gauss.hpp
                     src/PageRank.h
+                    src/impl/PageRank.cpp
                     src/IO.h
+                    src/impl/IO.cpp
                     src/MatrizCSR.h
-                    src/impl/MatrizCSR.hpp src/MatrizALT.h)
+                    src/impl/MatrizCSR.hpp
+                    src/MatrizALT.h)
 
 add_executable(TESTS-matriz ${SOURCE_FILES} tests/Matriz-test.cpp)
 # add_custom_target(TESTS_valgrind valgrind --leak-check=full -v TESTS)
 # add_executable(PageRank ${SOURCE_FILES})
-# add_executable(main ${SOURCE_FILES})
+add_executable(main ${SOURCE_FILES} main.cpp)
 
 target_link_libraries(TESTS-matriz gtest gtest_main)

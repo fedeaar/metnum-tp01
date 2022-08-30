@@ -13,17 +13,17 @@
  * Una matriz con estructura CSR.
  * @tparam n > 0, cantidad de filas.
  * @tparam m > 0, cantidad de columnas.
- * @tparam T implementa operadores =, <, >, +, -, *. <<.
+ * @tparam T implementa operadores =, <, >, +, -, *, /, <<.
  */
-template<std::size_t n, std::size_t m, class T>
+template<size_t n, size_t m, class T>
 class MatrizCSR : public Matriz<n, m, T> {
 private:
     /**
      ESTRUCTURA
      */
-    std::vector<T> _m;
-    std::vector<std::size_t> _jm;
-    std::vector<std::size_t> _im;
+    vector<T> _m;
+    vector<size_t> _jm;
+    vector<size_t> _im;
 
 public:
     /**
@@ -40,7 +40,7 @@ public:
      * @param row 0 <= i < n, fila del elemento a guardar.
      * @param col 0 <= j < m, columna del elemento a guardar.
      */
-    void set(std::size_t row, std::size_t col, T elem);
+    void set(size_t row, size_t col, T elem);
 
     /**
      REINDEX
@@ -57,7 +57,7 @@ public:
      * @param col 0 <= j < m, columna del elemento a guardar.
      * @return una copia del elemento que está en la posición dada.
      */
-    T at(std::size_t row, std::size_t col) const;
+    T at(size_t row, size_t col) const;
 };
 
 #include "./impl/MatrizCSR.hpp"
