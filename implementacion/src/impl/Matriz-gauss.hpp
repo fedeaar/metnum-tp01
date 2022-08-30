@@ -40,5 +40,15 @@ Matriz<n, m, T> Matriz<n, m, T>::gauss_sum(size_t i1, size_t i2, const T &val, b
 template<size_t n, size_t m, class T>
 Matriz<n, m, T> Matriz<n, m, T>::gauss_elim() const {
     // TODO
-    return Matriz();
+    Matriz res{*this};
+    for(int i = 0; i < n - 1; i++){
+        for(int j = i + 1; j < n; j++){
+            T mij = res.at(j, i) / res.at(i, i);
+            for(int k = i; k < m; k++){
+                T newVal = res.at(j, k) - mij*res.at(i, k);
+                res.set(j, k, newVal);
+            }
+        }
+    }
+    return res;
 }

@@ -21,7 +21,21 @@ private:
     /**
      ESTRUCTURA
      */
+    struct elem {
+        int col;
+        T val;
+    }
 
+    struct cache {
+        int from = 0;
+        int to = m;
+        int next = m;
+        int pos = 0;
+    }
+    std::array<std::vector<elem, m>, n> _m;
+    std::array<cache, n> _last;
+    int search(size_t row, size_t col);
+    void updateLast(size_t row, size_t pos);
 public:
     /**
      CONSTRUCTORES
@@ -55,6 +69,7 @@ public:
      * @return una copia del elemento que está en la posición dada.
      */
     T at(size_t row, size_t col) const;
+
 };
 
 #include "./impl/MatrizALT.hpp"
