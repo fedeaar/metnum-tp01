@@ -13,8 +13,8 @@ namespace PageRank {
         size_t i;
         size_t j;
     };
-    struct params {
-        params(size_t _p, size_t _l, double _val) : p_val(_val), paginas(_p), links(_l), relaciones(_l) {}
+    struct in_file {
+        in_file(size_t _p, size_t _l, double _val) : p_val(_val), paginas(_p), links(_l), relaciones() {}
 
         double p_val;
         size_t paginas;
@@ -22,8 +22,15 @@ namespace PageRank {
         vector<coords> relaciones;
     };
 
+    struct out_file {
+        explicit out_file(double _p_val) : p_val(_p_val), solucion() {}
+        double p_val;
+        vector<double> solucion;
+    };
 
-    vector<double> solve(params& p);
+    vector<double> solve(in_file &params);
+
+    vector<double> solve_optimizado(in_file &params);
 };
 
 #endif //IMPLEMENTACION_PAGERANK_H

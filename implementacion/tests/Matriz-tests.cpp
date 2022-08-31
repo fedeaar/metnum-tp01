@@ -1,10 +1,12 @@
 #include "gtest-1.8.1/gtest.h"
 #include "../src/Matriz.h"
+
 using namespace std;
+
 
 class MatrizTest : public testing::Test {
 protected:
-    Matriz<4, 4, int> a, b, c, d;
+    Matriz<int> a {4, 4}, b {4, 4}, c {4, 4}, d {4, 4};
     void SetUp() override {
         a = {
             {1, 2, 3, 4},
@@ -75,25 +77,25 @@ TEST_F(MatrizTest, init) {
 
 
 TEST_F(MatrizTest, suma) {
-    Matriz<4, 4, int> ab = {
+    Matriz<int> ab = {
         {2, 2, 3, 4},
         {4, 1, 0, 1},
         {1, 1, 2, 1},
         {1, 2, 3, 8}
     };
-    Matriz<4, 4, int> ac = {
+    Matriz<int> ac = {
         {2, 27, 6, 13},
         {8, 0, 7, 2},
         {2, 7, 7, 2},
         {2, 4, 3, 7}
     };
-    Matriz<4, 4, int> bd = {
+    Matriz<int> bd = {
         {1, 0, 0, 4},
         {1, 1, 0, 0},
         {0, 0, 4, 0},
         {0, 2, 0, 1}
     };
-    Matriz<4, 4, int> cb = {
+    Matriz<int> cb = {
         {2, 25, 3, 9},
         {4, 1, 7, 1},
         {1, 6, 7, 1},
@@ -111,25 +113,25 @@ TEST_F(MatrizTest, suma) {
 
 
 TEST_F(MatrizTest, resta) {
-    Matriz<4, 4, int> ab = {
+    Matriz<int> ab = {
         {0, 2, 3, 4},
         {4, -1, 0, 1},
         {1, 1, 0, 1},
         {1, 2, 3, 6}
     };
-    Matriz<4, 4, int> ac = {
+    Matriz<int> ac = {
         {0, -23, 0, -5},
         {0, 0, -7, 0},
         {0, -5, -5, 0},
         {0, 0, 3, 7}
     };
-    Matriz<4, 4, int> bd = {
+    Matriz<int> bd = {
         {1, 0, 0, -4},
         {-1, 1, 0, 0},
         {0, 0, -2, 0},
         {0, -2, 0, 1}
     };
-    Matriz<4, 4, int> cb = {
+    Matriz<int> cb = {
         {0, 25, 3, 9},
         {4, -1, 7, 1},
         {1, 6, 5, 1},
@@ -147,25 +149,25 @@ TEST_F(MatrizTest, resta) {
 
 
 TEST_F(MatrizTest, productoEscalar) {
-    Matriz<4, 4, int> a5 = {
+    Matriz<int> a5 = {
         {5, 10, 15, 20},
         {20, 0, 0, 5},
         {5, 5, 5, 5},
         {5, 10, 15, 35}
     };
-    Matriz<4, 4, int> b13 = {
+    Matriz<int> b13 = {
         {13, 0, 0, 0},
         {0, 13, 0, 0},
         {0, 0, 13, 0},
         {0, 0, 0, 13}
     };
-    Matriz<4, 4, int> c0 = {
+    Matriz<int> c0 = {
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0}
     };
-    Matriz<4, 4, int> d1 = {
+    Matriz<int> d1 = {
         {0, 0, 0, 4},
         {1, 0, 0, 0},
         {0, 0, 3, 0},
@@ -183,31 +185,31 @@ TEST_F(MatrizTest, productoEscalar) {
 
 
 TEST_F(MatrizTest, producto) {
-    Matriz<4, 4, int> aa = {
+    Matriz<int> aa = {
         {16, 13, 18, 37},
         {5, 10, 15, 23},
         {7, 5, 7, 13},
         {19, 19, 27, 58}
     };
-    Matriz<4, 4, int> ac = {
+    Matriz<int> ac = {
         {16, 51, 35, 14},
         {5, 102, 12, 36},
         {7, 33, 16, 11},
         {19, 57, 35, 14}
     };
-    Matriz<4, 4, int> ca = {
+    Matriz<int> ca = {
         {113, 23, 33, 95},
         {12, 17, 22, 30},
         {32, 10, 12, 23},
         {9, 2, 3, 6}
     };
-    Matriz<4, 4, int> cd = {
+    Matriz<int> cd = {
         {25, 18, 9, 4},
         {0, 2, 21, 16},
         {6, 2, 18, 4},
         {2, 0, 0, 4}
     };
-    Matriz<4, 4, int> abcd = {
+    Matriz<int> abcd = {
         {51, 28, 105, 64},
         {102, 72, 36, 20},
         {33, 22, 48, 28},
@@ -224,31 +226,31 @@ TEST_F(MatrizTest, producto) {
 
 
 TEST_F(MatrizTest, gauss_swap) {
-    Matriz<4, 4, int> a0_2 = {
+    Matriz<int> a0_2 = {
         {1, 1, 1, 1},
         {4, 0, 0, 1},
         {1, 2, 3, 4},
         {1, 2, 3, 7}
     };
-    Matriz<4, 4, int> a0_2y1_0 = {
+    Matriz<int> a0_2y1_0 = {
         {4, 0, 0, 1},
         {1, 1, 1, 1},
         {1, 2, 3, 4},
         {1, 2, 3, 7}
     };
-    Matriz<4, 4, int> a0_2y1_0y1_2 = {
+    Matriz<int> a0_2y1_0y1_2 = {
         {4, 0, 0, 1},
         {1, 2, 3, 4},
         {1, 1, 1, 1},
         {1, 2, 3, 7}
     };
-    Matriz<4, 4, int> a0_2y1_0y1_2y1_0 = {
+    Matriz<int> a0_2y1_0y1_2y1_0 = {
         {1, 2, 3, 4},
         {4, 0, 0, 1},
         {1, 1, 1, 1},
         {1, 2, 3, 7}
     };
-    Matriz<4, 4, int> a0_2c = {
+    Matriz<int> a0_2c = {
         {3, 2, 1, 4},
         {0, 0, 4, 1},
         {1, 1, 1, 1},
@@ -264,25 +266,25 @@ TEST_F(MatrizTest, gauss_swap) {
 
 
 TEST_F(MatrizTest, gauss_multiplo) {
-    Matriz<4, 4, int> af0p5 = {
+    Matriz<int> af0p5 = {
         {5, 10, 15, 20},
         {4, 0, 0, 1},
         {1, 1, 1, 1},
         {1, 2, 3, 7}
     };
-    Matriz<4, 4, int> af2p0 = {
+    Matriz<int> af2p0 = {
         {1, 2, 3, 4},
         {4, 0, 0, 1},
         {0, 0, 0, 0},
         {1, 2, 3, 7}
     };
-    Matriz<4, 4, int> ac1p5 = {
+    Matriz<int> ac1p5 = {
         {1, 10, 3, 4},
         {4, 0, 0, 1},
         {1, 5, 1, 1},
         {1, 10, 3, 7}
     };
-    Matriz<4, 4, int> ac3p0 = {
+    Matriz<int> ac3p0 = {
         {1, 2, 3, 0},
         {4, 0, 0, 0},
         {1, 1, 1, 0},
@@ -297,37 +299,37 @@ TEST_F(MatrizTest, gauss_multiplo) {
 
 
 TEST_F(MatrizTest, gauss_suma) {
-    Matriz<4, 4, int> af1 = {
+    Matriz<int> af1 = {
         {1, 2, 3, 4},
         {0, -8, -12, -15},
         {1, 1, 1, 1},
         {1, 2, 3, 7}
     };
-    Matriz<4, 4, int> af2 = {
+    Matriz<int> af2 = {
         {1, 2, 3, 4},
         {0, -8, -12, -15},
         {0, -1, -2, -3},
         {1, 2, 3, 7}
     };
-    Matriz<4, 4, int> af3 = {
+    Matriz<int> af3 = {
         {1, 2, 3, 4},
         {0, -8, -12, -15},
         {0, -1, -2, -3},
         {0, 0, 0, 3}
     };
-    Matriz<4, 4, int> ac1 = {
+    Matriz<int> ac1 = {
         {1, 0, 3, 4},
         {4, -8, 0, 1},
         {1, -1, 1, 1},
         {1, 0, 3, 7}
     };
-    Matriz<4, 4, int> ac2 = {
+    Matriz<int> ac2 = {
         {1, 0, 0, 4},
         {4, -8, -12, 1},
         {1, -1, -2, 1},
         {1, 0, 0, 7}
     };
-    Matriz<4, 4, int> ac3 = {
+    Matriz<int> ac3 = {
         {1, 0, 0, 0},
         {4, -8, -12, -15},
         {1, -1, -2, -3},
@@ -355,42 +357,37 @@ TEST_F(MatrizTest, print) {
 }
 
 TEST_F(MatrizTest, gauss_elim){
-    Matriz<3, 4, double> input1 = {
-            {1, 0, 0, 3},
-            {0, 1, 0, 6},
-            {0, 0, 1, 12}
+    Matriz<double> input1 = {
+        {1, 0, 0, 3},
+        {0, 1, 0, 6},
+        {0, 0, 1, 12}
     };
-
-    Matriz<3, 4, double> output1 = {
-            {1, 0, 0, 3},
-            {0, 1, 0, 6},
-            {0, 0, 1, 12}
+    Matriz<double> output1 = {
+        {1, 0, 0, 3},
+        {0, 1, 0, 6},
+        {0, 0, 1, 12}
     };
-
-    Matriz<3, 4, double> input2 = {
-            {1, 0, 0, 3},
-            {2, 1, 0, 6},
-            {1, 0, 1, 12}
+    Matriz<double> input2 = {
+        {1, 0, 0, 3},
+        {2, 1, 0, 6},
+        {1, 0, 1, 12}
     };
-
-    Matriz<3, 4, double> output2 = {
-            {1, 0, 0, 3},
-            {0, 1, 0, 0},
-            {0, 0, 1, 9}
+    Matriz<double> output2 = {
+        {1, 0, 0, 3},
+        {0, 1, 0, 0},
+        {0, 0, 1, 9}
     };
-
-    Matriz<4, 5, double> input3 = {
-            {1, 2, 3, 4, 2},
-            {1, 4, 9, 16, 10},
-            {1, 8, 27, 64, 44},
-            {1, 16, 81, 256, 190}
+    Matriz<double> input3 = {
+        {1, 2, 3, 4, 2},
+        {1, 4, 9, 16, 10},
+        {1, 8, 27, 64, 44},
+        {1, 16, 81, 256, 190}
     };
-
-    Matriz<4, 5, double> output3 = {
-            {1, 2, 3, 4, 2},
-            {0, 2, 6, 12, 8},
-            {0, 0, 6, 24, 18},
-            {0, 0, 0, 24, 24}
+    Matriz<double> output3 = {
+        {1, 2, 3, 4, 2},
+        {0, 2, 6, 12, 8},
+        {0, 0, 6, 24, 18},
+        {0, 0, 0, 24, 24}
     };
     EXPECT_TRUE(output1.eq(input1.gauss_elim()));
     EXPECT_TRUE(output2.eq(input2.gauss_elim()));

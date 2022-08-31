@@ -1,14 +1,14 @@
 todo           | limite  | obs
 -------------- | ------- | ---
-1*             | 26/08   |
-IO.h           |         |
+1*             | 26/08   | ok, pasar a latex
+IO.h           |         | ok
 IO.py          |         |
-Matriz.h       |         |
+Matriz.h       |         | ok ?
 -------------- | ------- | 
-2*             | 02/09   |      
-EG.h           |         |
-pageRank.h*    |         |
-tests.cpp      |         | 
+2*             | 02/09   | ok, pasar a latex     
+EG.h           |         | ok
+pageRank.h*    |         | ok
+tests.cpp      |         | pasan pero lento
 randomTests.py |         | 
 intro          |         |
 desarrollo*    |         |
