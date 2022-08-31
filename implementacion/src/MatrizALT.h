@@ -7,6 +7,8 @@
 
 #include "Matriz.h"
 #include <vector>
+#include <algorithm>
+using namespace std;
 
 
 /**
@@ -15,33 +17,38 @@
  * @tparam m > 0, cantidad de columnas.
  * @tparam T implementa operadores =, <, >, +, -, *, /, <<
  */
-template<size_t n, size_t m, class T>
-class MatrizALT : public Matriz<n, m, T> {
+template<class T>
+class MatrizALT : public Matriz<T> {
 private:
     /**
      ESTRUCTURA
      */
+
+    size_t n;
+    size_t m;
+
     struct elem {
         int col;
         T val;
-    }
+    };
 
     struct cache {
         int from = 0;
-        int to = m;
-        int next = m;
+        int to = 0;
+        int next = 0;
         int pos = 0;
-    }
-    std::array<std::vector<elem, m>, n> _m;
-    std::array<cache, n> _last;
-    int search(size_t row, size_t col);
+    };
+
     void updateLast(size_t row, size_t pos);
+    int search(size_t row, size_t col);
+    vector<cache> _last;
+    vector<vector<elem>> _m;
 public:
     /**
      CONSTRUCTORES
      * default, por copia, por array.
      */
-    MatrizALT();
+    MatrizALT(size_t n, size_t m);
     MatrizALT(const MatrizALT& b);
     MatrizALT(const initializer_list<initializer_list<T>>& b);
 
@@ -53,14 +60,14 @@ public:
      */
     void set(size_t row, size_t col, T elem);
 
-    /**
-     REINDEX
-     * modifica el orden de las filas o columnas.
-     * @param i1 0 <= i < n ó m según el orden, fila o columna por la que intercambiar.
-     * @param i2 0 <= j < n ó m según el orden, fila o columna por la que intercambiar.
-     * @param rowOrder si true intercambia por fila, sino por columna.
-     */
-    void reindex(size_t i1, size_t i2, bool rowOrder=true);
+    // /**
+    //  REINDEX
+    //  * modifica el orden de las filas o columnas.
+    //  * @param i1 0 <= i < n ó m según el orden, fila o columna por la que intercambiar.
+    //  * @param i2 0 <= j < n ó m según el orden, fila o columna por la que intercambiar.
+    //  * @param rowOrder si true intercambia por fila, sino por columna.
+    //  */
+    // void reindex(size_t i1, size_t i2, bool rowOrder=true);
 
     /**
      AT

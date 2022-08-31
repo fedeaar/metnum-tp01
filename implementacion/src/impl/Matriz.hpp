@@ -6,6 +6,9 @@
 //
 
 template<class T>
+Matriz<T>::Matriz() {}
+
+template<class T>
 Matriz<T>::Matriz(size_t n, size_t m): n(n), m(m), _mat(n, vector<T>(m)), _row(n), _col(m) {
     std::iota(_row.begin(), _row.end(), 0);
     std::iota(_col.begin(), _col.end(), 0);
@@ -178,6 +181,8 @@ ostream &Matriz<T>::print(ostream &os) const {
     }
     return os;
 }
+
+
 template<class T>
 ostream &operator<<(ostream &os, const Matriz<T> &mat) {
     return mat.print(os);

@@ -168,6 +168,8 @@ public:
     Matriz(const Matriz& b);
     Matriz(const initializer_list<initializer_list<T>> &b);
 
+    Matriz();
+
     /**
      DESTRUCTOR
      * default
