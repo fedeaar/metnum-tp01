@@ -358,52 +358,52 @@ TEST_F(MatrizALTTest, gauss_suma) {
 }
 
 
-TEST_F(MatrizALTTest, print) {
-    ostringstream stream;
-    stream << a;
-    string a_os = stream.str();
-    EXPECT_EQ(a_os, "\n1, 2, 3, 4\n4, 0, 0, 1\n1, 1, 1, 1\n1, 2, 3, 7\n");
-
-    stream = ostringstream();
-    stream << b;
-    string b_os = stream.str();
-    EXPECT_EQ(b_os, "\n1, 0, 0, 0\n0, 1, 0, 0\n0, 0, 1, 0\n0, 0, 0, 1\n");
-}
-
-TEST_F(MatrizALTTest, gauss_elim){
-    MatrizALT<double> input1 = {
-        {1, 0, 0, 3},
-        {0, 1, 0, 6},
-        {0, 0, 1, 12}
-    };
-    MatrizALT<double> output1 = {
-        {1, 0, 0, 3},
-        {0, 1, 0, 6},
-        {0, 0, 1, 12}
-    };
-    MatrizALT<double> input2 = {
-        {1, 0, 0, 3},
-        {2, 1, 0, 6},
-        {1, 0, 1, 12}
-    };
-    MatrizALT<double> output2 = {
-        {1, 0, 0, 3},
-        {0, 1, 0, 0},
-        {0, 0, 1, 9}
-    };
-    MatrizALT<double> input3 = {
-        {1, 2, 3, 4, 2},
-        {1, 4, 9, 16, 10},
-        {1, 8, 27, 64, 44},
-        {1, 16, 81, 256, 190}
-    };
-    MatrizALT<double> output3 = {
-        {1, 2, 3, 4, 2},
-        {0, 2, 6, 12, 8},
-        {0, 0, 6, 24, 18},
-        {0, 0, 0, 24, 24}
-    };
-    EXPECT_TRUE(output1.eq(input1.gauss_elim()));
-    EXPECT_TRUE(output2.eq(input2.gauss_elim()));
-    EXPECT_TRUE(output3.eq(input3.gauss_elim()));
-}
+//TEST_F(MatrizALTTest, print) {
+//    ostringstream stream;
+//    stream << a;
+//    string a_os = stream.str();
+//    EXPECT_EQ(a_os, "\n1, 2, 3, 4\n4, 0, 0, 1\n1, 1, 1, 1\n1, 2, 3, 7\n");
+//
+//    stream = ostringstream();
+//    stream << b;
+//    string b_os = stream.str();
+//    EXPECT_EQ(b_os, "\n1, 0, 0, 0\n0, 1, 0, 0\n0, 0, 1, 0\n0, 0, 0, 1\n");
+//}
+//
+//TEST_F(MatrizALTTest, gauss_elim){
+//    MatrizALT<double> input1 = {
+//        {1, 0, 0, 3},
+//        {0, 1, 0, 6},
+//        {0, 0, 1, 12}
+//    };
+//    MatrizALT<double> output1 = {
+//        {1, 0, 0, 3},
+//        {0, 1, 0, 6},
+//        {0, 0, 1, 12}
+//    };
+//    MatrizALT<double> input2 = {
+//        {1, 0, 0, 3},
+//        {2, 1, 0, 6},
+//        {1, 0, 1, 12}
+//    };
+//    MatrizALT<double> output2 = {
+//        {1, 0, 0, 3},
+//        {0, 1, 0, 0},
+//        {0, 0, 1, 9}
+//    };
+//    MatrizALT<double> input3 = {
+//        {1, 2, 3, 4, 2},
+//        {1, 4, 9, 16, 10},
+//        {1, 8, 27, 64, 44},
+//        {1, 16, 81, 256, 190}
+//    };
+//    MatrizALT<double> output3 = {
+//        {1, 2, 3, 4, 2},
+//        {0, 2, 6, 12, 8},
+//        {0, 0, 6, 24, 18},
+//        {0, 0, 0, 24, 24}
+//    };
+//    EXPECT_TRUE(output1.eq(input1.gauss_elim()));
+//    EXPECT_TRUE(output2.eq(input2.gauss_elim()));
+//    EXPECT_TRUE(output3.eq(input3.gauss_elim()));
+//}
