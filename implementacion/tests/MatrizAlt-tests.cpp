@@ -65,17 +65,27 @@ TEST_F(MatrizALTTest, init) {
             {0, 0, 3, 0},
             {0, 2, 0, 0}
     }};
-    for (auto it = a.begin(); it.in_range(); it.next()) {
-        EXPECT_EQ(it.at(), _a[it.row()][it.col()]);
+    for(int i = 0; i < a.n; ++i) {
+        for(int j = 0; j < a.m; ++j) {
+            int aAt = a.at(i, j);
+            int _aAt = _a[i][j];
+            EXPECT_EQ(aAt, _aAt);
+        }
     }
-    for (auto it = b.begin(); it.in_range(); it.next()) {
-        EXPECT_EQ(it.at(), _b[it.row()][it.col()]);
+    for(int i = 0; i < b.n; ++i) {
+        for(int j = 0; j < b.m; ++j) {
+            EXPECT_EQ(b.at(i, j), _b[i][j]);
+        }
     }
-    for (auto it = c.begin(); it.in_range(); it.next()) {
-        EXPECT_EQ(it.at(), _c[it.row()][it.col()]);
+    for(int i = 0; i < c.n; ++i) {
+        for(int j = 0; j < c.m; ++j) {
+            EXPECT_EQ(c.at(i, j), _c[i][j]);
+        }
     }
-    for (auto it = d.begin(); it.in_range(); it.next()) {
-        EXPECT_EQ(it.at(), _d[it.row()][it.col()]);
+    for(int i = 0; i < d.n; ++i) {
+        for(int j = 0; j < d.m; ++j) {
+            EXPECT_EQ(d.at(i, j), _d[i][j]);
+        }
     }
 }
 

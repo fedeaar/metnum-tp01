@@ -24,12 +24,9 @@ private:
      ESTRUCTURA
      */
 
-    size_t n;
-    size_t m;
-
     struct elem {
         int col;
-        T val;
+        T val {};
     };
 
     struct cache {
@@ -40,10 +37,12 @@ private:
     };
 
     void updateLast(size_t row, size_t pos);
-    int search(size_t row, size_t col);
+    size_t search(size_t row, size_t col);
     vector<cache> _last;
     vector<vector<elem>> _m;
 public:
+    size_t n;
+    size_t m;
     /**
      CONSTRUCTORES
      * default, por copia, por array.
@@ -58,7 +57,7 @@ public:
      * @param row 0 <= i < n, fila del elemento a guardar.
      * @param col 0 <= j < m, columna del elemento a guardar.
      */
-    void set(size_t row, size_t col, T elem);
+    void set(size_t row, size_t col, T val);
 
     // /**
     //  REINDEX
@@ -75,7 +74,7 @@ public:
      * @param col 0 <= j < m, columna del elemento a guardar.
      * @return una copia del elemento que está en la posición dada.
      */
-    T at(size_t row, size_t col) const;
+    T at(size_t row, size_t col);
 
 };
 

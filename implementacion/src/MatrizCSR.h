@@ -15,22 +15,24 @@
  * @tparam m > 0, cantidad de columnas.
  * @tparam T implementa operadores =, <, >, +, -, *, /, <<.
  */
-template<size_t n, size_t m, class T>
+template<class T>
 class MatrizCSR : public Matriz<n, m, T> {
 private:
     /**
      ESTRUCTURA
      */
-    vector<T> _m;
-    vector<size_t> _jm;
-    vector<size_t> _im;
-
+    size_t _nz;
+    vector<T> _m; // tamaño nz
+    vector<size_t> _cols; // tamaño nz
+    vector<size_t> _rows; // tamaño n+1
 public:
+    size_t n;
+    size_t m;
     /**
      CONSTRUCTORES
      * default, por copia, por array.
      */
-    MatrizCSR();
+    MatrizCSR(size_t n, size_t m);
     MatrizCSR(const MatrizCSR& b);
     MatrizCSR(const initializer_list<initializer_list<T>>& b);
 
@@ -42,14 +44,14 @@ public:
      */
     void set(size_t row, size_t col, T elem);
 
-    /**
-     REINDEX
-     * modifica el orden de las filas o columnas.
-     * @param i1 0 <= i < n ó m según el orden, fila o columna por la que intercambiar.
-     * @param i2 0 <= j < n ó m según el orden, fila o columna por la que intercambiar.
-     * @param rowOrder si true intercambia por fila, sino por columna.
-     */
-    void reindex(size_t i1, size_t i2, bool rowOrder=true);
+    // /**
+    //  REINDEX
+    //  * modifica el orden de las filas o columnas.
+    //  * @param i1 0 <= i < n ó m según el orden, fila o columna por la que intercambiar.
+    //  * @param i2 0 <= j < n ó m según el orden, fila o columna por la que intercambiar.
+    //  * @param rowOrder si true intercambia por fila, sino por columna.
+    //  */
+    //  void reindex(size_t i1, size_t i2, bool rowOrder=true);
 
     /**
      AT
