@@ -1,5 +1,6 @@
 #include "../pagerank.h"
-
+#include <chrono>
+using namespace std::chrono;
 
 void normalize(vector<double> &v) {
     double s = {};
@@ -32,6 +33,7 @@ vector<double> pagerank::solve(in_file &params) {
 
 
 vector<double> pagerank::solve_optimizado(in_file &params) {
+    auto start = high_resolution_clock::now();
     matriz<double, alt<double>> m(params.paginas, params.paginas);
     // m = 0
     vector<double> grado(params.paginas);
@@ -49,8 +51,15 @@ vector<double> pagerank::solve_optimizado(in_file &params) {
     for (auto it = m.begin(); it.in_range(); it.next_diagonal()) {
         it.set(1);
     }
+    auto stop = high_resolution_clock::now();
+    cout << "tiempo construir matriz: " << duration_cast<milliseconds>(stop-start).count() << " ms." << endl;
+
     // m = I - pWD
     vector<double> res = m.solve(vector<double>(params.paginas, 1));
+    start = high_resolution_clock::now();
     normalize(res);
+    stop = high_resolution_clock::now();
+    cout << "tiempo normalizar resultado: " << duration_cast<milliseconds>(stop-start).count() << " ms." << endl;
+
     return res;
 }

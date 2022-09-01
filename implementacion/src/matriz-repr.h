@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cassert>
+#include "matriz.h"
 
 using namespace std;
 
@@ -53,8 +54,23 @@ public:
     T at(size_t row, size_t col) const;
     void set(size_t row, size_t col, T val);
     void swap(size_t i1, size_t i2, bool rowOrder);
-};
 
+    class iterador_rapido {
+    protected:
+        size_t _row, _pos;
+        const alt<T> &_p;
+
+    public:
+        iterador_rapido(const alt<T> &p, size_t row, size_t col);
+        T at();
+        void next(bool wrap=true);
+        bool in_range();
+        size_t col();
+        size_t row();
+    };
+
+    iterador_rapido begin(size_t i=0, size_t j = 0) const;
+};
 
 #include "impl/matriz/matriz-repr-base.hpp"
 #include "impl/matriz/matriz-repr-alt.hpp"

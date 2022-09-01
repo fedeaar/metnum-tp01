@@ -1,6 +1,6 @@
 #include "../../matriz.h"
-
-
+#include <chrono>
+using namespace std::chrono;
 //
 // GAUSS
 //
@@ -52,6 +52,23 @@ matriz<T, R> matriz<T, R>::gauss_elim() const {
     }
     return res;
 }
+//template<class T, class R>
+//matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
+//    /** pre: A_ii != 0 para i: 0 ... N y b.size() == N. */
+//    assert(b.size() == n());
+//    matriz res {*this};
+//    for (size_t i = 0; i < n() - 1; i++) {
+//        for (size_t j = i + 1; j < n(); j++) {
+//            T mij = res.at(j, i) / res.at(i, i);
+//            for (size_t k = i; k < m(); k++) {
+//                T newVal = res.at(j, k) - mij * res.at(i, k);
+//                res.set(j, k, newVal);
+//            }
+//            b[j] = b[j] - mij * b[i];
+//        }
+//    }
+//    return res;
+//}
 template<class T, class R>
 matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
     /** pre: A_ii != 0 para i: 0 ... N y b.size() == N. */
@@ -59,12 +76,19 @@ matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
     matriz res {*this};
     for (size_t i = 0; i < n() - 1; i++) {
         for (size_t j = i + 1; j < n(); j++) {
-            T mij = res.at(j, i) / res.at(i, i);
-            for (size_t k = i; k < m(); k++) {
-                T newVal = res.at(j, k) - mij * res.at(i, k);
-                res.set(j, k, newVal);
+            T tmp = res.at(j, i);
+            if (tmp == 0) {
+                continue;
+            } else {
+                T mij = tmp / res.at(i, i);
+                auto kt = res._rep.begin(i, i);
+                while (kt.in_range()) {
+                    T newVal = res.at(j, kt.col()) - mij * kt.at();
+                    res.set(j, kt.col(), newVal);
+                    kt.next(false);
+                }
+                b[j] = b[j] - mij * b[i];
             }
-            b[j] = b[j] - mij * b[i];
         }
     }
     return res;
@@ -75,15 +99,23 @@ template<class T, class R>
 vector<T> matriz<T, R>::solve(const vector<T> &b) {
     /** pre: pre: A_ii != 0 para i: 0 ... N despues de triangular y N == M y b.size() == N. */
     assert(b.size() == n());
+
+    auto start = high_resolution_clock::now();
     vector<T> b_tri = b;
     matriz<T, R> m_tri = gauss_elim(b_tri);
+    auto stop = high_resolution_clock::now();
+    cout << "tiempo triangular: " << duration_cast<milliseconds>(stop-start).count() << " ms." << endl;
+
+    start = high_resolution_clock::now();
     vector<T> res(n());
     for (long i = n() - 1; i >= 0; --i) {
         T parcial {};
-        for (size_t j = i + 1; j < m(); ++j) {
-            parcial = parcial + m_tri.at(i, j) * res[j];
+        for (auto it = m_tri._rep.begin(i, i + 1); it.in_range(); it.next(false)) {
+            parcial = parcial + it.at() * res[it.col()];
         }
         res[i] = (b_tri[i] - parcial) / m_tri.at(i, i);
     }
+    stop = high_resolution_clock::now();
+    cout << "tiempo resolvero: " << duration_cast<milliseconds>(stop-start).count() << " ms." << endl;
     return res;
 }

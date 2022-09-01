@@ -8,6 +8,7 @@ add_library(gtest STATIC tests/gtest-1.8.1/gtest-all.cc)
 add_library(gtest_main STATIC tests/gtest-1.8.1/gtest_main.cc)
 
 set(SOURCE_FILES
+        src/matriz-repr.h
         src/impl/matriz/matriz-repr-base.hpp
         src/impl/matriz/matriz-repr-alt.hpp
         src/matriz.h

@@ -27,17 +27,19 @@
 #include <vector>
 #include <numeric>
 #include <iostream>
-#include "./matriz-repr.h"
 
 using namespace std;
 
+
+template<class T>
+class alt;
 
 /** ====================================================
  * Una matriz.
  * @tparam R la representacion interna
  * @tparam T numerico. Implementa: =, <, +, -, *, /, <<.
  ======================================================= */
-template<class T=double, class R=base<T>>
+template<class T=double, class R=alt<T>>
 class matriz {
 private:
     /**
@@ -303,14 +305,14 @@ public:
  << OVERLOAD
  * permite imprimir una matriz, ej. cout << A.
  */
-template<class T=double, class R=base<T>>
+template<class T=double, class R=alt<T>>
 ostream &operator<<(ostream &os, const matriz<T, R> &mat);
 
 /**
  PRODUCTO POR ESCALAR
  * overload global para R * matriz (orden inverso de los operandos).
  */
-template<class T=double, class R=base<T>>
+template<class T=double, class R=alt<T>>
 matriz<T, R> operator*(const T &b, const matriz<T, R> &a);
 
 
@@ -322,17 +324,18 @@ matriz<T, R> operator*(const T &b, const matriz<T, R> &a);
  IDENTIDAD
  * @return una matriz identidad n * n.
  */
-template<class T=double, class R=base<T>>
+template<class T=double, class R=alt<T>>
 matriz<T, R> identity(size_t n);
 
 /**
  DIAGONAL
  * @return una matriz diagonal con los elementos de v.
  */
-template<class T=double, class R=base<T>>
+template<class T=double, class R=alt<T>>
 matriz<T, R> diagonal(const vector<T> &v);
 
 
+#include "matriz-repr.h"
 #include "impl/matriz/matriz.hpp"
 #include "impl/matriz/matriz-interfaz.hpp"
 #include "impl/matriz/matriz-operadores.hpp"

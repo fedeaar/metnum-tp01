@@ -85,3 +85,60 @@ void alt<T>::updateLast(size_t row, size_t pos) const {
         _last[row].pos = pos;
     }
 }
+
+
+
+
+//
+// IT RAPIDO
+//
+
+template<class T>
+alt<T>::iterador_rapido::iterador_rapido(const alt<T> &p, size_t row, size_t col): _row(row), _p(p) {
+    if (0 <= _row && _row < _p.n() && 0 <= col && col < _p.m()) {
+        _pos = (p.search(row, col));
+    } else {
+        _pos = -1;
+    }
+}
+
+
+template<class T>
+T alt<T>::iterador_rapido::at() {
+    assert(in_range());
+    return _p._mat[_row][_pos].val;
+}
+
+
+template<class T>
+size_t alt<T>::iterador_rapido::col() {
+    return _p._mat[_row][_pos].col;
+}
+
+
+template<class T>
+size_t alt<T>::iterador_rapido::row() {
+    return _row;
+}
+
+
+template<class T>
+void alt<T>::iterador_rapido::next(bool wrap) {
+    ++_pos;
+    if (wrap && _pos >= _p._mat.size()) {
+        ++_row;
+        _pos = 0;
+    }
+}
+
+
+template<class T>
+bool alt<T>::iterador_rapido::in_range() {
+    return 0 <= _row && _row < _p._mat.size() && 0 <= _pos && _pos < _p._mat[_row].size();
+}
+
+
+template<class T> typename
+alt<T>::iterador_rapido alt<T>::begin(size_t i, size_t j) const {
+    return iterador_rapido(*this, i, j);
+}
