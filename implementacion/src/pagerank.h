@@ -1,12 +1,10 @@
 #ifndef IMPLEMENTACION_PAGERANK_H
 #define IMPLEMENTACION_PAGERANK_H
 
-#include "Matriz.h"
-#include <vector>
+#include "matriz.h"
 
 
-namespace PageRank {
-
+namespace pagerank {
     struct coords {
         coords(size_t _i, size_t _j) : i(_i), j(_j) {}
 

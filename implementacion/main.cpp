@@ -13,10 +13,10 @@ int main(int argc,  char** argv) {
     IO::stodcast(argv[2], p_val, "error: el valor p no se pudo interpretar como double.");
 
     cout << "leyendo el archivo: " + in << ".\n";
-    PageRank::in_file data = IO::pagerank_read_in(in, p_val);
+    pagerank::in_file data = IO::pagerank_read_in(in, p_val);
 
     cout << "calcuando pagerank...\n";
-    vector<double> solucion = PageRank::solve_optimizado(data);
+    vector<double> solucion = pagerank::solve_optimizado(data);
 
     cout << "guardando resultado en: " + out << " (si existe el directorio)." << endl;
     IO::pagerank_write_out(out, p_val, solucion);

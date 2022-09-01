@@ -19,7 +19,7 @@ void IO::stodcast(const string &val, double &res, const string &msg) {
 }
 
 
-PageRank::in_file IO::pagerank_read_in(const string &in, double p_val) {
+pagerank::in_file IO::pagerank_read_in(const string &in, double p_val) {
     ifstream file {in};
     if (!file.is_open()) {
         throw std::invalid_argument("no se pudo leer el archivo: " + in + ".");
@@ -35,7 +35,7 @@ PageRank::in_file IO::pagerank_read_in(const string &in, double p_val) {
     size_t links {};
     stolcast(_links, links, "error de formato: linea 2.");
     // init store
-    PageRank::in_file params(paginas, links, p_val);
+    pagerank::in_file params(paginas, links, p_val);
     // in coords
     string _i, _j;
     size_t i, j, k = 2;
@@ -43,13 +43,13 @@ PageRank::in_file IO::pagerank_read_in(const string &in, double p_val) {
         string msg = "error de formato: linea " + std::to_string(k) + ".";
         stolcast(_i, i, msg);
         stolcast(_j, j, msg);
-        params.relaciones.emplace_back(PageRank::coords{i, j});
+        params.relaciones.emplace_back(pagerank::coords{i, j});
     }
     return params;
 }
 
 
-PageRank::out_file IO::pagerank_read_out(const string &in) {
+pagerank::out_file IO::pagerank_read_out(const string &in) {
     ifstream file {in};
     if (!file.is_open()) {
         throw std::invalid_argument("no se pudo leer el archivo: " + in + ".");
@@ -60,7 +60,7 @@ PageRank::out_file IO::pagerank_read_out(const string &in) {
     double p_val {};
     stodcast(_p_val, p_val, "error de formato: linea 1.");
     // init store
-    PageRank::out_file params(p_val);
+    pagerank::out_file params(p_val);
     // in xi
     string _xi;
     double xi;

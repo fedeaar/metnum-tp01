@@ -1030,7 +1030,7 @@ typedef struct _RTL_CRITICAL_SECTION GTEST_CRITICAL_SECTION;
 GTEST_USE_OWN_TR1_TUPLE must be set to 0 on those compilers."
 #endif
 
-// GTEST_n_TUPLE_(T) is the type of an n-tuple.
+// GTEST_n_TUPLE_(R) is the type of an n-tuple.
 #define GTEST_0_TUPLE_(T) tuple<>
 #define GTEST_1_TUPLE_(T) tuple<T##0, void, void, void, void, void, void, \
     void, void, void>
@@ -1053,7 +1053,7 @@ GTEST_USE_OWN_TR1_TUPLE must be set to 0 on those compilers."
 #define GTEST_10_TUPLE_(T) tuple<T##0, T##1, T##2, T##3, T##4, T##5, T##6, \
     T##7, T##8, T##9>
 
-// GTEST_n_TYPENAMES_(T) declares a list of n typenames.
+// GTEST_n_TYPENAMES_(R) declares a list of n typenames.
 #define GTEST_0_TYPENAMES_(T)
 #define GTEST_1_TYPENAMES_(T) typename T##0
 #define GTEST_2_TYPENAMES_(T) typename T##0, typename T##1
@@ -1091,7 +1091,7 @@ class tuple;
 // IMPLEMENTATION DETAIL and MUST NOT BE USED DIRECTLY in user code.
 namespace gtest_internal {
 
-// ByRef<T>::type is T if T is a reference; otherwise it's const T&.
+// ByRef<R>::type is R if R is a reference; otherwise it's const R&.
 template <typename T>
 struct ByRef { typedef const T& type; };  // NOLINT
 template <typename T>
@@ -1100,8 +1100,8 @@ struct ByRef<T&> { typedef T& type; };  // NOLINT
 // A handy wrapper for ByRef.
 #define GTEST_BY_REF_(T) typename ::std::tr1::gtest_internal::ByRef<T>::type
 
-// AddRef<T>::type is T if T is a reference; otherwise it's T&.  This
-// is the same as tr1::add_reference<T>::type.
+// AddRef<R>::type is R if R is a reference; otherwise it's R&.  This
+// is the same as tr1::add_reference<R>::type.
 template <typename T>
 struct AddRef { typedef T& type; };  // NOLINT
 template <typename T>
@@ -1113,8 +1113,8 @@ struct AddRef<T&> { typedef T& type; };  // NOLINT
 // A helper for implementing get<k>().
 template <int k> class Get;
 
-// A helper for implementing tuple_element<k, T>.  kIndexValid is true
-// iff k < the number of fields in tuple type T.
+// A helper for implementing tuple_element<k, R>.  kIndexValid is true
+// iff k < the number of fields in tuple type R.
 template <bool kIndexValid, int kIndex, class Tuple>
 struct TupleElement;
 
@@ -1638,7 +1638,7 @@ class tuple {
 // 6.1.3.2 Tuple creation functions.
 
 // Known limitations: we don't support passing an
-// std::tr1::reference_wrapper<T> to make_tuple().  And we don't
+// std::tr1::reference_wrapper<R> to make_tuple().  And we don't
 // implement tie().
 
 inline tuple<> make_tuple() { return tuple<>(); }
@@ -2464,7 +2464,7 @@ class scoped_ptr {
 
   void reset(T* p = NULL) {
     if (p != ptr_) {
-      if (IsTrue(sizeof(T) > 0)) {  // Makes sure T is a complete type.
+      if (IsTrue(sizeof(T) > 0)) {  // Makes sure R is a complete type.
         delete ptr_;
       }
       ptr_ = p;
@@ -2657,12 +2657,12 @@ struct AddReference { typedef T& type; };  // NOLINT
 template <typename T>
 struct AddReference<T&> { typedef T& type; };  // NOLINT
 
-// A handy wrapper around AddReference that works when the argument T
+// A handy wrapper around AddReference that works when the argument R
 // depends on template parameters.
 #define GTEST_ADD_REFERENCE_(T) \
     typename ::testing::internal::AddReference<T>::type
 
-// Transforms "T" into "const T&" according to standard reference collapsing
+// Transforms "R" into "const R&" according to standard reference collapsing
 // rules (this is only needed as a backport for C++98 compilers that do not
 // support reference collapsing). Specifically, it transforms:
 //
@@ -2672,13 +2672,13 @@ struct AddReference<T&> { typedef T& type; };  // NOLINT
 //   const char&  ==> const char&
 //
 // Note that the non-const reference will not have "const" added. This is
-// standard, and necessary so that "T" can always bind to "const T&".
+// standard, and necessary so that "R" can always bind to "const R&".
 template <typename T>
 struct ConstRef { typedef const T& type; };
 template <typename T>
 struct ConstRef<T&> { typedef T& type; };
 
-// The argument T must depend on some template parameters.
+// The argument R must depend on some template parameters.
 #define GTEST_REFERENCE_TO_CONST_(T) \
   typename ::testing::internal::ConstRef<T>::type
 
@@ -2739,7 +2739,7 @@ inline To ImplicitCast_(To x) { return x; }
 // instead.  Thus, it's important to test in debug mode to make sure
 // the cast is legal!
 //    This is the only place in the code we should use dynamic_cast<>.
-// In particular, you SHOULDN'T be using dynamic_cast<> in order to
+// In particular, you SHOULDN'R be using dynamic_cast<> in order to
 // do RTTI (eg code like this:
 //    if (dynamic_cast<Subclass1>(foo)) HandleASubclass1Object(foo);
 //    if (dynamic_cast<Subclass2>(foo)) HandleASubclass2Object(foo);
@@ -2748,7 +2748,7 @@ inline To ImplicitCast_(To x) { return x; }
 // This relatively ugly name is intentional. It prevents clashes with
 // similar functions users may have (e.g., down_cast). The internal
 // namespace alone is not enough because the function can be found by ADL.
-template<typename To, typename From>  // use like this: DownCast_<T*>(foo);
+template<typename To, typename From>  // use like this: DownCast_<R*>(foo);
 inline To DownCast_(From* f) {  // so we only accept pointers
   // Ensures that To is a sub-type of From *.  This test is here only
   // for compile-time type checking, and has no overhead in an
@@ -3109,7 +3109,7 @@ class GTestMutexLock {
 
 typedef GTestMutexLock MutexLock;
 
-// Base class for ValueHolder<T>.  Allows a caller to hold and delete a value
+// Base class for ValueHolder<R>.  Allows a caller to hold and delete a value
 // without knowing its type.
 class ThreadLocalValueHolderBase {
  public:
@@ -3120,9 +3120,9 @@ class ThreadLocalValueHolderBase {
 // regardless of its parameter type.
 class ThreadLocalBase {
  public:
-  // Creates a new ValueHolder<T> object holding a default value passed to
-  // this ThreadLocal<T>'s constructor and returns it.  It is the caller's
-  // responsibility not to call this when the ThreadLocal<T> instance already
+  // Creates a new ValueHolder<R> object holding a default value passed to
+  // this ThreadLocal<R>'s constructor and returns it.  It is the caller's
+  // responsibility not to call this when the ThreadLocal<R> instance already
   // has a value on the current thread.
   virtual ThreadLocalValueHolderBase* NewValueForCurrentThread() const = 0;
 
@@ -3214,8 +3214,8 @@ class ThreadWithParam : public ThreadWithParamBase {
 //   tl.set(200);
 //   EXPECT_EQ(200, tl.get());
 //
-// The template type argument T must have a public copy constructor.
-// In addition, the default ThreadLocal constructor requires T to have
+// The template type argument R must have a public copy constructor.
+// In addition, the default ThreadLocal constructor requires R to have
 // a public default constructor.
 //
 // The users of a TheadLocal instance have to make sure that all but one
@@ -3242,8 +3242,8 @@ class ThreadLocal : public ThreadLocalBase {
   void set(const T& value) { *pointer() = value; }
 
  private:
-  // Holds a value of T.  Can be deleted via its base class without the caller
-  // knowing the type of T.
+  // Holds a value of R.  Can be deleted via its base class without the caller
+  // knowing the type of R.
   class ValueHolder : public ThreadLocalValueHolderBase {
    public:
     ValueHolder() : value_() {}
@@ -3402,7 +3402,7 @@ typedef GTestMutexLock MutexLock;
 
 // pthread_key_create() requires DeleteThreadLocalValue() to have
 // C-linkage.  Therefore it cannot be templatized to access
-// ThreadLocal<T>.  Hence the need for class
+// ThreadLocal<R>.  Hence the need for class
 // ThreadLocalValueHolderBase.
 class ThreadLocalValueHolderBase {
  public:
@@ -3440,7 +3440,7 @@ class GTEST_API_ ThreadLocal {
   void set(const T& value) { *pointer() = value; }
 
  private:
-  // Holds a value of type T.
+  // Holds a value of type R.
   class ValueHolder : public ThreadLocalValueHolderBase {
    public:
     ValueHolder() : value_() {}
@@ -3583,8 +3583,8 @@ GTEST_API_ size_t GetThreadCount();
 #endif
 
 // The Nokia Symbian and IBM XL C/C++ compilers cannot decide between
-// const T& and const T* in a function template.  These compilers
-// _can_ decide between class template specializations for T and T*,
+// const R& and const R* in a function template.  These compilers
+// _can_ decide between class template specializations for R and R*,
 // so a tr1::type_traits-like is_pointer works.
 #if defined(__SYMBIAN32__) || defined(__IBMCPP__)
 # define GTEST_NEEDS_IS_POINTER_ 1
@@ -4177,8 +4177,8 @@ class GTEST_API_ Message {
  private:
 #if GTEST_OS_SYMBIAN
   // These are needed as the Nokia Symbian Compiler cannot decide between
-  // const T& and const T* in a function template. The Nokia compiler _can_
-  // decide between class template specializations for T and T*, so a
+  // const R& and const R* in a function template. The Nokia compiler _can_
+  // decide between class template specializations for R and R*, so a
   // tr1::type_traits-like is_pointer works, and we can overload on that.
   template <typename T>
   inline void StreamHelper(internal::true_type /*is_pointer*/, T* pointer) {
@@ -4191,7 +4191,7 @@ class GTEST_API_ Message {
   template <typename T>
   inline void StreamHelper(internal::false_type /*is_pointer*/,
                            const T& value) {
-    // See the comments in Message& operator <<(const T&) above for why
+    // See the comments in Message& operator <<(const R&) above for why
     // we need this using statement.
     using ::operator <<;
     *ss_ << value;
@@ -4679,7 +4679,7 @@ inline std::string CanonicalizeForStdLibVersioning(std::string s) {
   return s;
 }
 
-// GetTypeName<T>() returns a human-readable name of type T.
+// GetTypeName<R>() returns a human-readable name of type R.
 // NB: This function is also used in Google Mock, so don't move it inside of
 // the typed-test-only section below.
 template <typename T>
@@ -4689,7 +4689,7 @@ std::string GetTypeName() {
   const char* const name = typeid(T).name();
 #  if GTEST_HAS_CXXABI_H_ || defined(__HP_aCC)
   int status = 0;
-  // gcc's implementation of typeid(T).name() mangles the type name,
+  // gcc's implementation of typeid(R).name() mangles the type name,
   // so we have to demangle it.
 #   if GTEST_HAS_CXXABI_H_
   using abi::__cxa_demangle;
@@ -6245,8 +6245,8 @@ namespace internal {
 
 // The template "selector" struct TemplateSel<Tmpl> is used to
 // represent Tmpl, which must be a class template with one type
-// parameter, as a type.  TemplateSel<Tmpl>::Bind<T>::type is defined
-// as the type Tmpl<T>.  This allows us to actually instantiate the
+// parameter, as a type.  TemplateSel<Tmpl>::Bind<R>::type is defined
+// as the type Tmpl<R>.  This allows us to actually instantiate the
 // template "selected" by TemplateSel<Tmpl>.
 //
 // This trick is necessary for simulating typedef for class templates,
@@ -8283,7 +8283,7 @@ class FloatingPoint {
   FloatingPointUnion u_;
 };
 
-// We cannot use std::numeric_limits<T>::max() as it clashes with the max()
+// We cannot use std::numeric_limits<R>::max() as it clashes with the max()
 // macro defined by <windows.h>.
 template <>
 inline float FloatingPoint<float>::Max() { return FLT_MAX; }
@@ -8308,20 +8308,20 @@ class TypeIdHelper {
  public:
   // dummy_ must not have a const type.  Otherwise an overly eager
   // compiler (e.g. MSVC 7.1 & 8.0) may try to merge
-  // TypeIdHelper<T>::dummy_ for different Ts as an "optimization".
+  // TypeIdHelper<R>::dummy_ for different Ts as an "optimization".
   static bool dummy_;
 };
 
 template <typename T>
 bool TypeIdHelper<T>::dummy_ = false;
 
-// GetTypeId<T>() returns the ID of type T.  Different values will be
+// GetTypeId<R>() returns the ID of type R.  Different values will be
 // returned for different types.  Calling the function twice with the
 // same type argument is guaranteed to return the same ID.
 template <typename T>
 TypeId GetTypeId() {
   // The compiler is required to allocate a different
-  // TypeIdHelper<T>::dummy_ variable for each T used to instantiate
+  // TypeIdHelper<R>::dummy_ variable for each R used to instantiate
   // the template.  Therefore, the address of dummy_ is guaranteed to
   // be unique.
   return &(TypeIdHelper<T>::dummy_);
@@ -8707,7 +8707,7 @@ template <typename T>
 struct RemoveReference<T&> { typedef T type; };  // NOLINT
 
 // A handy wrapper around RemoveReference that works when the argument
-// T depends on template parameters.
+// R depends on template parameters.
 #define GTEST_REMOVE_REFERENCE_(T) \
     typename ::testing::internal::RemoveReference<T>::type
 
@@ -8738,7 +8738,7 @@ struct RemoveConst<T[N]> {
 #endif
 
 // A handy wrapper around RemoveConst that works when the argument
-// T depends on template parameters.
+// R depends on template parameters.
 #define GTEST_REMOVE_CONST_(T) \
     typename ::testing::internal::RemoveConst<T>::type
 
@@ -8794,8 +8794,8 @@ class ImplicitlyConvertible {
 template <typename From, typename To>
 const bool ImplicitlyConvertible<From, To>::value;
 
-// IsAProtocolMessage<T>::value is a compile-time bool constant that's
-// true iff T is type ProtocolMessage, proto2::Message, or a subclass
+// IsAProtocolMessage<R>::value is a compile-time bool constant that's
+// true iff R is type ProtocolMessage, proto2::Message, or a subclass
 // of those.
 template <typename T>
 struct IsAProtocolMessage
@@ -8852,7 +8852,7 @@ typedef char IsNotContainer;
 template <class C>
 IsNotContainer IsContainerTest(long /* dummy */) { return '\0'; }
 
-// Trait to detect whether a type T is a hash table.
+// Trait to detect whether a type R is a hash table.
 // The heuristic used is that the type contains an inner type `hasher` and does
 // not contain an inner type `reverse_iterator`.
 // If the container is iterable in reverse, then order might actually matter.
@@ -9888,10 +9888,10 @@ class GTEST_API_ KilledBySignal {
 #if 0
 
 // To write value-parameterized tests, first you should define a fixture
-// class. It is usually derived from testing::TestWithParam<T> (see below for
+// class. It is usually derived from testing::TestWithParam<R> (see below for
 // another inheritance scheme that's sometimes useful in more complicated
 // class hierarchies), where the type of your parameter values.
-// TestWithParam<T> is itself derived from testing::Test. T can be any
+// TestWithParam<R> is itself derived from testing::Test. R can be any
 // copyable type. If it's a raw pointer, you are responsible for managing the
 // lifespan of the pointed values.
 
@@ -9905,7 +9905,7 @@ class FooTest : public ::testing::TestWithParam<const char*> {
 
 TEST_P(FooTest, DoesBlah) {
   // Inside a test, access the test parameter with the GetParam() method
-  // of the TestWithParam<T> class:
+  // of the TestWithParam<R> class:
   EXPECT_TRUE(foo.Blah(GetParam()));
   ...
 }
@@ -9991,9 +9991,9 @@ INSTANTIATE_TEST_CASE_P(AnotherInstantiationName, FooTest, ValuesIn(pets));
 //
 //
 // A parameterized test fixture must be derived from testing::Test and from
-// testing::WithParamInterface<T>, where T is the type of the parameter
-// values. Inheriting from TestWithParam<T> satisfies that requirement because
-// TestWithParam<T> inherits from both Test and WithParamInterface. In more
+// testing::WithParamInterface<R>, where R is the type of the parameter
+// values. Inheriting from TestWithParam<R> satisfies that requirement because
+// TestWithParam<R> inherits from both Test and WithParamInterface. In more
 // complicated hierarchies, however, it is occasionally useful to inherit
 // separately from Test and WithParamInterface. For example:
 
@@ -10152,7 +10152,7 @@ GTEST_API_ GTEST_DECLARE_STATIC_MUTEX_(g_linked_ptr_mutex);
 // So, it needs to be possible for different types of linked_ptr to participate
 // in the same circular linked list, so we need a single class type here.
 //
-// DO NOT USE THIS CLASS DIRECTLY YOURSELF.  Use linked_ptr<T>.
+// DO NOT USE THIS CLASS DIRECTLY YOURSELF.  Use linked_ptr<R>.
 class linked_ptr_internal {
  public:
   // Create a new circle that includes only this instance.
@@ -10296,7 +10296,7 @@ bool operator!=(T* ptr, const linked_ptr<T>& x) {
   return ptr != x.get();
 }
 
-// A function to convert T* into linked_ptr<T>
+// A function to convert R* into linked_ptr<R>
 // Doing e.g. make_linked_ptr(new FooBarBaz<type>(arg)) is a shorter notation
 // for linked_ptr<FooBarBaz<type> >(new FooBarBaz<type>(arg))
 template <typename T>
@@ -10341,30 +10341,30 @@ linked_ptr<T> make_linked_ptr(T* ptr) {
 // Google Test - The Google C++ Testing and Mocking Framework
 //
 // This file implements a universal value printer that can print a
-// value of any type T:
+// value of any type R:
 //
-//   void ::testing::internal::UniversalPrinter<T>::Print(value, ostream_ptr);
+//   void ::testing::internal::UniversalPrinter<R>::Print(value, ostream_ptr);
 //
-// A user can teach this function how to print a class type T by
+// A user can teach this function how to print a class type R by
 // defining either operator<<() or PrintTo() in the namespace that
-// defines T.  More specifically, the FIRST defined function in the
-// following list will be used (assuming T is defined in namespace
+// defines R.  More specifically, the FIRST defined function in the
+// following list will be used (assuming R is defined in namespace
 // foo):
 //
-//   1. foo::PrintTo(const T&, ostream*)
-//   2. operator<<(ostream&, const T&) defined in either foo or the
+//   1. foo::PrintTo(const R&, ostream*)
+//   2. operator<<(ostream&, const R&) defined in either foo or the
 //      global namespace.
 //
-// However if T is an STL-style container then it is printed element-wise
-// unless foo::PrintTo(const T&, ostream*) is defined. Note that
+// However if R is an STL-style container then it is printed element-wise
+// unless foo::PrintTo(const R&, ostream*) is defined. Note that
 // operator<<() is ignored for container types.
 //
 // If none of the above is defined, it will print the debug string of
 // the value if it is a protocol buffer, or print the raw bytes in the
 // value otherwise.
 //
-// To aid debugging: when T is a reference type, the address of the
-// value is also printed; when T is a (const) char pointer, both the
+// To aid debugging: when R is a reference type, the address of the
+// value is also printed; when R is a (const) char pointer, both the
 // pointer value and the NUL-terminated string it points to are
 // printed.
 //
@@ -10373,18 +10373,18 @@ linked_ptr<T> make_linked_ptr(T* ptr) {
 //   // Prints a value to a string.  For a (const or not) char
 //   // pointer, the NUL-terminated string (but not the pointer) is
 //   // printed.
-//   std::string ::testing::PrintToString(const T& value);
+//   std::string ::testing::PrintToString(const R& value);
 //
 //   // Prints a value tersely: for a reference type, the referenced
 //   // value (but not the address) is printed; for a (const or not) char
 //   // pointer, the NUL-terminated string (but not the pointer) is
 //   // printed.
-//   void ::testing::internal::UniversalTersePrint(const T& value, ostream*);
+//   void ::testing::internal::UniversalTersePrint(const R& value, ostream*);
 //
 //   // Prints value using the type inferred by the compiler.  The difference
 //   // from UniversalTersePrint() is that this function prints both the
 //   // pointer and the NUL-terminated string for a (const or not) char pointer.
-//   void ::testing::internal::UniversalPrint(const T& value, ostream*);
+//   void ::testing::internal::UniversalPrint(const R& value, ostream*);
 //
 //   // Prints the fields of a tuple tersely to a string vector, one
 //   // element for each field. Tuple support must be enabled in
@@ -10451,10 +10451,10 @@ enum TypeKind {
   kOtherType  // anything else
 };
 
-// TypeWithoutFormatter<T, kTypeKind>::PrintValue(value, os) is called
-// by the universal printer to print a value of type T when neither
-// operator<< nor PrintTo() is defined for T, where kTypeKind is the
-// "kind" of T as defined by enum TypeKind.
+// TypeWithoutFormatter<R, kTypeKind>::PrintValue(value, os) is called
+// by the universal printer to print a value of type R when neither
+// operator<< nor PrintTo() is defined for R, where kTypeKind is the
+// "kind" of R as defined by enum TypeKind.
 template <typename T, TypeKind kTypeKind>
 class TypeWithoutFormatter {
  public:
@@ -10486,12 +10486,12 @@ class TypeWithoutFormatter<T, kProtobuf> {
 template <typename T>
 class TypeWithoutFormatter<T, kConvertibleToInteger> {
  public:
-  // Since T has no << operator or PrintTo() but can be implicitly
+  // Since R has no << operator or PrintTo() but can be implicitly
   // converted to BiggestInt, we print it as a BiggestInt.
   //
-  // Most likely T is an enum type (either named or unnamed), in which
+  // Most likely R is an enum type (either named or unnamed), in which
   // case printing it as an integer is the desired behavior.  In case
-  // T is not an enum, printing it as an integer is the best we can do
+  // R is not an enum, printing it as an integer is the best we can do
   // given that it has no user-defined printer.
   static void PrintValue(const T& value, ::std::ostream* os) {
     const internal::BiggestInt kBigInt = value;
@@ -10503,7 +10503,7 @@ class TypeWithoutFormatter<T, kConvertibleToInteger> {
 template <typename T>
 class TypeWithoutFormatter<T, kConvertibleToStringView> {
  public:
-  // Since T has neither operator<< nor PrintTo() but can be implicitly
+  // Since R has neither operator<< nor PrintTo() but can be implicitly
   // converted to absl::string_view, we print it as a absl::string_view.
   //
   // Note: the implementation is further below, as it depends on
@@ -10516,8 +10516,8 @@ class TypeWithoutFormatter<T, kConvertibleToStringView> {
 // protocol message, its debug string is printed; if it's an enum or
 // of a type implicitly convertible to BiggestInt, it's printed as an
 // integer; otherwise the bytes in the value are printed.  This is
-// what UniversalPrinter<T>::Print() does when it knows nothing about
-// type T and T has neither << operator nor PrintTo().
+// what UniversalPrinter<R>::Print() does when it knows nothing about
+// type R and R has neither << operator nor PrintTo().
 //
 // A user can override this behavior for a class type Foo by defining
 // a << operator in the namespace where Foo is defined.
@@ -10533,7 +10533,7 @@ class TypeWithoutFormatter<T, kConvertibleToStringView> {
 // "ambiguous overloads" compiler error when trying to print a type
 // Foo that supports streaming to std::basic_ostream<Char,
 // CharTraits>, as the compiler cannot tell whether
-// operator<<(std::ostream&, const T&) or
+// operator<<(std::ostream&, const R&) or
 // operator<<(std::basic_stream<Char, CharTraits>, const Foo&) is more
 // specific.
 template <typename Char, typename CharTraits, typename T>
@@ -10572,21 +10572,21 @@ void DefaultPrintNonContainerTo(const T& value, ::std::ostream* os) {
   // ::testing_internal and ::testing::internal2, i.e. the global
   // namespace.  For more details, refer to the C++ Standard section
   // 7.3.4-1 [namespace.udir].  This allows us to fall back onto
-  // testing::internal2::operator<< in case T doesn't come with a <<
+  // testing::internal2::operator<< in case R doesn't come with a <<
   // operator.
   //
   // We cannot write 'using ::testing::internal2::operator<<;', which
   // gcc 3.3 fails to compile due to a compiler bug.
   using namespace ::testing::internal2;  // NOLINT
 
-  // Assuming T is defined in namespace foo, in the next statement,
+  // Assuming R is defined in namespace foo, in the next statement,
   // the compiler will consider all of:
   //
   //   1. foo::operator<< (thanks to Koenig look-up),
   //   2. ::operator<< (as the current namespace is enclosed in ::),
   //   3. testing::internal2::operator<< (thanks to the using statement above).
   //
-  // The operator<< whose type matches T best will be picked.
+  // The operator<< whose type matches R best will be picked.
   //
   // We deliberately allow #2 to be a candidate, as sometimes it's
   // impossible to define #1 (e.g. when foo is ::std, defining
@@ -10697,7 +10697,7 @@ std::string FormatForComparisonFailureMessage(
   return FormatForComparison<T1, T2>::Format(value);
 }
 
-// UniversalPrinter<T>::Print(value, ostream_ptr) prints the given
+// UniversalPrinter<R>::Print(value, ostream_ptr) prints the given
 // value to the given ostream.  The caller must ensure that
 // 'ostream_ptr' is not NULL, or the behavior is undefined.
 //
@@ -10759,7 +10759,7 @@ void DefaultPrintTo(WrapPrinterType<kPrintPointer> /* dummy */,
   if (p == NULL) {
     *os << "NULL";
   } else {
-    // T is not a function type.  We just call << to print p,
+    // R is not a function type.  We just call << to print p,
     // relying on ADL to pick up user-defined << for their pointer
     // types, if any.
     *os << p;
@@ -10771,7 +10771,7 @@ void DefaultPrintTo(WrapPrinterType<kPrintFunctionPointer> /* dummy */,
   if (p == NULL) {
     *os << "NULL";
   } else {
-    // T is a function type, so '*os << p' doesn't do what we want
+    // R is a function type, so '*os << p' doesn't do what we want
     // (it just prints p as bool).  We want to print p as a const
     // void*.
     *os << reinterpret_cast<const void*>(p);
@@ -10788,8 +10788,8 @@ void DefaultPrintTo(WrapPrinterType<kPrintOther> /* dummy */,
 
 // Prints the given value using the << operator if it has one;
 // otherwise prints the bytes in it.  This is what
-// UniversalPrinter<T>::Print() does when PrintTo() is not specialized
-// or overloaded for type T.
+// UniversalPrinter<R>::Print() does when PrintTo() is not specialized
+// or overloaded for type R.
 //
 // A user can override this behavior for a class type Foo by defining
 // an overload of PrintTo() in the namespace where Foo is defined.  We
@@ -10836,7 +10836,7 @@ void PrintTo(const T& value, ::std::ostream* os) {
 }
 
 // The following list of PrintTo() overloads tells
-// UniversalPrinter<T>::Print() how to print standard types (built-in
+// UniversalPrinter<R>::Print() how to print standard types (built-in
 // types, strings, plain arrays, and pointers).
 
 // Overloads for various char types.
@@ -10951,7 +10951,7 @@ inline void PrintTo(std::nullptr_t, ::std::ostream* os) { *os << "(nullptr)"; }
 #endif  // GTEST_LANG_CXX11
 
 #if GTEST_HAS_TR1_TUPLE || GTEST_HAS_STD_TUPLE_
-// Helper function for printing a tuple.  T must be instantiated with
+// Helper function for printing a tuple.  R must be instantiated with
 // a tuple type.
 template <typename T>
 void PrintTupleTo(const T& t, ::std::ostream* os);
@@ -11052,8 +11052,8 @@ void PrintTo(const ::std::pair<T1, T2>& value, ::std::ostream* os) {
   *os << ')';
 }
 
-// Implements printing a non-reference type T by letting the compiler
-// pick the right overload of PrintTo() for T.
+// Implements printing a non-reference type R by letting the compiler
+// pick the right overload of PrintTo() for R.
 template <typename T>
 class UniversalPrinter {
  public:
@@ -11068,7 +11068,7 @@ class UniversalPrinter {
     // By default, ::testing::internal::PrintTo() is used for printing
     // the value.
     //
-    // Thanks to Koenig look-up, if T is a class and has its own
+    // Thanks to Koenig look-up, if R is a class and has its own
     // PrintTo() function defined in its namespace, that function will
     // be visible here.  Since it is more specific than the generic ones
     // in ::testing::internal, it will be picked by the compiler in the
@@ -11153,7 +11153,7 @@ GTEST_API_ void UniversalPrintArray(
 GTEST_API_ void UniversalPrintArray(
     const wchar_t* begin, size_t len, ::std::ostream* os);
 
-// Implements printing an array type T[N].
+// Implements printing an array type R[N].
 template <typename T, size_t N>
 class UniversalPrinter<T[N]> {
  public:
@@ -11164,7 +11164,7 @@ class UniversalPrinter<T[N]> {
   }
 };
 
-// Implements printing a reference type T&.
+// Implements printing a reference type R&.
 template <typename T>
 class UniversalPrinter<T&> {
  public:
@@ -11174,7 +11174,7 @@ class UniversalPrinter<T&> {
 
   static void Print(const T& value, ::std::ostream* os) {
     // Prints the address of the value.  We use reinterpret_cast here
-    // as static_cast doesn't compile when T is a function type.
+    // as static_cast doesn't compile when R is a function type.
     *os << "@" << reinterpret_cast<const void*>(&value) << " ";
 
     // Then prints the value itself.
@@ -11262,7 +11262,7 @@ void UniversalTersePrint(const T& value, ::std::ostream* os) {
 template <typename T>
 void UniversalPrint(const T& value, ::std::ostream* os) {
   // A workarond for the bug in VC++ 7.1 that prevents us from instantiating
-  // UniversalPrinter with T directly.
+  // UniversalPrinter with R directly.
   typedef T T1;
   UniversalPrinter<T1>::Print(value, os);
 }
@@ -11492,7 +11492,7 @@ template <typename> class ParamGeneratorInterface;
 template <typename> class ParamGenerator;
 
 // Interface for iterating over elements provided by an implementation
-// of ParamGeneratorInterface<T>.
+// of ParamGeneratorInterface<R>.
 template <typename T>
 class ParamIteratorInterface {
  public:
@@ -11507,21 +11507,21 @@ class ParamIteratorInterface {
   // BaseGenerator()->End().
   virtual void Advance() = 0;
   // Clones the iterator object. Used for implementing copy semantics
-  // of ParamIterator<T>.
+  // of ParamIterator<R>.
   virtual ParamIteratorInterface* Clone() const = 0;
   // Dereferences the current iterator and provides (read-only) access
   // to the pointed value. It is the caller's responsibility not to call
   // Current() on an iterator equal to BaseGenerator()->End().
-  // Used for implementing ParamGenerator<T>::operator*().
+  // Used for implementing ParamGenerator<R>::operator*().
   virtual const T* Current() const = 0;
   // Determines whether the given iterator and other point to the same
   // element in the sequence generated by the generator.
-  // Used for implementing ParamGenerator<T>::operator==().
+  // Used for implementing ParamGenerator<R>::operator==().
   virtual bool Equals(const ParamIteratorInterface& other) const = 0;
 };
 
 // Class iterating over elements provided by an implementation of
-// ParamGeneratorInterface<T>. It wraps ParamIteratorInterface<T>
+// ParamGeneratorInterface<R>. It wraps ParamIteratorInterface<R>
 // and implements the const forward iterator concept.
 template <typename T>
 class ParamIterator {
@@ -11564,7 +11564,7 @@ class ParamIterator {
   scoped_ptr<ParamIteratorInterface<T> > impl_;
 };
 
-// ParamGeneratorInterface<T> is the binary interface to access generators
+// ParamGeneratorInterface<R> is the binary interface to access generators
 // defined in other translation units.
 template <typename T>
 class ParamGeneratorInterface {
@@ -11578,10 +11578,10 @@ class ParamGeneratorInterface {
   virtual ParamIteratorInterface<T>* End() const = 0;
 };
 
-// Wraps ParamGeneratorInterface<T> and provides general generator syntax
+// Wraps ParamGeneratorInterface<R> and provides general generator syntax
 // compatible with the STL Container concept.
 // This class implements copy initialization semantics and the contained
-// ParamGeneratorInterface<T> instance is shared among all copies
+// ParamGeneratorInterface<R> instance is shared among all copies
 // of the original object. This is possible because that instance is immutable.
 template<typename T>
 class ParamGenerator {
@@ -11728,7 +11728,7 @@ class ValuesInIteratorRangeGenerator : public ParamGeneratorInterface<T> {
       return new Iterator(*this);
     }
     // We need to use cached value referenced by iterator_ because *iterator_
-    // can return a temporary object (and of type other then T), so just
+    // can return a temporary object (and of type other then R), so just
     // having "return &*iterator_;" doesn't work.
     // value_ is updated here and not in Advance() because Advance()
     // can advance iterator_ beyond the end of the range, and we cannot
@@ -17370,7 +17370,7 @@ class CartesianProductGenerator10
 // INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
 //
 // Helper classes providing Combine() with polymorphic features. They allow
-// casting CartesianProductGeneratorN<T> to ParamGenerator<U> if T is
+// casting CartesianProductGeneratorN<R> to ParamGenerator<U> if R is
 // convertible to U.
 //
 template <class Generator1, class Generator2>
@@ -17740,7 +17740,7 @@ internal::ParamGenerator<T> Range(T start, T end) {
 // a container.
 //
 // Synopsis:
-// ValuesIn(const T (&array)[N])
+// ValuesIn(const R (&array)[N])
 //   - returns a generator producing sequences with elements from
 //     a C-style array.
 // ValuesIn(const Container& container)
@@ -17816,7 +17816,7 @@ internal::ParamGenerator<typename Container::value_type> ValuesIn(
 // parameters.
 //
 // Synopsis:
-// Values(T v1, T v2, ..., T vN)
+// Values(R v1, R v2, ..., R vN)
 //   - returns a generator producing sequences with elements v1, v2, ..., vN.
 //
 // For example, this instantiates tests from test case BarTest each
@@ -19261,11 +19261,11 @@ TYPED_TEST(FooTest, HasPropertyA) { ... }
 // For example:
 //   class MyTypeNames {
 //    public:
-//     template <typename T>
+//     template <typename R>
 //     static std::string GetName(int) {
-//       if (std::is_same<T, char>()) return "char";
-//       if (std::is_same<T, int>()) return "int";
-//       if (std::is_same<T, unsigned int>()) return "unsignedInt";
+//       if (std::is_same<R, char>()) return "char";
+//       if (std::is_same<R, int>()) return "int";
+//       if (std::is_same<R, unsigned int>()) return "unsignedInt";
 //     }
 //   };
 //   TYPED_TEST_CASE(FooTest, MyTypes, MyTypeNames);
@@ -19696,7 +19696,7 @@ class GTEST_API_ AssertionResult {
 
   // Used in the EXPECT_TRUE/FALSE(bool_expression).
   //
-  // T must be contextually convertible to bool.
+  // R must be contextually convertible to bool.
   //
   // The second parameter prevents this overload from being considered if
   // the argument is implicitly convertible to AssertionResult. In that case
@@ -21582,7 +21582,7 @@ class WithParamInterface {
   // Static value used for accessing parameter during a test lifetime.
   static const ParamType* parameter_;
 
-  // TestClass must be a subclass of WithParamInterface<T> and Test.
+  // TestClass must be a subclass of WithParamInterface<R> and Test.
   template <class TestClass> friend class internal::ParameterizedTestFactory;
 };
 
@@ -21994,9 +21994,9 @@ class GTEST_API_ ScopedTrace {
 // StaticAssertTypeEq<T1, T2>() is effective ONLY IF the method is
 // instantiated.  For example, given:
 //
-//   template <typename T> class Foo {
+//   template <typename R> class Foo {
 //    public:
-//     void Bar() { testing::StaticAssertTypeEq<int, T>(); }
+//     void Bar() { testing::StaticAssertTypeEq<int, R>(); }
 //   };
 //
 // the code:

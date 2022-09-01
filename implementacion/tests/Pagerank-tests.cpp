@@ -7,7 +7,7 @@ protected:
     string basedir;
     double epsilon;
     void SetUp() override {
-        basedir = "../tests/files/";
+        basedir = "./tests/files/";
         epsilon = 1e-4;
     }
 
@@ -15,9 +15,9 @@ protected:
 };
 
 bool PageRankTest::base_test(const string &in, const string &out) {
-    PageRank::out_file expected = IO::pagerank_read_out(basedir + out);
-    PageRank::in_file data = IO::pagerank_read_in(basedir + in, expected.p_val);
-    vector<double> solucion = PageRank::solve_optimizado(data);
+    pagerank::out_file expected = IO::pagerank_read_out(basedir + out);
+    pagerank::in_file data = IO::pagerank_read_in(basedir + in, expected.p_val);
+    vector<double> solucion = pagerank::solve_optimizado(data);
     bool res = (solucion.size() == expected.solucion.size());
     for (size_t i = 0; i < solucion.size() && res; ++i) {
         res = std::abs(solucion[i] - expected.solucion[i]) < epsilon;
@@ -51,13 +51,13 @@ TEST_F(PageRankTest, test_sin_links) {
 }
 
 TEST_F(PageRankTest, test_15_segundos) {
-//    bool res = base_test("test_15_segundos.txt", "test_15_segundos.txt.out");
-//    EXPECT_TRUE(res);
+    bool res = base_test("test_15_segundos.txt", "test_15_segundos.txt.out");
+    EXPECT_TRUE(res);
 }
 
 TEST_F(PageRankTest, test_30_segundos) {
-//    bool res = base_test("test_30_segundos.txt", "test_30_segundos.txt.out");
-//    EXPECT_TRUE(res);
+    bool res = base_test("test_30_segundos.txt", "test_30_segundos.txt.out");
+    EXPECT_TRUE(res);
 }
 
 

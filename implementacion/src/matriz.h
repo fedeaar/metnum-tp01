@@ -1,11 +1,7 @@
-//
-// Estructura base para una matríz
-//
-
 /**
  SOBRE EL DISEÑO:
  *
- *      Matriz<T> busca ser una modulo base para la implementación de matrices numericas.
+ *      matriz<R> busca ser una modulo base para la implementación de matrices numericas.
  *
  *      El objetivo es que cualquier clase derivada pueda modificar la estructura subyacente
  *      sin tener que reimplementar el núcleo de las operaciones, salvo que así se desee para
@@ -31,25 +27,23 @@
 #include <vector>
 #include <numeric>
 #include <iostream>
+#include "./matriz-repr.h"
 
 using namespace std;
 
 
-/** =======================================--===========
+/** ====================================================
  * Una matriz.
+ * @tparam R la representacion interna
  * @tparam T numerico. Implementa: =, <, +, -, *, /, <<.
  ======================================================= */
-template<class T>
-class Matriz {
+template<class T=double, class R=base<T>>
+class matriz {
 private:
     /**
      ESTRUCTURA
      */
-    size_t n;
-    size_t m;
-    vector<vector<T>> _mat;   // matriz
-    vector<size_t> _row;      // indice de filas
-    vector<size_t> _col;      // indice de columnas
+    R _rep;
 
 protected:
 // === ITERADORES === //
@@ -63,7 +57,7 @@ protected:
          ESTRUCTURA
          */
         size_t _row, _col;
-        const Matriz<T> &_p;
+        const matriz<T, R> &_p;
 
     public:
     // === CONSTRUCTORES / DESTRUCTOR === //
@@ -72,7 +66,7 @@ protected:
          * @param row 0 <= row < n, fila inicial.
          * @param col 0 <= col < m, columna inicial.
          */
-        explicit const_iterator(const Matriz<T> &p, size_t row=0, size_t col=0);
+        explicit const_iterator(const matriz<T, R> &p, size_t row=0, size_t col=0);
 
         /**
          DESTRUCTOR
@@ -137,7 +131,7 @@ protected:
          /**
          ESTRUCTURA
          */
-         Matriz<T> &_p;
+         matriz<T, R> &_p;
 
      public:
      // === CONSTRUCTORES / DESTRUCTOR === //
@@ -146,7 +140,7 @@ protected:
           * @param row 0 <= row < n, fila inicial.
           * @param col 0 <= col < m, columna inicial.
           */
-         explicit iterator(Matriz<T> &p, size_t row=0, size_t col=0);
+         explicit iterator(matriz<T, R> &p, size_t row=0, size_t col=0);
 
 
      // === GETTERS / SETTERS === //
@@ -162,55 +156,67 @@ public:
 // === CONSTRUCTORES / DESTRUCTOR === //
     /**
      CONSTRUCTORES
-     * default, por copia, por array.
      */
-    Matriz(size_t n, size_t m);
-    Matriz(const Matriz& b);
-    Matriz(const initializer_list<initializer_list<T>> &b);
-
-    Matriz();
+    matriz(size_t n, size_t m);
+    template<class S>
+    explicit matriz(const matriz<T, S> &b);
+    matriz(const initializer_list<initializer_list<T>> &b);
 
     /**
      DESTRUCTOR
      * default
      */
-    ~Matriz();
+    ~matriz();
+
+
+// === INTERFAZ === //
+
+    const size_t &n() const;
+    const size_t &m() const;
+    T at(size_t row, size_t col) const;
+    void set(size_t row, size_t col, T elem);
+    void swap(size_t i1, size_t i2, bool rowOrder);
 
 
 // === OPERADORES === //
     /**
      ASSIGN
      */
-    Matriz &operator=(const Matriz &b);
-    Matriz &operator=(const initializer_list<initializer_list<T>> &b);
+    template<class S>
+    matriz &operator=(const matriz<T, S> &b);
+    matriz &operator=(const initializer_list<initializer_list<T>> &b);
 
     /**
      SUMA
      */
-    Matriz operator+(const Matriz &b) const;
+    template<class S>
+    matriz operator+(const matriz<T, S> &b) const;
 
     /**
      RESTA
      */
-    Matriz operator-(const Matriz &b) const;
+    template<class S>
+    matriz operator-(const matriz<T, S> &b) const;
 
     /**
      PRODUCTO POR ESCALAR
      */
-    Matriz operator*(const T &b) const;
+    matriz operator*(const T &b) const;
 
     /**
      PRODUCTO
      * @param b es una matriz con M filas.
      */
-    Matriz operator*(const Matriz &b) const;
+    template<class S>
+    matriz operator*(const matriz<T, S> &b) const;
 
     /**
      EQ
      * @param epsilon cota de error máxima
      * @return true si para cada a_ij en la matriz y b_ij en b, | a_ij - b_ij | < epsilon.
      */
-    bool eq(const Matriz &b, double epsilon=1e-4) const;
+    template<class S>
+    bool eq(const matriz<T, S> &b, double epsilon=1e-4) const;
 
 
 // === GAUSS === //
@@ -220,7 +226,7 @@ public:
      * @param i2 0 <= i2 < n ó m según el orden. Segunda fila o columna a intercambiar.
      * @param rowOrder si true intercambia por fila, sino por columna.
      */
-    Matriz gauss_swap(size_t i1, size_t i2, bool rowOrder=true) const;
+    matriz gauss_swap(size_t i1, size_t i2, bool rowOrder=true) const;
 
     /**
      GAUSS MULT
@@ -229,7 +235,7 @@ public:
      * @param val un escalar.
      * @param rowOrder si true intercambia por fila, sino por columna.
      */
-    Matriz gauss_mult(size_t i, const T &val, bool rowOrder=true) const;
+    matriz gauss_mult(size_t i, const T &val, bool rowOrder=true) const;
 
     /**
      GAUSS SUM
@@ -241,7 +247,7 @@ public:
      * @returns Una matriz M' casi equivalente a la instancia, salvo para la fila o columna M'_i1,
      * que ahora satisface M'_i1 = M_i1 + M_i2 * val.
      */
-    Matriz gauss_sum(size_t i1, size_t i2, const T &val, bool rowOrder=true) const;
+    matriz gauss_sum(size_t i1, size_t i2, const T &val, bool rowOrder=true) const;
 
     /**
      ELIMINACION GAUSSIANA
@@ -249,8 +255,8 @@ public:
      * @param b vector solucion, se modifica para ser solucion de la matriz resultante.
      * @return una matriz triangular superior equivalente a la actual.
      */
-    Matriz gauss_elim(vector<T> &b) const;
-    Matriz gauss_elim() const;
+    matriz gauss_elim() const;
+    matriz gauss_elim(vector<T> &b) const;
 
     /**
      SOLVE
@@ -258,39 +264,6 @@ public:
      * @return una solución al sistema Ax = b.
      */
     vector<T> solve(const vector<T> &b);
-
-
-// === GETTERS / SETTERS === //
-    /**
-     SET
-     * modifica el elemento en la posición dada.
-     * @param row 0 <= i < n, fila del elemento a guardar.
-     * @param col 0 <= j < m, columna del elemento a guardar.
-     */
-    void set(size_t row, size_t col, T elem);
-
-    /**
-     AT
-     * @param row 0 <= i < n, fila del elemento a guardar.
-     * @param col 0 <= j < m, columna del elemento a guardar.
-     * @return una copia del elemento que está en la posición dada.
-     */
-    T at(size_t row, size_t col) const;
-
-    /**
-     SHAPE
-     * @return un par (n, m), la forma de la matriz.
-     */
-    pair<size_t, size_t> shape() const;
-
-    /**
-     REINDEX
-     * modifica el orden de las filas o columnas.
-     * @param i1 0 <= i < n ó m según el orden, fila o columna por la que intercambiar.
-     * @param i2 0 <= j < n ó m según el orden, fila o columna por la que intercambiar.
-     * @param rowOrder si true intercambia por fila, sino por columna.
-     */
-    void reindex(size_t i1, size_t i2, bool rowOrder=true);
 
 
 // === BEGIN / END === //
@@ -320,6 +293,8 @@ public:
 };
 
 
+
+
 //
 // OVERLOADS
 //
@@ -328,15 +303,15 @@ public:
  << OVERLOAD
  * permite imprimir una matriz, ej. cout << A.
  */
-template<class T>
-ostream &operator<<(ostream &os, const Matriz<T> &mat);
+template<class T=double, class R=base<T>>
+ostream &operator<<(ostream &os, const matriz<T, R> &mat);
 
 /**
  PRODUCTO POR ESCALAR
- * overload global para T * Matriz (orden inverso de los operandos).
+ * overload global para R * matriz (orden inverso de los operandos).
  */
-template<class T>
-Matriz<T> operator*(const T &b, const Matriz<T> &a);
+template<class T=double, class R=base<T>>
+matriz<T, R> operator*(const T &b, const matriz<T, R> &a);
 
 
 //
@@ -347,18 +322,20 @@ Matriz<T> operator*(const T &b, const Matriz<T> &a);
  IDENTIDAD
  * @return una matriz identidad n * n.
  */
-template<class T>
-Matriz<T> identity(size_t n);
+template<class T=double, class R=base<T>>
+matriz<T, R> identity(size_t n);
 
 /**
  DIAGONAL
  * @return una matriz diagonal con los elementos de v.
  */
-template<class T>
-Matriz<T> diagonal(const vector<T>& v);
+template<class T=double, class R=base<T>>
+matriz<T, R> diagonal(const vector<T> &v);
 
 
-#include "./impl/Matriz.hpp"
-#include "./impl/Matriz-iteradores.hpp"
-#include "./impl/Matriz-gauss.hpp"
+#include "impl/matriz/matriz.hpp"
+#include "impl/matriz/matriz-interfaz.hpp"
+#include "impl/matriz/matriz-operadores.hpp"
+#include "impl/matriz/matriz-iteradores.hpp"
+#include "impl/matriz/matriz-gauss.hpp"
 #endif //IMPLEMENTACION_MATRIZ_H

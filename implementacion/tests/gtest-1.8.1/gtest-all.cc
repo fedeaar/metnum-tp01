@@ -5098,7 +5098,7 @@ std::string FormatEpochTimeInMillisAsIso8601(TimeInMillis ms) {
   // YYYY-MM-DDThh:mm:ss
   return StreamableToString(time_struct.tm_year + 1900) + "-" +
       String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" +
-      String::FormatIntWidth2(time_struct.tm_mday) + "T" +
+      String::FormatIntWidth2(time_struct.tm_mday) + "R" +
       String::FormatIntWidth2(time_struct.tm_hour) + ":" +
       String::FormatIntWidth2(time_struct.tm_min) + ":" +
       String::FormatIntWidth2(time_struct.tm_sec);
@@ -5459,7 +5459,7 @@ static std::string FormatEpochTimeInMillisAsRFC3339(TimeInMillis ms) {
   // YYYY-MM-DDThh:mm:ss
   return StreamableToString(time_struct.tm_year + 1900) + "-" +
       String::FormatIntWidth2(time_struct.tm_mon + 1) + "-" +
-      String::FormatIntWidth2(time_struct.tm_mday) + "T" +
+      String::FormatIntWidth2(time_struct.tm_mday) + "R" +
       String::FormatIntWidth2(time_struct.tm_hour) + ":" +
       String::FormatIntWidth2(time_struct.tm_min) + ":" +
       String::FormatIntWidth2(time_struct.tm_sec) + "Z";
@@ -9495,14 +9495,14 @@ const int kStdErrFileno = STDERR_FILENO;
 #if GTEST_OS_LINUX
 
 namespace {
-template <typename T>
-T ReadProcFileField(const std::string& filename, int field) {
+template <typename R>
+R ReadProcFileField(const std::string& filename, int field) {
   std::string dummy;
   std::ifstream file(filename.c_str());
   while (field-- > 0) {
     file >> dummy;
   }
-  T output = 0;
+  R output = 0;
   file >> output;
   return output;
 }
@@ -10756,9 +10756,9 @@ const char* StringFromGTestEnv(const char* flag, const char* default_value) {
 // Google Test - The Google C++ Testing and Mocking Framework
 //
 // This file implements a universal value printer that can print a
-// value of any type T:
+// value of any type R:
 //
-//   void ::testing::internal::UniversalPrinter<T>::Print(value, ostream_ptr);
+//   void ::testing::internal::UniversalPrinter<R>::Print(value, ostream_ptr);
 //
 // It uses the << operator when possible, and prints the bytes in the
 // object otherwise.  A user can override its behavior for a class
