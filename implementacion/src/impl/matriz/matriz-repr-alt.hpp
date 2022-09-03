@@ -36,10 +36,10 @@ template<class T>
 void alt<T>::set(size_t row, size_t col, T val) {
     assert(0 <= row && row < _n && 0 <= col && col < _m);
     size_t pos = search(row, col);
-    elem newVal;
     if(pos < _mat[row].size() && _mat[row][pos].col == col)
         _mat[row][pos].val = val;
-    else if(val != newVal.val) { //agregar epsilon a la comparacion
+    else if(compCero(val)) { //agregar epsilon a la comparacion
+        elem newVal;
         newVal.col = col;
         newVal.val = val;
         _mat[row].insert(_mat[row].begin() + pos, newVal);
@@ -95,7 +95,7 @@ void alt<T>::updateLast(size_t row, size_t pos) const {
 
 template<class T>
 alt<T>::iterador_rapido::iterador_rapido(const alt<T> &p, size_t row, size_t col): _row(row), _p(p) {
-    if (0 <= _row && _row < _p.n() && 0 <= col && col < _p.m()) {
+    if (0 <= row && row < _p._n && 0 <= col && col < _p._m) {
         _pos = (p.search(row, col));
     } else {
         _pos = -1;
@@ -125,7 +125,7 @@ size_t alt<T>::iterador_rapido::row() {
 template<class T>
 void alt<T>::iterador_rapido::next(bool wrap) {
     ++_pos;
-    if (wrap && _pos >= _p._mat.size()) {
+    if (wrap && _pos >= _p._mat[_row].size()) {
         ++_row;
         _pos = 0;
     }
@@ -134,7 +134,7 @@ void alt<T>::iterador_rapido::next(bool wrap) {
 
 template<class T>
 bool alt<T>::iterador_rapido::in_range() {
-    return 0 <= _row && _row < _p._mat.size() && 0 <= _pos && _pos < _p._mat[_row].size();
+    return 0 <= _row && _row < _p._n && 0 <= _pos && _pos < _p._mat[_row].size();
 }
 
 
