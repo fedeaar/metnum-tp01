@@ -1,12 +1,18 @@
 #include "gtest-1.8.1/gtest.h"
 #include "../src/matriz.h"
+#include "../src/matriz_base.h"
+#include "../src/matriz_alt.h"
 
-using namespace std;
+#if ESTR == 1
+typedef base estr;
+#elif ESTR == 2
+typedef alt estr;
+#endif
 
 
 class MatrizTest : public testing::Test {
 protected:
-    matriz<int> a {4, 4}, b {4, 4}, c {4, 4}, d {4, 4};
+    matriz<estr> a {4, 4}, b {4, 4}, c {4, 4}, d {4, 4};
     void SetUp() override {
         a = {
             {1, 2, 3, 4},
@@ -77,25 +83,25 @@ TEST_F(MatrizTest, init) {
 
 
 TEST_F(MatrizTest, suma) {
-    matriz<int> ab = {
+    matriz<estr> ab = {
         {2, 2, 3, 4},
         {4, 1, 0, 1},
         {1, 1, 2, 1},
         {1, 2, 3, 8}
     };
-    matriz<int> ac = {
+    matriz<estr> ac = {
         {2, 27, 6, 13},
         {8, 0, 7, 2},
         {2, 7, 7, 2},
         {2, 4, 3, 7}
     };
-    matriz<int> bd = {
+    matriz<estr> bd = {
         {1, 0, 0, 4},
         {1, 1, 0, 0},
         {0, 0, 4, 0},
         {0, 2, 0, 1}
     };
-    matriz<int> cb = {
+    matriz<estr> cb = {
         {2, 25, 3, 9},
         {4, 1, 7, 1},
         {1, 6, 7, 1},
@@ -113,25 +119,25 @@ TEST_F(MatrizTest, suma) {
 
 
 TEST_F(MatrizTest, resta) {
-    matriz<int> ab = {
+    matriz<estr> ab = {
         {0, 2, 3, 4},
         {4, -1, 0, 1},
         {1, 1, 0, 1},
         {1, 2, 3, 6}
     };
-    matriz<int> ac = {
+    matriz<estr> ac = {
         {0, -23, 0, -5},
         {0, 0, -7, 0},
         {0, -5, -5, 0},
         {0, 0, 3, 7}
     };
-    matriz<int> bd = {
+    matriz<estr> bd = {
         {1, 0, 0, -4},
         {-1, 1, 0, 0},
         {0, 0, -2, 0},
         {0, -2, 0, 1}
     };
-    matriz<int> cb = {
+    matriz<estr> cb = {
         {0, 25, 3, 9},
         {4, -1, 7, 1},
         {1, 6, 5, 1},
@@ -149,25 +155,25 @@ TEST_F(MatrizTest, resta) {
 
 
 TEST_F(MatrizTest, productoEscalar) {
-    matriz<int> a5 = {
+    matriz<estr> a5 = {
         {5, 10, 15, 20},
         {20, 0, 0, 5},
         {5, 5, 5, 5},
         {5, 10, 15, 35}
     };
-    matriz<int> b13 = {
+    matriz<estr> b13 = {
         {13, 0, 0, 0},
         {0, 13, 0, 0},
         {0, 0, 13, 0},
         {0, 0, 0, 13}
     };
-    matriz<int> c0 = {
+    matriz<estr> c0 = {
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0}
     };
-    matriz<int> d1 = {
+    matriz<estr> d1 = {
         {0, 0, 0, 4},
         {1, 0, 0, 0},
         {0, 0, 3, 0},
@@ -185,31 +191,31 @@ TEST_F(MatrizTest, productoEscalar) {
 
 
 TEST_F(MatrizTest, producto) {
-    matriz<int> aa = {
+    matriz<estr> aa = {
         {16, 13, 18, 37},
         {5, 10, 15, 23},
         {7, 5, 7, 13},
         {19, 19, 27, 58}
     };
-    matriz<int> ac = {
+    matriz<estr> ac = {
         {16, 51, 35, 14},
         {5, 102, 12, 36},
         {7, 33, 16, 11},
         {19, 57, 35, 14}
     };
-    matriz<int> ca = {
+    matriz<estr> ca = {
         {113, 23, 33, 95},
         {12, 17, 22, 30},
         {32, 10, 12, 23},
         {9, 2, 3, 6}
     };
-    matriz<int> cd = {
+    matriz<estr> cd = {
         {25, 18, 9, 4},
         {0, 2, 21, 16},
         {6, 2, 18, 4},
         {2, 0, 0, 4}
     };
-    matriz<int> abcd = {
+    matriz<estr> abcd = {
         {51, 28, 105, 64},
         {102, 72, 36, 20},
         {33, 22, 48, 28},
@@ -225,125 +231,6 @@ TEST_F(MatrizTest, producto) {
 }
 
 
-TEST_F(MatrizTest, gauss_swap) {
-    matriz<int> a0_2 = {
-        {1, 1, 1, 1},
-        {4, 0, 0, 1},
-        {1, 2, 3, 4},
-        {1, 2, 3, 7}
-    };
-    matriz<int> a0_2y1_0 = {
-        {4, 0, 0, 1},
-        {1, 1, 1, 1},
-        {1, 2, 3, 4},
-        {1, 2, 3, 7}
-    };
-    matriz<int> a0_2y1_0y1_2 = {
-        {4, 0, 0, 1},
-        {1, 2, 3, 4},
-        {1, 1, 1, 1},
-        {1, 2, 3, 7}
-    };
-    matriz<int> a0_2y1_0y1_2y1_0 = {
-        {1, 2, 3, 4},
-        {4, 0, 0, 1},
-        {1, 1, 1, 1},
-        {1, 2, 3, 7}
-    };
-    matriz<int> a0_2c = {
-        {3, 2, 1, 4},
-        {0, 0, 4, 1},
-        {1, 1, 1, 1},
-        {3, 2, 1, 7}
-    };
-    EXPECT_TRUE(a0_2.eq(a.gauss_swap(0, 2)));
-    EXPECT_TRUE(a0_2y1_0.eq(a.gauss_swap(0, 2).gauss_swap(1, 0)));
-    EXPECT_TRUE(a0_2y1_0y1_2.eq(a.gauss_swap(0, 2).gauss_swap(1, 0).gauss_swap(1, 2)));
-    EXPECT_TRUE(a0_2y1_0y1_2y1_0.eq(a.gauss_swap(0, 2).gauss_swap(1, 0).gauss_swap(1, 2).gauss_swap(1, 0)));
-    EXPECT_TRUE(a0_2c.eq(a.gauss_swap(0, 2, false)));
-    EXPECT_TRUE(a.eq(a.gauss_swap(0, 2, false).gauss_swap(2, 0, false)));
-}
-
-
-TEST_F(MatrizTest, gauss_multiplo) {
-    matriz<int> af0p5 = {
-        {5, 10, 15, 20},
-        {4, 0, 0, 1},
-        {1, 1, 1, 1},
-        {1, 2, 3, 7}
-    };
-    matriz<int> af2p0 = {
-        {1, 2, 3, 4},
-        {4, 0, 0, 1},
-        {0, 0, 0, 0},
-        {1, 2, 3, 7}
-    };
-    matriz<int> ac1p5 = {
-        {1, 10, 3, 4},
-        {4, 0, 0, 1},
-        {1, 5, 1, 1},
-        {1, 10, 3, 7}
-    };
-    matriz<int> ac3p0 = {
-        {1, 2, 3, 0},
-        {4, 0, 0, 0},
-        {1, 1, 1, 0},
-        {1, 2, 3, 0}
-    };
-    EXPECT_TRUE(af0p5.eq(a.gauss_mult(0, 5)));
-    EXPECT_TRUE(af2p0.eq(a.gauss_mult(2, 0)));
-    EXPECT_TRUE(ac1p5.eq(a.gauss_mult(1, 5, false)));
-    EXPECT_TRUE(ac3p0.eq(a.gauss_mult(3, 0, false)));
-}
-
-
-
-TEST_F(MatrizTest, gauss_suma) {
-    matriz<int> af1 = {
-        {1, 2, 3, 4},
-        {0, -8, -12, -15},
-        {1, 1, 1, 1},
-        {1, 2, 3, 7}
-    };
-    matriz<int> af2 = {
-        {1, 2, 3, 4},
-        {0, -8, -12, -15},
-        {0, -1, -2, -3},
-        {1, 2, 3, 7}
-    };
-    matriz<int> af3 = {
-        {1, 2, 3, 4},
-        {0, -8, -12, -15},
-        {0, -1, -2, -3},
-        {0, 0, 0, 3}
-    };
-    matriz<int> ac1 = {
-        {1, 0, 3, 4},
-        {4, -8, 0, 1},
-        {1, -1, 1, 1},
-        {1, 0, 3, 7}
-    };
-    matriz<int> ac2 = {
-        {1, 0, 0, 4},
-        {4, -8, -12, 1},
-        {1, -1, -2, 1},
-        {1, 0, 0, 7}
-    };
-    matriz<int> ac3 = {
-        {1, 0, 0, 0},
-        {4, -8, -12, -15},
-        {1, -1, -2, -3},
-        {1, 0, 0, 3}
-    };
-    EXPECT_TRUE(af1.eq(a.gauss_sum(1, 0, -4)));
-    EXPECT_TRUE(af2.eq(af1.gauss_sum(2, 0, -1)));
-    EXPECT_TRUE(af3.eq(af2.gauss_sum(3, 0, -1)));
-    EXPECT_TRUE(ac1.eq(a.gauss_sum(1, 0, -2, false)));
-    EXPECT_TRUE(ac2.eq(ac1.gauss_sum(2, 0, -3, false)));
-    EXPECT_TRUE(ac3.eq(ac2.gauss_sum(3, 0, -4, false)));
-}
-
-
 TEST_F(MatrizTest, print) {
     ostringstream stream;
     stream << a;
@@ -356,34 +243,35 @@ TEST_F(MatrizTest, print) {
     EXPECT_EQ(b_os, "\n1, 0, 0, 0\n0, 1, 0, 0\n0, 0, 1, 0\n0, 0, 0, 1\n");
 }
 
+
 TEST_F(MatrizTest, gauss_elim){
-    matriz<double> input1 = {
+    matriz<estr> input1 = {
         {1, 0, 0, 3},
         {0, 1, 0, 6},
         {0, 0, 1, 12}
     };
-    matriz<double> output1 = {
+    matriz<estr> output1 = {
         {1, 0, 0, 3},
         {0, 1, 0, 6},
         {0, 0, 1, 12}
     };
-    matriz<double> input2 = {
+    matriz<estr> input2 = {
         {1, 0, 0, 3},
         {2, 1, 0, 6},
         {1, 0, 1, 12}
     };
-    matriz<double> output2 = {
+    matriz<estr> output2 = {
         {1, 0, 0, 3},
         {0, 1, 0, 0},
         {0, 0, 1, 9}
     };
-    matriz<double> input3 = {
+    matriz<estr> input3 = {
         {1, 2, 3, 4, 2},
         {1, 4, 9, 16, 10},
         {1, 8, 27, 64, 44},
         {1, 16, 81, 256, 190}
     };
-    matriz<double> output3 = {
+    matriz<estr> output3 = {
         {1, 2, 3, 4, 2},
         {0, 2, 6, 12, 8},
         {0, 0, 6, 24, 18},

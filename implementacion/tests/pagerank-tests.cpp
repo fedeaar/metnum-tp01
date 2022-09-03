@@ -1,9 +1,6 @@
-#include <chrono>
-
 #include "gtest-1.8.1/gtest.h"
 #include "../src/IO.h"
 
-using namespace std::chrono;
 
 class PageRankTest : public testing::Test {
 protected:
@@ -19,22 +16,9 @@ protected:
 
 bool PageRankTest::base_test(const string &in, const string &out) {
 
-    cout << "testing: " << in << endl;
-    auto start = high_resolution_clock::now();
     pagerank::out_file expected = IO::pagerank_read_out(basedir + out);
-    auto stop = high_resolution_clock::now();
-    cout << "tiempo read out file: " << duration_cast<milliseconds>(stop-start).count() << " ms." << endl;
-
-    start = high_resolution_clock::now();
     pagerank::in_file data = IO::pagerank_read_in(basedir + in, expected.p_val);
-    stop = high_resolution_clock::now();
-    cout << "tiempo read in file: " << duration_cast<milliseconds>(stop-start).count() << " ms." << endl;
-
-    start = high_resolution_clock::now();
     vector<double> solucion = pagerank::solve_optimizado(data);
-    stop = high_resolution_clock::now();
-    cout << "tiempo total calcular solucion: " << duration_cast<milliseconds>(stop-start).count() << " ms." << endl;
-
     bool res = (solucion.size() == expected.solucion.size());
     for (size_t i = 0; i < solucion.size() && res; ++i) {
         res = std::abs(solucion[i] - expected.solucion[i]) < epsilon;
@@ -76,5 +60,3 @@ TEST_F(PageRankTest, test_30_segundos) {
     bool res = base_test("test_30_segundos.txt", "test_30_segundos.txt.out");
     EXPECT_TRUE(res);
 }
-
-

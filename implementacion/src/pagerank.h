@@ -1,8 +1,8 @@
 #ifndef IMPLEMENTACION_PAGERANK_H
 #define IMPLEMENTACION_PAGERANK_H
 
-#include "matriz.h"
-
+#include "matriz_base.h"
+#include "matriz_alt.h"
 
 namespace pagerank {
     struct coords {
