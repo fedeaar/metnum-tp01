@@ -34,7 +34,7 @@ vector<double> pagerank::solve(in_file &params) {
 
 vector<double> pagerank::solve_optimizado(in_file &params) {
     auto start = high_resolution_clock::now();
-    matriz<double, alt<double>> m(params.paginas, params.paginas);
+    matriz<double, vlist<double>> m(params.paginas, params.paginas);
     // m = 0
     vector<double> grado(params.paginas);
     for (auto &r: params.relaciones) {

@@ -69,31 +69,126 @@ matriz<T, R> matriz<T, R>::gauss_elim() const {
 //    }
 //    return res;
 //}
+
 template<class T, class R>
 matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
     /** pre: A_ii != 0 para i: 0 ... N y b.size() == N. */
     assert(b.size() == n());
     matriz res {*this};
     for (size_t i = 0; i < n() - 1; i++) {
+        T mii = res._rep._mat[i].front().val;
         for (size_t j = i + 1; j < n(); j++) {
-            T tmp = res.at(j, i);
-            if (tmp == 0) {
-                continue;
-            } else {
-                T mij = tmp / res.at(i, i);
-                auto kt = res._rep.begin(i, i);
-                while (kt.in_range()) {
-                    T newVal = res.at(j, kt.col()) - mij * kt.at();
-                    res.set(j, kt.col(), newVal);
-                    kt.next(false);
+            auto col_i = res._rep._mat[j].begin();
+            if (col_i->col != i) continue;
+            T mij = col_i->val / mii;
+            auto iti = res._rep._mat[i].begin();
+            auto itj = col_i;
+            auto final = res._rep._mat[j].end();
+            ++iti, --final;
+            itj = res._rep._mat[j].erase(itj);
+            while (iti != res._rep._mat[i].end()) {
+                if(j == 747 && i == 601 && iti->col > 670) {
+                    int a = 5;
                 }
-                b[j] = b[j] - mij * b[i];
+                while(itj != final && itj->col < iti->col) ++itj;
+                T val = - mij * iti->val;
+                if(itj->col == iti->col) val += itj->val;
+                res._rep.set(itj, j, iti->col, val);
+                ++iti;
             }
+            b[j] = b[j] - mij * b[i];
+
         }
     }
     return res;
 }
 
+//template<class T, class R>
+//matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
+//    /** pre: A_ii != 0 para i: 0 ... N y b.size() == N. */
+//    assert(b.size() == n());
+//    matriz res {*this};
+//    for (size_t i = 0; i < n() - 1; i++) {
+//        for (size_t j = i + 1; j < n(); j++) {
+//            T tmp = res.at(j, i);
+//            if (tmp == 0) {
+//                continue;
+//            } else {
+//                T mij = tmp / res.at(i, i);
+//                auto kt = res._rep.begin(i, i);
+//                while (kt.in_range()) {
+//                    T newVal = res.at(j, kt.col()) - mij * kt.at();
+//                    res.set(j, kt.col(), newVal);
+//                    kt.next(false);
+//                }
+//                b[j] = b[j] - mij * b[i];
+//            }
+//        }
+//    }
+//    return res;
+//}
+
+
+
+//template<class T, class R>
+//matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
+//    assert(b.size() == n());
+//    matriz res {*this};
+//    for(size_t i = 0; i < n()-1; ++i) {
+//        auto mii = res._rep.inicioRow(i); // parado en la diagonal
+//        auto col_i = mii; // recorre la columna i
+//        col_i = col_i->nextInCol;
+//
+//        while(col_i->row < res._rep.n()) {
+//            auto row_i = mii;
+//            row_i = row_i->nextInRow;
+//            T k = col_i->val/mii->val;
+//            while(row_i->col < res._rep.m()) {
+//                T newVal = res.at(col_i->row, row_i->col) - k * row_i->val;
+//                res.set(col_i->row, row_i->col, newVal);
+//                row_i = row_i->nextInRow;
+//            }
+//            b[col_i->row] = b[col_i->row] - k * b[i];
+//
+//            col_i = col_i->nextInCol;
+//            res._rep.remove(col_i->prevInCol);
+//        }
+//    }
+//    return res;
+//}
+
+// template<class T, class R>
+// matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
+//     assert(b.size() == n());
+//     matriz res {*this};
+//     auto mii = res._rep.begin();; // parado en la diagonal
+//     for(size_t i = 0; i < n(); ++i) {
+//         auto col_i = res._rep.begin(mii); // recorre la columna i
+//         col_i.nextInCol();
+//         while(col_i.in_range()) {
+//             auto row_i = res._rep.begin(mii);
+//             row_i.next();
+//             auto row_j = res._rep.begin(col_i);
+//             row_j.next();
+//             T k = col_i.at()/mii.at();
+//             while(row_j.in_range() && row_i.in_range()) {
+//                 if(row_i.col() == row_j.col())
+//                     row_j.set(row_j.at() - k * row_i.at());
+//                 else if(row_i.col() > row_j.col())
+//                     row_j.next();
+//                 else
+//                     row_i.next();
+//             }
+//
+//             b[col_i.row()] = b[col_i.row()] - k * b[i];
+//             col_i.remove(false);
+//         }
+//
+//         mii.next();
+//         mii.nextInCol();
+//     }
+//     return res;
+// }
 
 template<class T, class R>
 vector<T> matriz<T, R>::solve(const vector<T> &b) {
