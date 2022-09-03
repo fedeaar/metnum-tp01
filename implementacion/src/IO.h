@@ -15,7 +15,10 @@ namespace IO {
     pagerank::out_file pagerank_read_out(const string &in);
 
     void pagerank_write_out(const string &out, double p_val, const vector<double> &res);
+
+    template<class R> void pagerank_write_matriz(const string &out, const matriz<R>& mat);
 }
 
 
+#include "./impl/IO.hpp"
 #endif //IMPLEMENTACION_IO_H

@@ -1,5 +1,19 @@
 #include "gtest-1.8.1/gtest.h"
+
 #include "../src/IO.h"
+#include "../src/matriz/matriz_base.h"
+#include "../src/matriz/matriz_alt.h"
+#include "../src/matriz/matriz_llist.h"
+
+#if ESTR == 1
+    typedef base __ESTR__;
+#elif ESTR == 2
+    typedef alt __ESTR__;
+#elif ESTR == 3
+    typedef llist __ESTR__;
+#else
+    typedef alt __ESTR__;
+#endif
 
 
 class PageRankTest : public testing::Test {
@@ -18,7 +32,9 @@ bool PageRankTest::base_test(const string &in, const string &out) {
 
     pagerank::out_file expected = IO::pagerank_read_out(basedir + out);
     pagerank::in_file data = IO::pagerank_read_in(basedir + in, expected.p_val);
-    vector<double> solucion = pagerank::solve_optimizado(data);
+    matriz<__ESTR__> mat = pagerank::make<__ESTR__>(data);
+    vector<double> solucion = pagerank::solve<__ESTR__>(mat);
+
     bool res = (solucion.size() == expected.solucion.size());
     for (size_t i = 0; i < solucion.size() && res; ++i) {
         res = std::abs(solucion[i] - expected.solucion[i]) < epsilon;

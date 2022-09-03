@@ -1,9 +1,9 @@
 #include "gtest-1.8.1/gtest.h"
 
 #include "../src/matriz.h"
-#include "../src/matriz_base.h"
-#include "../src/matriz_alt.h"
-#include "../src/matriz_llist.h"
+#include "../src/matriz/matriz_base.h"
+#include "../src/matriz/matriz_alt.h"
+#include "../src/matriz/matriz_llist.h"
 
 #if ESTR == 1
     typedef base __ESTR__;

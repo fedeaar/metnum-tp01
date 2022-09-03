@@ -1,7 +1,7 @@
 #ifndef IMPLEMENTACION_MATRIZ_BASE_H
 #define IMPLEMENTACION_MATRIZ_BASE_H
 
-#include "matriz.h"
+#include "../matriz.h"
 
 using namespace std;
 

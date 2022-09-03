@@ -17,9 +17,10 @@ set(SOURCE_FILES
         src/matriz_llist.h
         src/impl/matriz/matriz_llist.cpp
         src/pagerank.h
-        src/impl/pagerank.cpp
+        src/impl/pagerank.hpp
         src/IO.h
         src/impl/IO.cpp
+        src/impl/IO.hpp
 )
 
 add_executable(TESTS-matriz-base ${SOURCE_FILES} tests/matriz-tests.cpp)
@@ -48,4 +49,4 @@ target_link_libraries(TESTS-pagerank-llist gtest gtest_main)
 
 add_executable(main ${SOURCE_FILES} main.cpp)
 
-# add_custom_target(TESTS_valgrind valgrind --leak-check=full -v TESTS)
+add_custom_target(TESTS-pagerank-alt-valgrind valgrind --leak-check=full -v TESTS-pagerank-alt)

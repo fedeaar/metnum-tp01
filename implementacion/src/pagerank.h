@@ -1,20 +1,7 @@
 #ifndef IMPLEMENTACION_PAGERANK_H
 #define IMPLEMENTACION_PAGERANK_H
 
-#include "matriz_base.h"
-#include "../src/matriz_base.h"
-#include "../src/matriz_alt.h"
-#include "../src/matriz_llist.h"
-
-#if ESTR == 1
-    typedef base __ESTR__;
-#elif ESTR == 2
-    typedef alt __ESTR__;
-#elif ESTR == 3
-    typedef llist __ESTR__;
-#else
-    typedef alt __ESTR__;
-#endif
+#include "matriz.h"
 
 
 namespace pagerank {
@@ -39,9 +26,11 @@ namespace pagerank {
         vector<double> solucion;
     };
 
-    vector<double> solve(in_file &params);
+    template<class R> matriz<R> make(const in_file &params);
 
-    vector<double> solve_optimizado(in_file &params);
+    template<class R> vector<double> solve(const matriz<R>& mat);
 };
 
+
+#include "./impl/pagerank.hpp"
 #endif //IMPLEMENTACION_PAGERANK_H

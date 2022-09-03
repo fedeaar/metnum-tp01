@@ -1,7 +1,7 @@
 #ifndef IMPLEMENTACION_MATRIZ_LLIST_H
 #define IMPLEMENTACION_MATRIZ_LLIST_H
 
-#include "matriz.h"
+#include "../matriz.h"
 
 #include <list>
 

@@ -1,4 +1,4 @@
-#include "../../matriz_alt.h"
+#include "../../matriz/matriz_alt.h"
 
 
 //

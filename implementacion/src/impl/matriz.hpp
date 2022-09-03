@@ -2,7 +2,6 @@
 // CONSTRUCTORES
 //
 
-#include "../../matriz.h"
 
 template<class R>
 matriz<R>::matriz(size_t n, size_t m): _rep(n, m), _n(n), _m(m) {}

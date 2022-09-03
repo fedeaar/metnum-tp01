@@ -77,6 +77,6 @@ template<class R>
 matriz<R> identity(size_t n);
 
 
-#include "impl/matriz/matriz.hpp"
+#include "impl/matriz.hpp"
 
 #endif //IMPLEMENTACION_MATRIZ_H
