@@ -29,10 +29,6 @@ public:
 template<class T>
 class alt {
 protected:
-    struct elem {
-        int col = 0;
-        T val {};
-    };
     struct cache {
         int from = 0;
         int to = 0;
@@ -40,13 +36,17 @@ protected:
         int pos = 0;
     };
     size_t _n, _m;               // tamaño
-    vector<vector<elem>> _mat;   // matriz
     mutable vector<cache> _last; // cache
 
     void updateLast(size_t row, size_t pos) const;
     size_t search(size_t row, size_t col) const;
 
 public:
+    struct elem {
+        int col = 0;
+        T val {};
+    };
+    vector<vector<elem>> _mat;   // matriz
     alt(size_t n, size_t m);
 
     const size_t &n() const;

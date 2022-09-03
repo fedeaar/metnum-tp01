@@ -24,7 +24,7 @@ T alt<T>::at(size_t row, size_t col) const {
     assert(0 <= row && row < _n && 0 <= col && col < _m);
     if(!_mat[row].size()) return {};
     size_t pos = search(row, col);
-    updateLast(row, pos);
+    //updateLast(row, pos);
     if(pos < _mat[row].size() && _mat[row][pos].col == col)
         return _mat[row][pos].val;
     else
@@ -44,7 +44,7 @@ void alt<T>::set(size_t row, size_t col, T val) {
         newVal.val = val;
         _mat[row].insert(_mat[row].begin() + pos, newVal);
     }
-    updateLast(row, pos);
+    //updateLast(row, pos);
 }
 
 
@@ -55,8 +55,8 @@ void alt<T>::swap(size_t i1, size_t i2, bool rowOrder) {}
 template<class T>
 size_t alt<T>::search(size_t row, size_t col) const {
     assert(0 <= row && row < _n && 0 <= col && col < _m);
-    if(_last[row].from <= col && col <= _last[row].to)   return _last[row].pos;
-    if(_last[row].to+1 <= col && col <= _last[row].next) return _last[row].pos + 1;
+    //if(_last[row].from <= col && col <= _last[row].to)   return _last[row].pos;
+    //if(_last[row].to+1 <= col && col <= _last[row].next) return _last[row].pos + 1;
     size_t i = 0, j = _mat[row].size();
     while(i < j) {
         size_t k = (i+j)/2;

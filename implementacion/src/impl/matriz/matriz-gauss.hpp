@@ -52,43 +52,44 @@ matriz<T, R> matriz<T, R>::gauss_elim() const {
     }
     return res;
 }
-//template<class T, class R>
-//matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
-//    /** pre: A_ii != 0 para i: 0 ... N y b.size() == N. */
-//    assert(b.size() == n());
-//    matriz res {*this};
-//    for (size_t i = 0; i < n() - 1; i++) {
-//        for (size_t j = i + 1; j < n(); j++) {
-//            T mij = res.at(j, i) / res.at(i, i);
-//            for (size_t k = i; k < m(); k++) {
-//                T newVal = res.at(j, k) - mij * res.at(i, k);
-//                res.set(j, k, newVal);
-//            }
-//            b[j] = b[j] - mij * b[i];
-//        }
-//    }
-//    return res;
-//}
+
 template<class T, class R>
 matriz<T, R> matriz<T, R>::gauss_elim(vector<T> &b) const {
     /** pre: A_ii != 0 para i: 0 ... N y b.size() == N. */
     assert(b.size() == n());
     matriz res {*this};
-    for (size_t i = 0; i < n() - 1; i++) {
+    for (size_t i = 0; i < n()- 1; i++) {
+        T mii = res._rep._mat[i][0].val;
         for (size_t j = i + 1; j < n(); j++) {
-            T tmp = res.at(j, i);
-            if (tmp == 0) {
-                continue;
-            } else {
-                T mij = tmp / res.at(i, i);
-                auto kt = res._rep.begin(i, i);
-                while (kt.in_range()) {
-                    T newVal = res.at(j, kt.col()) - mij * kt.at();
-                    res.set(j, kt.col(), newVal);
-                    kt.next(false);
+            typename alt<T>::elem col_i = res._rep._mat[j][0];
+            if(col_i.col != i) continue;
+            T mij = col_i.val / mii;
+            size_t pos = 1;
+            vector<typename alt<T>::elem> newRow = {};
+            for (size_t k = 1; k < res._rep._mat[i].size(); k++) {
+                while(pos < res._rep._mat[j].size() && res._rep._mat[j][pos].col < res._rep._mat[i][k].col) {
+                    if(abs(res._rep._mat[j][pos].val) > 1e-4) newRow.push_back(res._rep._mat[j][pos]);
+                    pos++;
                 }
-                b[j] = b[j] - mij * b[i];
+
+                // m[j][pos].col >= m[k].col
+                typename alt<T>::elem x;
+                if(pos < res._rep._mat[j].size() && res._rep._mat[j][pos].col == res._rep._mat[i][k].col) {
+                    x.val = res._rep._mat[j][pos].val;
+                    pos++;
+                }
+                x.val -= mij * res._rep._mat[i][k].val;
+                x.col = res._rep._mat[i][k].col;
+                if(abs(x.val) > 1e-4) newRow.push_back(x);
             }
+
+            for(size_t k = pos; k < res._rep._mat[j].size(); ++k) {
+                if(abs(res._rep._mat[j][k].val) > 1e-4) newRow.push_back(res._rep._mat[j][k]);
+            }
+
+            res._rep._mat[j] = newRow;
+
+            b[j] = b[j] - mij * b[i];
         }
     }
     return res;

@@ -73,8 +73,8 @@ TEST_F(PageRankTest, test_15_segundos) {
 }
 
 TEST_F(PageRankTest, test_30_segundos) {
-//    bool res = base_test("test_30_segundos.txt", "test_30_segundos.txt.out");
-//    EXPECT_TRUE(res);
+    bool res = base_test("test_30_segundos.txt", "test_30_segundos.txt.out");
+    EXPECT_TRUE(res);
 }
 
 
