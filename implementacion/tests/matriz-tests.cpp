@@ -1,18 +1,24 @@
 #include "gtest-1.8.1/gtest.h"
+
 #include "../src/matriz.h"
 #include "../src/matriz_base.h"
 #include "../src/matriz_alt.h"
+#include "../src/matriz_llist.h"
 
 #if ESTR == 1
-typedef base estr;
+    typedef base __ESTR__;
 #elif ESTR == 2
-typedef alt estr;
+    typedef alt __ESTR__;
+#elif ESTR == 3
+    typedef llist __ESTR__;
+#else
+    typedef alt __ESTR__;
 #endif
 
 
 class MatrizTest : public testing::Test {
 protected:
-    matriz<estr> a {4, 4}, b {4, 4}, c {4, 4}, d {4, 4};
+    matriz<__ESTR__> a {4, 4}, b {4, 4}, c {4, 4}, d {4, 4};
     void SetUp() override {
         a = {
             {1, 2, 3, 4},
@@ -83,25 +89,25 @@ TEST_F(MatrizTest, init) {
 
 
 TEST_F(MatrizTest, suma) {
-    matriz<estr> ab = {
+    matriz<__ESTR__> ab = {
         {2, 2, 3, 4},
         {4, 1, 0, 1},
         {1, 1, 2, 1},
         {1, 2, 3, 8}
     };
-    matriz<estr> ac = {
+    matriz<__ESTR__> ac = {
         {2, 27, 6, 13},
         {8, 0, 7, 2},
         {2, 7, 7, 2},
         {2, 4, 3, 7}
     };
-    matriz<estr> bd = {
+    matriz<__ESTR__> bd = {
         {1, 0, 0, 4},
         {1, 1, 0, 0},
         {0, 0, 4, 0},
         {0, 2, 0, 1}
     };
-    matriz<estr> cb = {
+    matriz<__ESTR__> cb = {
         {2, 25, 3, 9},
         {4, 1, 7, 1},
         {1, 6, 7, 1},
@@ -119,25 +125,25 @@ TEST_F(MatrizTest, suma) {
 
 
 TEST_F(MatrizTest, resta) {
-    matriz<estr> ab = {
+    matriz<__ESTR__> ab = {
         {0, 2, 3, 4},
         {4, -1, 0, 1},
         {1, 1, 0, 1},
         {1, 2, 3, 6}
     };
-    matriz<estr> ac = {
+    matriz<__ESTR__> ac = {
         {0, -23, 0, -5},
         {0, 0, -7, 0},
         {0, -5, -5, 0},
         {0, 0, 3, 7}
     };
-    matriz<estr> bd = {
+    matriz<__ESTR__> bd = {
         {1, 0, 0, -4},
         {-1, 1, 0, 0},
         {0, 0, -2, 0},
         {0, -2, 0, 1}
     };
-    matriz<estr> cb = {
+    matriz<__ESTR__> cb = {
         {0, 25, 3, 9},
         {4, -1, 7, 1},
         {1, 6, 5, 1},
@@ -155,25 +161,25 @@ TEST_F(MatrizTest, resta) {
 
 
 TEST_F(MatrizTest, productoEscalar) {
-    matriz<estr> a5 = {
+    matriz<__ESTR__> a5 = {
         {5, 10, 15, 20},
         {20, 0, 0, 5},
         {5, 5, 5, 5},
         {5, 10, 15, 35}
     };
-    matriz<estr> b13 = {
+    matriz<__ESTR__> b13 = {
         {13, 0, 0, 0},
         {0, 13, 0, 0},
         {0, 0, 13, 0},
         {0, 0, 0, 13}
     };
-    matriz<estr> c0 = {
+    matriz<__ESTR__> c0 = {
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0},
         {0, 0, 0, 0}
     };
-    matriz<estr> d1 = {
+    matriz<__ESTR__> d1 = {
         {0, 0, 0, 4},
         {1, 0, 0, 0},
         {0, 0, 3, 0},
@@ -191,31 +197,31 @@ TEST_F(MatrizTest, productoEscalar) {
 
 
 TEST_F(MatrizTest, producto) {
-    matriz<estr> aa = {
+    matriz<__ESTR__> aa = {
         {16, 13, 18, 37},
         {5, 10, 15, 23},
         {7, 5, 7, 13},
         {19, 19, 27, 58}
     };
-    matriz<estr> ac = {
+    matriz<__ESTR__> ac = {
         {16, 51, 35, 14},
         {5, 102, 12, 36},
         {7, 33, 16, 11},
         {19, 57, 35, 14}
     };
-    matriz<estr> ca = {
+    matriz<__ESTR__> ca = {
         {113, 23, 33, 95},
         {12, 17, 22, 30},
         {32, 10, 12, 23},
         {9, 2, 3, 6}
     };
-    matriz<estr> cd = {
+    matriz<__ESTR__> cd = {
         {25, 18, 9, 4},
         {0, 2, 21, 16},
         {6, 2, 18, 4},
         {2, 0, 0, 4}
     };
-    matriz<estr> abcd = {
+    matriz<__ESTR__> abcd = {
         {51, 28, 105, 64},
         {102, 72, 36, 20},
         {33, 22, 48, 28},
@@ -245,33 +251,33 @@ TEST_F(MatrizTest, print) {
 
 
 TEST_F(MatrizTest, gauss_elim){
-    matriz<estr> input1 = {
+    matriz<__ESTR__> input1 = {
         {1, 0, 0, 3},
         {0, 1, 0, 6},
         {0, 0, 1, 12}
     };
-    matriz<estr> output1 = {
+    matriz<__ESTR__> output1 = {
         {1, 0, 0, 3},
         {0, 1, 0, 6},
         {0, 0, 1, 12}
     };
-    matriz<estr> input2 = {
+    matriz<__ESTR__> input2 = {
         {1, 0, 0, 3},
         {2, 1, 0, 6},
         {1, 0, 1, 12}
     };
-    matriz<estr> output2 = {
+    matriz<__ESTR__> output2 = {
         {1, 0, 0, 3},
         {0, 1, 0, 0},
         {0, 0, 1, 9}
     };
-    matriz<estr> input3 = {
+    matriz<__ESTR__> input3 = {
         {1, 2, 3, 4, 2},
         {1, 4, 9, 16, 10},
         {1, 8, 27, 64, 44},
         {1, 16, 81, 256, 190}
     };
-    matriz<estr> output3 = {
+    matriz<__ESTR__> output3 = {
         {1, 2, 3, 4, 2},
         {0, 2, 6, 12, 8},
         {0, 0, 6, 24, 18},

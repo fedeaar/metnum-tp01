@@ -2,7 +2,20 @@
 #define IMPLEMENTACION_PAGERANK_H
 
 #include "matriz_base.h"
-#include "matriz_alt.h"
+#include "../src/matriz_base.h"
+#include "../src/matriz_alt.h"
+#include "../src/matriz_llist.h"
+
+#if ESTR == 1
+    typedef base __ESTR__;
+#elif ESTR == 2
+    typedef alt __ESTR__;
+#elif ESTR == 3
+    typedef llist __ESTR__;
+#else
+    typedef alt __ESTR__;
+#endif
+
 
 namespace pagerank {
     struct coords {

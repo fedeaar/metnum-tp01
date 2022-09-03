@@ -13,7 +13,7 @@ void normalize(vector<double> &v) {
 
 
 vector<double> pagerank::solve(in_file &params) {
-    matriz<alt> w(params.paginas, params.paginas);
+    matriz<__ESTR__> w(params.paginas, params.paginas);
     vector<double> grado(params.paginas);
     for (auto &r: params.relaciones) {
         w.set(r.i - 1, r.j - 1, 1);
@@ -22,9 +22,9 @@ vector<double> pagerank::solve(in_file &params) {
     for (auto &r: grado) {
         r = r == 0 ? 0 : 1 / r;
     }
-    matriz<alt> d = diagonal<alt>(grado);
-    matriz<alt> i = identity<alt>(params.paginas);
-    matriz<alt> ipwd = i - params.p_val * (w * d);
+    matriz<__ESTR__> d = diagonal<__ESTR__>(grado);
+    matriz<__ESTR__> i = identity<__ESTR__>(params.paginas);
+    matriz<__ESTR__> ipwd = i - params.p_val * (w * d);
     vector<double> res = ipwd.solve(vector<double>(params.paginas, 1));
     normalize(res);
     return res;
@@ -32,7 +32,7 @@ vector<double> pagerank::solve(in_file &params) {
 
 
 vector<double> pagerank::solve_optimizado(in_file &params) {
-    matriz<alt> m(params.paginas, params.paginas);
+    matriz<__ESTR__> m(params.paginas, params.paginas);
     // m = 0
     vector<double> grado(params.paginas);
     for (auto &r: params.relaciones) {

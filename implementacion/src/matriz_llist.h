@@ -5,6 +5,7 @@
 
 #include <list>
 
+
 class llist {
 protected:
     struct elem {
@@ -24,9 +25,13 @@ protected:
     mutable vector<elem*> _last;   // cache
 
     // funciones
+    elem* inicioRow(size_t row) const;
+    elem* finRow(size_t row) const;
+    elem* inicioCol(size_t col) const;
+    elem* finCol(size_t col) const;
     elem* search(size_t row, size_t col, bool dir) const;
     void remove(elem* x);
-    void set(elem* x, double val);
+    // void set(elem* x, double val);
 
 public:
     // constructor
@@ -40,8 +45,10 @@ public:
     class const_iterator;
     class iterator;
 
-    iterator begin(size_t i, size_t j);
-    const_iterator begin(size_t i, size_t j) const;
+    iterator begin(size_t i=0, size_t j=0);
+    iterator begin(const iterator &it); // obs: ninguna funcion de matriz inicializa por it
+    const_iterator begin(size_t i=0, size_t j=0) const;
+    const_iterator begin(const const_iterator &it) const; // obs: ninguna funcion de matriz inicializa por it
 };
 
 
@@ -51,7 +58,8 @@ protected:
     const llist &_p;
 
 public:
-    const_iterator(const llist &p, size_t row=0, size_t col=0);
+    explicit const_iterator(const llist &p, size_t row=0, size_t col=0);
+    const_iterator(const const_iterator &p); // obs: ninguna funcion de matriz inicializa por it
 
     bool in_range() const;
     size_t row() const;
@@ -67,7 +75,10 @@ protected:
 
 public:
     explicit iterator(llist &p, size_t row=0, size_t col=0);
+    iterator(const iterator &p); // obs: ninguna funcion de matriz inicializa por it
+
     void set(double elem);
+    void remove(bool rowOrder=true); // obs: ninguna funcion de matriz usa remove
 };
 
 

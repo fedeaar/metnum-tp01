@@ -1,5 +1,5 @@
-//#ifndef IMPLEMENTACION_REPRESENTACIONES_H
-//#define IMPLEMENTACION_REPRESENTACIONES_H
+//#ifndef IMPLEMENTACION_MATRIZ_VLIST_H
+//#define IMPLEMENTACION_MATRIZ_VLIST_H
 //
 //#include <vector>
 //#include <list>
@@ -51,8 +51,6 @@
 //bool compCero(T a) {
 //    return abs((double) a) < 1e-4;
 //}
-//#include "impl/matriz/matriz-base.hpp"
-//#include "impl/matriz/matriz-vlist.hpp"
-//// #include "impl/matriz/matriz-repr-list.hpp"
-//#include "impl/matriz/matriz-alt.hpp"
-//#endif //IMPLEMENTACION_REPRESENTACIONES_H
+
+
+#endif //IMPLEMENTACION_MATRIZ_VLIST_H

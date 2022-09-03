@@ -14,6 +14,8 @@ set(SOURCE_FILES
         src/impl/matriz/matriz_base.cpp
         src/matriz_alt.h
         src/impl/matriz/matriz_alt.cpp
+        src/matriz_llist.h
+        src/impl/matriz/matriz_llist.cpp
         src/pagerank.h
         src/impl/pagerank.cpp
         src/IO.h
@@ -26,10 +28,23 @@ target_link_libraries(TESTS-matriz-base gtest gtest_main)
 
 add_executable(TESTS-matriz-alt  ${SOURCE_FILES} tests/matriz-tests.cpp)
 target_compile_definitions(TESTS-matriz-alt PUBLIC ESTR=2)
-target_link_libraries(TESTS-matriz-alt  gtest gtest_main)
+target_link_libraries(TESTS-matriz-alt gtest gtest_main)
 
-add_executable(TESTS-pagerank ${SOURCE_FILES} tests/pagerank-tests.cpp)
-target_link_libraries(TESTS-pagerank    gtest gtest_main)
+add_executable(TESTS-matriz-llist  ${SOURCE_FILES} tests/matriz-tests.cpp)
+target_compile_definitions(TESTS-matriz-llist PUBLIC ESTR=3)
+target_link_libraries(TESTS-matriz-llist gtest gtest_main)
+
+add_executable(TESTS-pagerank-base ${SOURCE_FILES} tests/pagerank-tests.cpp)
+target_compile_definitions(TESTS-pagerank-base PUBLIC ESTR=1)
+target_link_libraries(TESTS-pagerank-base gtest gtest_main)
+
+add_executable(TESTS-pagerank-alt ${SOURCE_FILES} tests/pagerank-tests.cpp)
+target_compile_definitions(TESTS-pagerank-alt PUBLIC ESTR=2)
+target_link_libraries(TESTS-pagerank-alt gtest gtest_main)
+
+add_executable(TESTS-pagerank-llist ${SOURCE_FILES} tests/pagerank-tests.cpp)
+target_compile_definitions(TESTS-pagerank-llist PUBLIC ESTR=3)
+target_link_libraries(TESTS-pagerank-llist gtest gtest_main)
 
 add_executable(main ${SOURCE_FILES} main.cpp)
 
