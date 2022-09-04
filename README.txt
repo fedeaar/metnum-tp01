@@ -13,8 +13,11 @@ desde la raiz del repo:
 // entramos
 > cd build
 
+// abrimos bash (si en windows)
+> bash
+
 // creamos el cmake
-> cmake ../../implementacion
+$ cmake ../../implementacion
 
 // creamos el ejecutable	
-> make ./pagerank
+$ make ./pagerank

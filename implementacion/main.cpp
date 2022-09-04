@@ -8,7 +8,7 @@ int main(int argc,  char** argv) {
 
     if (argc < 3) {
         cout << "error: cantidad invalida de parametros.\n" <<
-                "expected: [source] [valor_p] ?-out='./' ?-dev" << endl;
+                "expected: [source] [valor_p] ?-out='./' ?-debug" << endl;
         return -1;
     }
 

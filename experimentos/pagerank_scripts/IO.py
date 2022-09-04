@@ -43,7 +43,7 @@ def createFileIn(filename, matrix):
     return links
 
 
-def run(matriz, p_value, filename, out_dir='.gen/out', debug=False, exe_path='./build/pagerank'):
+def run(matriz, p_value, filename, out_dir='.gen/out', debug=True, exe_path='./build/pagerank'):
     createFileIn(filename, matriz)
     sub.check_call([
         'wsl', 
@@ -51,4 +51,4 @@ def run(matriz, p_value, filename, out_dir='.gen/out', debug=False, exe_path='./
         filename,
         str(p_value), 
         f'-out={out_dir}', 
-        f'{"-dev" if debug else ""}'])
+        f'{"-debug" if debug else ""}'])
