@@ -2,10 +2,13 @@
 #define IMPLEMENTACION_IO_H
 
 #include "pagerank.h"
+#include <iomanip>
 #include <fstream>
 
 
 namespace IO {
+    const int PRECISION = 15;
+
     void stolcast(const string &val, size_t &res, const string &msg);
 
     void stodcast(const string &val, double &res, const string &msg);

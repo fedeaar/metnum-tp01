@@ -1,1 +1,0 @@
-acá van los jupyter notebooks donde experimentar y hacer gráficos

@@ -82,7 +82,7 @@ void IO::pagerank_write_out(const string &out,  double p_val, const vector<doubl
     ofstream file {out};
     file << p_val << '\n';
     for (auto &xi : res) {
-        file << xi << '\n';
+        file << std::setprecision(PRECISION) << std::fixed << xi << '\n';
     }
     file.close();
 }

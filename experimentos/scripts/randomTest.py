@@ -1,1 +1,0 @@
-# modulo para crear entradas random a pageRank por: -m, -n, -p, -distribucion, y comparar con alguna implementación standard de pageRank

@@ -9,12 +9,12 @@ add_library(gtest_main STATIC tests/gtest-1.8.1/gtest_main.cc)
 
 set(SOURCE_FILES
         src/matriz.h
-        src/impl/matriz/matriz.hpp
-        src/matriz_base.h
+        src/impl/matriz.hpp
+        src/matriz/matriz_base.h
         src/impl/matriz/matriz_base.cpp
-        src/matriz_alt.h
+        src/matriz/matriz_alt.h
         src/impl/matriz/matriz_alt.cpp
-        src/matriz_llist.h
+        src/matriz/matriz_llist.h
         src/impl/matriz/matriz_llist.cpp
         src/pagerank.h
         src/impl/pagerank.hpp
@@ -47,6 +47,6 @@ add_executable(TESTS-pagerank-llist ${SOURCE_FILES} tests/pagerank-tests.cpp)
 target_compile_definitions(TESTS-pagerank-llist PUBLIC ESTR=3)
 target_link_libraries(TESTS-pagerank-llist gtest gtest_main)
 
-add_executable(main ${SOURCE_FILES} main.cpp)
+add_executable(pagerank ${SOURCE_FILES} main.cpp)
 
 add_custom_target(TESTS-pagerank-alt-valgrind valgrind --leak-check=full -v TESTS-pagerank-alt)

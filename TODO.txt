@@ -2,7 +2,7 @@ todo           | limite  | obs
 -------------- | ------- | ---
 1*             | 26/08   | OK, pasar a latex
 IO.h           |         | OK
-IO.py          |         |
+IO.py          |         | OK
 Matriz.h       |         | OK
 -------------- | ------- | 
 2*             | 02/09   | OK, pasar a latex
