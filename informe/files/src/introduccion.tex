@@ -1,0 +1,43 @@
+\vspace{1em}
+
+\subsection{Aridad}
+$\\\\$
+Consideremos primero el dominio y la imágen del problema. Tenemos un conjunto de páginas web conectadas unas a otras por hipervínculos. Como única condición vamos a ignorar las auto-referencias. Si nos abstraemos, podemos considerar que nuestro dominio es el conjunto de todo grafo direccionado sin auto-direccionamiento (los nodos son los sitios y los ejes, los links). En consecuencia, podemos proponer la siguiente representación:
+
+\vspace{0.25em}
+\begin{equation}
+W_n = \{w_n\ |\ w_n \in \{0,\ 1\}^{n \times n},\ (w_n)_{ij} =    
+    \left\{ 
+        \begin{array}{lcc}
+        1           &  \text{si}    & i \neq j\  \wedge\ j \stackrel{l}{\longrightarrow} i \\
+        0           &  \text{sino}  &
+        \end{array}
+    \right.\ \forall i,\ j:\ 1\ ...\ n\ \}
+\end{equation}
+\vspace{0.5em}
+
+\noindent donde la notación $j \stackrel{l}{\longrightarrow} i$ representa un link de la página $j$ a la página $i$, y las filas y columnas de $w_n$, denominada \textit{matríz de conectividad}, representan, indexadas por posición, las páginas del grafo.  
+
+\vspace{1em}
+$PageRank$ define, además, un parámetro de entrada $p \in (0,\ 1)$, que representa la probabilidad de que un usuario decida navegar aleatoriamente a otra página en el grafo. Notar que $p$ se puede interpretar como el parámetro de un variable aleatoria bernoulli, y que no está definida para sus extremos.
+
+\vspace{1em}
+La imágen, por su parte, es un vector $\vec{s} \in [0,\ 1]^{n}$, donde $\vec{s}_i$ representa el Ranking de Page para la i-ésima página del grafo de entrada. Los valores están normalizados, tal que:
+
+\begin{equation*}
+\sum_{i=0}^{n}{\vec{s}_i} = 1
+\end{equation*}
+
+\vspace{1em}
+\noindent Tenemos entonces:
+
+\begin{equation}
+    PageRank:\ W_n \times (0,\ 1) \longrightarrow [0,\ 1]^{n}\qquad \forall n \in \mathbb{N}
+\end{equation}
+
+
+\vspace{1em}
+
+\subsection{Matriz de probabilidad}
+$\\\\$
+La resolución de PageRank requiere resolver un sistema de ecuaciones lineales sobre una matriz de probabilidades. Esta se define de la siguiente manera:

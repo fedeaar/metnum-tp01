@@ -9,8 +9,7 @@ Matriz.h       |         | OK
 EG.h           |         | OK
 pageRank.h*    |         | OK
 tests.cpp      |         | OK
-randomTests.py |         | 
-intro          |         |
+intro          |         | 
 desarrollo*    |         |
 -------------- | ------- |
 experimentos   | 09/09   |

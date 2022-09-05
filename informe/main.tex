@@ -6,43 +6,42 @@
 \input{files/src/caratula.tex}
 
 % palabras clave y resumen
-\section*{palabras clave}
-\input{files/src/palabras.tex}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
 \section*{resumen}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
 \input{files/src/resumen.tex}
-\newpage
 
 % contenido
 \tableofcontents
 \newpage
 
 % introduccion
-\section*{introducción teórica}
+\section{Introducción Teórica}
 \input{files/src/introduccion.tex}
 \newpage
 
 % desarrollo
-\section*{desarrollo}
+\section{Desarrollo}
 \input{files/src/desarrollo.tex}
 \newpage
 
 % resultados
-\section*{resultados y discusión}
+\section{Resultados y Discusión}
 \input{files/src/resultados.tex}
 \newpage
 
 % conclusiones
-\section*{conclusiones}
+\section{Conclusiones}
 \input{files/src/conclusiones.tex}
 \newpage
 
 % bibliografia - requiere que haya citas
-%\bibliographystyle{plain}
-%\bibliography{files/citations}
-%\newpage
+\bibliographystyle{plain}
+\bibliography{files/citations}
+\newpage
 
 % apendice
-\section*{apéndice}
+\section{Apéndice}
 \input{files/src/apendice.tex}
 
 \end{document}

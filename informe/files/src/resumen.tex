@@ -1,0 +1,8 @@
+El Ranking de Page, \textit{PageRank \cite{PageRank}}, es un método propuesto por Sergey Brin y Larry Page ---co-fundadores de Google---, para establecer la importancia de una página web dentro del internet, o dentro de un subconjunto de las páginas que lo componen. Holísticamente, considera que un sitio va a ser más relevante si es más probable que un usuario lo acceda. Por ello, el ranking define para cada par de páginas $a$ y $b$ la probabilidad condicional de que un navegante acceda a $a$, dado que actualmente se encuentre en $b$, y busca resolver un sistema de ecuaciones lineal donde la i-ésima ecuación representa la \textit{importancia} de la i-ésima página: la esperanza probabilística de que el usuario la acceda.
+
+Este trabajo propone una implementación eficiente de PageRank a través del uso de distintas representaciones de matríz (acorde a la cantidad de valores no nulos), y el empleo de iteradores específicos, para reducir el costo espacial y temporal de la eliminación gaussiana, método utilizado para la resolución del sistema. 
+
+Se buscará dar una presentación teórica y una evaluación cuantitativa y cualitativa de los resultados del método propuesto. 
+
+$\\$
+\noindent Palabras clave: \textit{Ranking de Page, Eliminación Gaussiana, Matrices ralas}
