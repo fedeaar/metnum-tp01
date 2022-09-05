@@ -6,11 +6,11 @@ tests_path = "../implementacion/tests/files/"
 paginas, q_links, matriz = IO.readFileIn(filename=tests_path + "test_15_segundos.txt") 
 p_value, solucion        = IO.readFileOut(filename=tests_path + "test_15_segundos.txt.out")
 
-#IO.run(matriz=matriz, p_value=p_value, filename='./gen/in/ejemplo.txt', out_dir='./gen/out', debug=True)
+IO.run(matriz=matriz, p_value=p_value, filename='./gen/in/ejemplo.txt', out_dir='./gen/out', debug=False)
 
-_p_value, _solucion = IO.readFileOut(filename='./gen/out/resultado.txt')
+_p_value, _solucion = IO.readFileOut(filename='./gen/out/ejemplo.out')
 
-print('\n','error relativo test: ', _solucion - solucion)
+print('\n\n','error relativo test: ', _solucion - solucion)
 
 
 D = np.eye(2000)
