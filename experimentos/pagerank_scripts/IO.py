@@ -26,7 +26,7 @@ def readFileOut(filename):
 def readMatriz(filename):
     with open(filename) as f:
         mylist = [x.split(', ') for x in f.read().splitlines()]
-        matriz = np.array(mylist);
+        matriz = np.array(mylist)
     return matriz
 
 
