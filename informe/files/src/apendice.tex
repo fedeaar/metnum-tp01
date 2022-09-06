@@ -1,0 +1,108 @@
+\subsection{$A = pWD + ez^t$}\label{A.1}
+\begin{proof}[demostración] Recordemos que:
+
+\begin{align*}
+    e_i     &=  1
+    \\
+    \\
+    z_{j}   &=  \left\{ 
+                    \begin{array}{lcc}
+                    (1 - p) / n     &  \ \text{si}    &  c_j \neq 0 \\
+                    1 / n           &  \ \text{si no} &
+                    \end{array}
+                \right.\
+    \\
+    \\
+    w_{ij}  &=  \left\{ 
+                    \begin{array}{lcc}
+                    1               &  \qquad \qquad \text{si}    & i \neq j\  \wedge\ j \stackrel{l}{\longrightarrow} i \\
+                    0               &  \qquad \qquad \text{si no} &
+                    \end{array}
+                \right.\
+    \\
+    \\
+    d_{ij}  &=  \left\{ 
+                    \begin{array}{lcc}
+                    1 / c_j         &  \qquad \: \: \text{si}    & i = j\  \wedge\ c_j \neq 0 \\
+                    0               &  \qquad \ \  \text{si no} &
+                    \end{array}
+                \right.\
+\end{align*}
+\vspace{1em}
+
+\noindent A partir de estas definiciones, vemos que, como $\textbf{D}$ es diagonal, el producto a derecha $\textbf{W}\textbf{D}$ escala cada columna $w_j$ por el factor $d_{jj}$, tal que:
+\vspace{1em}
+
+\begin {equation*}
+    (\textbf{W}\textbf{D})_{ij}  =  \left\{ 
+                    \begin{array}{lcc}
+                    w_{ij} / c_j    & \ \ \ \ \ \text{si}    & c_j \neq 0 \\
+                    0               & \ \ \ \ \ \text{si no} &
+                    \end{array}
+                \right.\
+\end {equation*}
+\vspace{1em}
+
+\noindent Como $p$ es un escalar, sigue entonces que:
+\vspace{1em}
+
+\begin {equation*}
+    (p\textbf{W}\textbf{D})_{ij}  =   \left\{ 
+                        \begin{array}{lcc}
+                        p \cdot w_{ij} / c_j    &  \text{si}    & c_j \neq 0 \\
+                        0                       &  \text{si no} &
+                        \end{array}
+                    \right.\
+\end {equation*}
+\vspace{1em}
+
+\noindent Además, $\ e \in \mathbb{R}^{n \times 1}\ \wedge\ z^t \in \mathbb{R}^{1 \times n} \implies ez^t \in \mathbb{R}^{n \times n}\ $, y:
+\vspace{1em}
+
+\begin {equation*}
+    (ez^t)_{ij} := \sum_{k=1}^{1} e_{ik} \cdot z^t_{kj} = e_i \cdot z^t_j = 1 \cdot z^t_j = z_j 
+\end {equation*}
+\vspace{1em}
+
+\noindent Por lo que:
+\begin {align*}
+    (p\textbf{W}\textbf{D} + ez^t)_{ij}   &=   \left\{ 
+                                \begin{array}{lcc}
+                                p \cdot w_{ij} / c_j + z_j   &  \ \ \ \ \qquad \text{si}    & c_j \neq 0 \\
+                                z_j                          &  \ \ \ \ \qquad \text{si no} &
+                                \end{array}
+                            \right.\ \\
+                            \\
+                        &=  \left\{ 
+                                \begin{array}{lcc}
+                                (1 - p) \cdot \frac{1}{n} + p \cdot \frac{w_{ij}}{c_j}   &  \ \ \   \text{si}    & c_j \neq 0 \\
+                                \frac {1}{n}                                             &  \ \ \   \text{si no} &
+                                \end{array}
+                            \right.\
+\end {align*}
+
+\noindent pero: 
+\vspace{1em}
+
+\begin{equation*}
+    a_{ij} := Pr(j \longrightarrow i) = \left\{ 
+                                            \begin{array}{lcc}
+                                            (1 - p)\cdot \frac{1}{n} + p \cdot \frac{I_{ij}}{c_j}      &  \text{si}    & c_j \neq 0\\
+                                            \frac{1}{n}                                                &  \text{si no}  &
+                                            \end{array}
+                                        \right.
+\end{equation*}
+\vspace{1em}
+
+\noindent Como $\ I_{ij} = 1\ $ si y sólo si existe un hipervínculo de $j$ a $i$, con $j \neq i$ ---y nulo en caso contrario---, entonces $\ I_{ij} = w_{ij}\ $ y concluímos que $\ a_{ij} = (p\textbf{W}\textbf{D} + ez^t)_{ij}$, $\forall i, j:\ 1\ ...\ n\ $,  lo que implica que:
+\vspace{1em}
+
+\begin{equation*}
+    \textbf{A} = p\textbf{W}\textbf{D} + ez^t
+\end{equation*}
+\vspace{1em}
+
+\end{proof}
+
+
+\subsection{$\textbf{I} - p\textbf{W}\textbf{D}$ permite la eliminación gaussiana}\label{A.2}

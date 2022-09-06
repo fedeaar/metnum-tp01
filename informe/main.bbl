@@ -1,9 +1,19 @@
 \begin{thebibliography}{1}
 
-\bibitem{PageRank}
+\bibitem{Brin98}
 Sergey Brin and Lawrence Page.
-\newblock {\em The anatomy of a large-scale hypertextual Web search engine},
-  volume Computer networks and ISDN systems, 30 (1-7):107–117.
-\newblock Standford, 1998.
+\newblock The anatomy of a large-scale hypertextual web search engine.
+\newblock {\em Computer networks and ISDN systems, 30 (1-7):107–117}, 1998.
+
+\bibitem{Bryan06}
+Kurt Bryan and Tanya Leise.
+\newblock The \$25,000,000,000 eigenvector: The linear algebra behind google.
+\newblock {\em T SIAM review, 48 (3):569–581}, 2006.
+
+\bibitem{Kamvar03}
+Sepandar D Kamvar; Taher H Haveliwala; Christopher~D Manning and Gene~H Golub.
+\newblock Extrapolation methods for accelerating pagerank computations.
+\newblock {\em In Proceedings of the 12th international conference on World
+  Wide Web, pages 261-270. ACM}, 2003.
 
 \end{thebibliography}
