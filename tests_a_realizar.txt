@@ -22,3 +22,5 @@ a medida que cambiamos la cantidad de conexiones aleatoriamente (bernoulli).
 8. como decrece el ranking de un nodo a medida que a otro nodo le apuntan mas (1, ..., n).
 9. los clusters son autocontenidos? si hay dos estructuras sin relacion entre ellas, 
 modificaciones en un lado afectan al otro lado?
+10. tenes 2*n + 1 nodos, primero 0 apunta a n y n apunta a 2*n, 
+despues 0 y 1 apuntan a n y n apunta 2*n y 2*n-1 ...
