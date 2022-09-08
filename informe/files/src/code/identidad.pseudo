@@ -1,0 +1,8 @@
+proc identidad(in n: natural, out B: matriz<n, n>) {
+    B := matriz(n, n, 0) // B = 0 de dimension n x n
+    i := 0
+    while i < n {
+        B.set(i, i, 1)
+        i := i + 1
+    }
+}

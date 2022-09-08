@@ -1,0 +1,10 @@
+proc sumar_fila(inout A: matriz<n, n>, inout b: vector<n>, 
+                in f1, f2: natural, in c: real) {
+    it := iterador(A, f1, f1)
+    while it.en_rango() {
+        val := B.at(f2, it.j) - c * it.at()
+        B.set(f2, it.j, val)
+        it.proximo_fila()
+    }
+    b[f2] := b[f2] - mij * b[f1]
+}

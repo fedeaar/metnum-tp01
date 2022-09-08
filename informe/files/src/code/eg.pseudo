@@ -1,0 +1,15 @@
+proc eliminacion_gaussiana(inout A: matriz<n, n>, inout b: vector<n>) {
+    i := 0
+    while i < A.n - 1 {
+        jt := iterador(A, i + 1, i)
+        while jt.en_rango() {
+            if (jt.j == i) { // solo si B.at(i + 1, i) != 0
+                mij := jt.at() / A.at(i, i)
+                sumar_fila(A, b, i, jt.i, mij)
+            }
+            jt.proximo_columna()
+        }
+        i := i + 1
+    }
+}
+                

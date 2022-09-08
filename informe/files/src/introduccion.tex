@@ -51,16 +51,16 @@
 Notemos que $Pr(j \longrightarrow i)$ se puede interpretar de la siguente manera: un navegante situado en la página $j$ decidirá con probabilidad $p$ acceder a uno de los links del sitio y con probabilidad $1 - p$ saltar a otra página del conjunto. En ambos casos, deberá luego decidir uniformemente sobre el total disponible, y terminará eligiendo a $i$ con una probabilidad de $\frac{I_{ij}}{c_j}$ ó $\frac{1}{n}$, respectivamente, acorde a la primer decisión. Si no hay links en la página, siempre saltará de manera uniforme a otra página del conjunto, y eligirá a $i$ con probabilidad $\frac{1}{n}$. 
 
 \vspace{1em}
-$x_i$, por su parte, también recibe una interpretación particular: es la probabilidad que para algún momento $k > K$, el navegante se encuentre situado en la página $i$. Para un $K$ lo suficientemente grande, esta probabilidad es única \cite{Kamvar03}. 
+$x_i$, por su parte, también recibe una interpretación particular: es la probabilidad que para algún momento $k > K$, el navegante se encuentre situado en la página $i$. Para un $K$ lo suficientemente grande, esta probabilidad es única \cite{Kamvar03}. Notar que esto es equivalente a decir que  $x_i$ representa la fracción de tiempo, al largo plazo, que un navegante permanecerá en la página $i$.
 
 \vspace{1em}
-A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El mismo asume lo siguiente: un link de la página $j$ a la página $i$ es evidencia de la importancia de la página $i$. Específicamente: la cantidad de relevancia que le confiere la página $j$ a la página $i$ es proporcional a la relevancia de $j$ e inversamente proporcional al número de páginas a las que apunta $j$ \cite{Kamvar03}. Esto se puede ver en que $x_i$ es la suma de toda otra importancia $x_j$ ponderada por $Pr(j \longrightarrow i)$, que incluye en su definición una división sobre la cantidad de links salientes $c_j$. 
+A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El mismo asume lo siguiente: Dado un link de la página $j$ a la página $i$, la página $j$ le conferirá importancia a la página $i$ de manera proporcional a la relevancia de $j$ e inversamente proporcional al número de páginas a las que apunta $j$ \cite{Kamvar03}. Esto se puede ver en que $x_i$ es la suma de toda otra importancia $x_j$ ponderada por $Pr(j \longrightarrow i)$, que incluye en su definición una división sobre la cantidad de links salientes $c_j$. 
 
 
 
 % === representación matricial === %
 \vspace{2em}
-\subsection{Representación matricial} Dado que estamos trabajando con un sistema lineal, será de utilidad considerar la matriz asociada \textbf{\textit{A}} y resolver, equivalentemente, $\textbf{A}x = x$. Definimos entonces:
+\subsection{Representación matricial} Dado que estamos trabajando con un sistema lineal, será de utilidad considerar la matriz asociada `\textbf{\textit{A}}' y resolver, equivalentemente, $\textbf{A}x = x$, donde $x = (x_1,\ ...\ ,\ x_n)^t$. Definimos entonces:
 
 \begin{equation}
     a_{ij} := Pr(j \longrightarrow i)
@@ -69,7 +69,7 @@ A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El m
 \vspace{1em}
 \noindent y proponemos que\footnote{Una demostración de esta equivalencia se encuentra en \ref{A.1}.}:
 
-\begin{equation}
+\begin{equation}\label{E.1}
     \textbf{A} = p\textbf{W}\textbf{D} + ez^t
 \end{equation}
 
@@ -105,10 +105,10 @@ A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El m
 \end{align*}
 \vspace{1em}
 
-\noindent La notación $j \stackrel{l}{\longrightarrow} i$ representa que existe un link de la página $j$ a la página $i$, y las filas y columnas de $\textbf{W}$, denominada \textit{matriz de conectividad}, representan ---indexadas por posición--- las páginas de $g$.
+\noindent La notación $j \stackrel{l}{\longrightarrow} i$ representa que existe un link de la página $j$ a la página $i$, y las filas y columnas de $\textbf{W}$, denominada \textit{matriz de conectividad}, representan ---indexadas por posición--- las páginas de una web $g \in G_n$.
 \vspace{1em}
 
-\noindent A partir de esta última equivalencia podemos ver que:
+\noindent A partir de la ecuación (\ref{E.1}) podemos ver que:
 
 \begin{align*}
     \textbf{A}x &= x \\
@@ -118,15 +118,15 @@ A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El m
     (\textbf{I} - p\textbf{W}\textbf{D})x &= \gamma e \\
 \end{align*}
 
-\noindent donde $\gamma = z^tx$.
+\noindent donde $\gamma = z^tx$ es un escalar.
 \vspace{1em}
 
-\noindent Si asumimos $\gamma = 1$, entonces el sistema a resolver será:
+Dado que nuestro resultado deberá ser normalizado para cumplir con los requerimientos de la imágen (con la intuición que, si cada $x_i$ representa una probabilidad disjunta, entonces las suma de las $x_i$ deberá ser igual a uno, ya que su unión representa la probabilidad del espacio entero), podemos asumir un $\gamma$ conveniente \cite{Langville04}, $\gamma = 1$, tal que el sistema a resolver sea:
 \vspace{1em}
 
-\begin{equation}\label{sistema}
+\begin{equation}\label{E.2}
     (\textbf{I} - p\textbf{W}\textbf{D})x = e
 \end{equation}
 \vspace{1em}
 
-El sistema definido en (\ref{sistema}) permite la aplicación de la eliminación gaussiana sin permutación.\footnote{Una demostración de este enunciado se encuentra en \ref{A.2}.} Por lo que utilizaremos éste método para su resolución. Como no necesariamente $\ \sum_{i=1}^{n}{x_i} = 1$, normalizaremos el resultado alcanzado para satisfacer los requerimientos de la imágen.
+Notar que La matriz $\textbf{I} - p\textbf{W}\textbf{D}$  permite la aplicación de la eliminación gaussiana sin permutación \footnote{Una demostración de este enunciado se encuentra en \ref{A.2}.}.

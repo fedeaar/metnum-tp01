@@ -1,0 +1,9 @@
+proc PageRank(in g: G<n>, in p: real, out x: vector<n>) {
+    /* Pre: 0 < p < 1 */
+    B := construir(g, p) // B = I - pWD
+    e := vector(n, 1)    // e = 1 de dimension n 
+    eliminacion_gaussiana(B, e)
+    x := sustitucion_inversa(B, e) 
+    normalizar(x)
+    /* Post: |Bx - x| < 1e-4 */
+}

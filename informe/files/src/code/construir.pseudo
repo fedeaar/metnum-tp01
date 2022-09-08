@@ -1,0 +1,5 @@
+proc construir(in g: G<n>, in p: real, out B: matriz<n, n>) {
+    n := g.#paginas
+    B := identidad(n)   // B = I de dimension n x n
+    ponderar(B, g, p)   // B = I - pWD
+}

@@ -1,0 +1,14 @@
+proc ponderar(inout B: matriz<n, n>, in g: G<n>, in p: real) {
+    grado := vector(n, 0) // grado = 0 de dimension n
+    i = 0
+    while i < largo(g.relaciones) {
+        eje := g.relaciones[i]
+        grado[eje.j] := grado[eje.j] + 1
+    }
+    while i < largo(g.relaciones) {
+        eje := g.relaciones[i]
+        if eje.i != eje.j {
+            B.set(eje.i, eje.j, -p / grado[eje.j])
+        }
+    }
+}

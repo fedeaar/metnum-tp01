@@ -1,0 +1,15 @@
+proc sustitucion_inversa(in A: matriz<n, n>, in b: vector<n>, 
+                         out x: vector<n>) {
+    x := vector(A.n, 0) // x = 0 de dimension n
+    i := A.n - 1
+    while i >= 0 {
+        s  := 0
+        it := iterador(A, i, i + 1)
+        while it.en_rango() {
+            s := s + it.at() * x[it.j] 
+            it.proximo_fila()
+        }
+        x[i] := (b[i] - s) / A.at(i, i)
+        i := i + 1
+    }
+}
