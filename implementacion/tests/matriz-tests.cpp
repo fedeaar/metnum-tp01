@@ -3,14 +3,11 @@
 #include "../src/matriz.h"
 #include "../src/matriz/matriz_base.h"
 #include "../src/matriz/matriz_alt.h"
-#include "../src/matriz/matriz_llist.h"
 
 #if ESTR == 1
     typedef base __ESTR__;
 #elif ESTR == 2
     typedef alt __ESTR__;
-#elif ESTR == 3
-    typedef llist __ESTR__;
 #else
     typedef alt __ESTR__;
 #endif
@@ -241,12 +238,12 @@ TEST_F(MatrizTest, print) {
     ostringstream stream;
     stream << a;
     string a_os = stream.str();
-    EXPECT_EQ(a_os, "\n1, 2, 3, 4\n4, 0, 0, 1\n1, 1, 1, 1\n1, 2, 3, 7\n");
+    EXPECT_EQ(a_os, "1, 2, 3, 4\n4, 0, 0, 1\n1, 1, 1, 1\n1, 2, 3, 7\n");
 
     stream = ostringstream();
     stream << b;
     string b_os = stream.str();
-    EXPECT_EQ(b_os, "\n1, 0, 0, 0\n0, 1, 0, 0\n0, 0, 1, 0\n0, 0, 0, 1\n");
+    EXPECT_EQ(b_os, "1, 0, 0, 0\n0, 1, 0, 0\n0, 0, 1, 0\n0, 0, 0, 1\n");
 }
 
 
