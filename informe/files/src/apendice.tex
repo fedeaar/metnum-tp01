@@ -119,7 +119,7 @@ Definimos la eliminación Gaussiana de la siguiente manera : \\
                             \\
     \textbf{Eg}_{k+1}(\textbf{A})_{ij}  &=  \left\{ 
                                     \begin{array}{lcc}
-                                    \textbf{A}_{ij}   &   \text{si}    & i < k+1 \ \vee \  j < k+1 \\
+                                    \textbf{Eg}_{k}(\textbf{A})_{ij}  &   \text{si}    & i < k+1 \ \vee \  j < k+1 \\
                                     \textbf{Eg}_{k}(\textbf{A})_{ij} - \frac {\textbf{Eg}_{k}(\textbf{A})_{ik} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}    &  \ \ \ \  \text{si no} &
                                     \end{array}
                                 \right.\
@@ -150,7 +150,7 @@ Definimos la eliminación Gaussiana de la siguiente manera : \\
     (\forall j \in 	\mathbb{N}) (1 \ \leq \ j \ \leq \ N ) &\longrightarrow_L \ \text{True} \\ 
 \end{align*}
 
-QED que $(\forall j \in \mathbb{N}) (k \ \leq \ j \ \leq \ N ) &\longrightarrow_L |\textbf{Eg}_{k}(\textbf{A})_{jj}| \geq \sum_{i=k, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ij}|$\\
+QED que $(\forall j \in \mathbb{N}) (k \ \leq \ j \ \leq \ N ) \longrightarrow_L |\textbf{Eg}_{k}(\textbf{A})_{jj}| \geq \sum_{i=k, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ij}|$\\
 Por ende el elemento $|\textbf{Eg}_{k}(\textbf{A})_{kk}| = 0 \leftrightarrow \sum_{i=k+1}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ik}| = 0$
 O sea que el elemento de la diagonal en cada paso de la eliminacion gaussiana es 0 si y solo si todos los elementos que tiene por debajo en su columna son 0 o sea que se podria saltear ese paso
 
