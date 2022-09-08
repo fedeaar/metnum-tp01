@@ -3,6 +3,7 @@
 venv
 
 experimentos/build
+experimentos/__pycache__
 experimentos/pagerank_scripts/__pycache__
 
 implementacion/build
@@ -18,3 +19,6 @@ informe/*.synctex.gz
 informe/*.toc
 
 *.exe
+informe/main.bbl
+*.blg
+*.bbl
