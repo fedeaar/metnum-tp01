@@ -14,11 +14,12 @@
 
 int main(int argc,  char** argv) {
 
-    if (argc < 3 || argc > 7) {
+    if (argc < 3 || argc > 8) {
         cout << "error: cantidad invalida de parametros.\n" <<
                 "expected: [source] [valor_p]\n"  <<
                 "optional: -out=./\n" <<
-                "          -presicion=15" <<
+                "          -save_as=[source]\n" <<
+                "          -presicion=15\n" <<
                 "          -save_m\n" <<
                 "          -time_it" << endl;
         return -1;
@@ -35,29 +36,30 @@ int main(int argc,  char** argv) {
     if (out_path[out_path.length() - 1] != '/') {
         out_path += '/';
     }
+    string out_name = params.count("-save_as") ? params.at("-save_as") : file_name;
 
-    cout << "leyendo el archivo: " + in_path << ".\n";
+    // cout << "leyendo el archivo: " + in_path << ".\n";
     pagerank::in_file data = IO::pagerank_read_in(in_path, p_val);
 
-    cout << "calculando PageRank...\n";
+    // cout << "calculando PageRank...\n";
     auto inicio = chrono::high_resolution_clock::now();
     matriz<__ESTR__> mat = pagerank::make<__ESTR__>(data);
     vector<double> solucion = pagerank::solve<__ESTR__>(mat);
     auto fin = chrono::high_resolution_clock::now();
 
-    string out = out_path + file_name + ".out";
-    cout << "guardando resultado en: " + out << " (si el path existe).\n";
+    string out = out_path + out_name + ".out";
+    // cout << "guardando resultado en: " + out << " (si el path existe).\n";
     IO::pagerank_write_out(out, p_val, solucion);
 
     if (params.count("-time_it")) {
         auto time = chrono::duration_cast<chrono::microseconds>(fin - inicio);
-        string time_out = out_path + file_name + ".time";
-        cout << "guardando tiempo de ejecucion en: " + time_out << " (si el path existe).\n";
+        string time_out = out_path + out_name + ".time";
+        // cout << "guardando tiempo de ejecucion en: " + time_out << " (si el path existe).\n";
         IO::pagerank_write_time(time_out, time);
     }
     if (params.count("-save_m")) {
-        string matriz_out = out_path + file_name + ".matriz";
-        cout << "guardando matriz en: " + matriz_out << " (si el path existe).\n";
+        string matriz_out = out_path + out_name + ".matriz";
+        // cout << "guardando matriz en: " + matriz_out << " (si el path existe).\n";
         IO::pagerank_write_matriz(matriz_out, mat);
     }
 
