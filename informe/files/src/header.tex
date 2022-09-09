@@ -5,3 +5,24 @@
 \renewcommand{\contentsname}{Contenidos}
 \renewcommand{\refname}{Referencias}
 \renewcommand\qedsymbol{$\blacksquare$}
+\renewcommand{\lstlistingname}{Algoritmo}% Listing -> Algorithm
+
+\lstdefinelanguage{pseudo}{
+  morekeywords={
+    pre,
+    post,
+    if,
+    while,
+    for,
+    in,
+    out,
+    proc,
+    inout
+  },
+  sensitive=false, % keywords are not case-sensitive
+  morecomment=[l]{//}, % l is for line comment
+  morecomment=[s]{/*}{*/}, % s is for start and end delimiter
+  keywordstyle=\color{black}\textbf,
+  commentstyle=\color{gray},
+  morestring=[b]" % defines that strings are enclosed in double quotes
+}

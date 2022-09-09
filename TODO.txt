@@ -1,6 +1,6 @@
 todo           | limite  | obs
 -------------- | ------- | ---
-1*             | 26/08   | OK, pasar a latex
+1*             | 26/08   | OK
 IO.h           |         | OK
 IO.py          |         | OK
 Matriz.h       |         | OK
@@ -9,7 +9,7 @@ Matriz.h       |         | OK
 EG.h           |         | OK
 pageRank.h*    |         | OK
 tests.cpp      |         | OK
-intro          |         | 
+intro          |         | OK
 desarrollo*    |         |
 -------------- | ------- |
 experimentos   | 09/09   |

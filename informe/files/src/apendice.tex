@@ -1,5 +1,8 @@
-\subsection{$A = pWD + ez^t$}\label{A.1}
-\begin{proof}[demostración] Recordemos que:
+% === demo 1 === %
+\subsection{A: $A = pWD + ez^t$}\label{A.1}
+\begin{proof}[demostración] 
+    
+Recordemos que:
 
 \begin{align*}
     e_i     &=  1
@@ -33,39 +36,39 @@
 \noindent A partir de estas definiciones, vemos que, como $\textbf{D}$ es diagonal, el producto a derecha $\textbf{W}\textbf{D}$ escala cada columna $w_j$ por el factor $d_{jj}$, tal que:
 \vspace{1em}
 
-\begin{equation*}
+\begin {equation*}
     (\textbf{W}\textbf{D})_{ij}  =  \left\{ 
                     \begin{array}{lcc}
                     w_{ij} / c_j    & \ \ \ \ \ \text{si}    & c_j \neq 0 \\
                     0               & \ \ \ \ \ \text{si no} &
                     \end{array}
                 \right.\
-\end{equation*}
+\end {equation*}
 \vspace{1em}
 
 \noindent Como $p$ es un escalar, sigue entonces que:
 \vspace{1em}
 
-\begin{equation*}
+\begin {equation*}
     (p\textbf{W}\textbf{D})_{ij}  =   \left\{ 
                         \begin{array}{lcc}
                         p \cdot w_{ij} / c_j    &  \text{si}    & c_j \neq 0 \\
                         0                       &  \text{si no} &
                         \end{array}
                     \right.\
-\end{equation*}
+\end {equation*}
 \vspace{1em}
 
 \noindent Además, $\ e \in \mathbb{R}^{n \times 1}\ \wedge\ z^t \in \mathbb{R}^{1 \times n} \implies ez^t \in \mathbb{R}^{n \times n}\ $, y:
 \vspace{1em}
 
-\begin{equation*}
+\begin {equation*}
     (ez^t)_{ij} := \sum_{k=1}^{1} e_{ik} \cdot z^t_{kj} = e_i \cdot z^t_j = 1 \cdot z^t_j = z_j 
-\end{equation*}
+\end {equation*}
 \vspace{1em}
 
 \noindent Por lo que:
-\begin{align*}
+\begin {align*}
     (p\textbf{W}\textbf{D} + ez^t)_{ij}   &=   \left\{ 
                                 \begin{array}{lcc}
                                 p \cdot w_{ij} / c_j + z_j   &  \ \ \ \ \qquad \text{si}    & c_j \neq 0 \\
@@ -79,7 +82,7 @@
                                 \frac {1}{n}                                             &  \ \ \   \text{si no} &
                                 \end{array}
                             \right.\
-\end{align*}
+\end {align*}
 
 \noindent pero: 
 \vspace{1em}
@@ -94,7 +97,7 @@
 \end{equation*}
 \vspace{1em}
 
-\noindent Como $\ I_{ij} = 1\ $ si y sólo si existe un hipervínculo de $j$ a $i$, con $j \neq i$ ---y nulo en caso contrario---, entonces $\ I_{ij} = w_{ij}\ $ y concluímos que $\ a_{ij} = (p\textbf{W}\textbf{D} + ez^t)_{ij}$, $\forall i, j:\ 1\ ...\ n\ $,  lo que implica que:
+Como $\ I_{ij} = 1\ $ si y sólo si existe un hipervínculo de $j$ a $i$, con $j \neq i$ ---y nulo en caso contrario---, entonces $\ I_{ij} = w_{ij}\ $ y concluímos que $\ a_{ij} = (p\textbf{W}\textbf{D} + ez^t)_{ij}$, $\forall i, j:\ 1\ ...\ n\ $,  lo que implica que:
 \vspace{1em}
 
 \begin{equation*}
@@ -105,10 +108,11 @@
 \end{proof}
 
 
-\subsection{$\textbf{I} - p\textbf{W}\textbf{D}$ permite la eliminación gaussiana}\label{A.2}
 
+% === demo 2 === %
+\subsection{B: $I - pWD$ permite la eliminación gaussiana}\label{A.2}
 
-Definimos la eliminación Gaussiana de la siguiente manera : \\
+Definimos la eliminación Gaussiana de la siguiente manera:
 
 \begin{equation*}
 \textbf{A} := \textbf{I} - p\textbf{WD}
@@ -124,8 +128,6 @@ Definimos la eliminación Gaussiana de la siguiente manera : \\
                                     \end{array}
                                 \right.\
 \end{align*}
-
-
 
 \begin{align*}
     HI: (\forall j \in \mathbb{N}) (k \ \leq \ j \ \leq \ N ) &\longrightarrow_L |\textbf{Eg}_{k}(\textbf{A})_{jj}| \geq \sum_{i=k, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ij}| \\
@@ -155,4 +157,8 @@ Por ende el elemento $|\textbf{Eg}_{k}(\textbf{A})_{kk}| = 0 \leftrightarrow \su
 O sea que el elemento de la diagonal en cada paso de la eliminacion gaussiana es 0 si y solo si todos los elementos que tiene por debajo en su columna son 0 o sea que se podria saltear ese paso
 
 
+ 
 
+
+% === estructuras alternativas === %
+\subsection{C: Estructuras alternativas}\label{A.3}

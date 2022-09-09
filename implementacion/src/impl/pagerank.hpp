@@ -4,24 +4,16 @@
 
 template<class R>
 matriz<R> pagerank::make(const in_file &params) {
-    matriz<R> m(params.paginas, params.paginas);
-    // m = 0
+    matriz<R> m = identity<R>(params.paginas);
+    // m = I
     vector<double> grado(params.paginas);
     for (auto &r: params.relaciones) {
-        m.set(r.i - 1, r.j - 1, -params.p_val);
         ++grado[r.j - 1];
     }
-    // m = -pW
-    for (auto jt = m.begin(); jt.in_range(); jt.next(false)) {
-        for (auto it = m.begin(jt.row(), jt.col()); it.in_range(); it.next()) {
-            double grado_i = grado[it.col()];
-            double peso = grado_i == 0 ? 0 : 1 / grado_i;
-            it.set(it.at() * peso);
+    for (auto &r: params.relaciones) {
+        if (r.i != r.j) {
+            m.set(r.i - 1, r.j - 1, -params.p_val / grado[r.j - 1]);
         }
-    }
-    // m = -pWD
-    for (size_t i = 0; i < params.paginas; ++i) {
-        m.set(i, i, 1);
     }
     // m = I - pWD
     return m;

@@ -1,0 +1,201 @@
+\vspace{1em}
+
+\subsection{Implementación} A partir del sistema planteado en la ecuación (\ref{E.2}), proponemos el siguiente método para la resolución de PageRank:
+\vspace{1em}
+
+\begin{enumerate}
+    \item Construir la matriz $\textbf{I} - p\textbf{W}\textbf{D}$ a partir de alguna representación de $g \in G_n$ (recordar que $g$ es un conjunto de páginas web con cardinalidad $n$).
+    \item Triangular la matriz extendida $(\textbf{I} - p\textbf{W}\textbf{D}\ |\ e)$  mediante eliminación gaussiana, sin pivoteo \footnote{Es decir, nuestra solución no buscará reducir el error numérico de la aritmética de punto flotante ---en particular por cancelación catastrófica--- por medio de las técnicas de pivoteo parcial o pivoteo completo que se utilizan en algunas implementaciones del algoritmo.}.
+    \item Resolver la matriz triangular resultante mediante el algoritmo de sustitución inversa. 
+    \item Normalizar el resultado.
+\end{enumerate}
+\vspace{1em} 
+
+\noindent Tenemos entonces:
+\vspace{1em}
+
+\lstinputlisting[language=pseudo, caption={Pseudocódigo para $PageRank$.}, label=PageRank]{files/src/code/pagerank.pseudo}
+\vspace{1em}
+
+De este algoritmo surgen las siguientes preguntas: ¿Cómo representamos las matrices\footnote{Para este trabajo asumiremos que existe una representación de vector. Sin embargo, notar que un vector puede ser representado por una matríz $n \times 1$ ó $1 \times n$.}? ¿Cómo construimos $(\mathbf{I} - p\mathbf{W}\mathbf{D}\ |\ e)$? ¿Cómo implementamos la eliminación gaussiana? y ¿Cómo implementamos la sustitución inversa? 
+
+
+
+
+
+\vspace{2em}
+\subsubsection{Matríz} Una representación eficiente de matríz será una que permita aprovechar las cualidades de $(\mathbf{I} - p\mathbf{W}\mathbf{D}\ |\ e)$, que tenga un costo mínimo de mantenimiento respecto a sus operaciones elementales y que sea eficiente en el uso de la memoria. 
+\vspace{1em}
+
+Lo primero a notar son las operaciones fundamentales de la estructura. Desde un punto de vista abstracto, estas son aquellas que la definen como un espacio vectorial y, en el caso de $\mathbb{R}^{n \times n}$, como un álgebra:
+\vspace{1em}
+
+\begin{align*}
+    \mathbf{A} + \mathbf{B}     &:= (a + b)_{ij} = a_{ij} + b_{ij}                &   \forall i: 1\ ...\ n,\ j: 1\ ...\ m\\
+    \\
+    \mathbf{A} \cdot \mathbf{B} &:= (ab)_{ij} = \sum_{k=1}^{m} a_{ik}\ b_{kj}     &   \forall i: 1\ ...\ n,\ j: 1\ ...\ q\\ 
+    \\
+    \lambda \cdot_{\mathbb{R}} \mathbf{A}  &:= (\lambda a)_{ij} = \lambda a_{ij}  &   \forall i: 1\ ...\ n,\ j: 1\ ...\ m
+\end{align*}
+\vspace{1em}
+
+Más allá de las posibles implementaciones ---que no se requerirán---, importa destacar el fuerte carácter iterativo (las operaciones y la acción actúan sobre todas las posiciones) y observar que cuando $a_{ij} = 0$ ó $b_{ij} = 0$, el resultado es invariante respecto a al menos uno de los operandos. Desde un punto de vista algorítmico, esto significa que estos casos son redundantes y posiblemente se los pueda omitir (por ejemplo, iterando sólo sobre los elementos no nulos).  
+\vspace{1em}
+
+
+Esto es particularmente importante para PageRank, donde se espera que una página web tenga pocos links salientes (en relación al total de los sitios) y donde se puede demostrar una tendencia a la localidad de las relaciones \cite{Langville04}. Entonces, para un conjunto lo suficientemente grande, podemos suponer que nuestra matríz estará principalmente vacía. 
+\vspace{1em}
+
+\noindent A partir de este breve análisis, proponemos las siguientes estructuras\footnote{Una evaluación en más detalle de la implementación y las alternativas consideradas se encuentra en (\ref{A.3}).}:
+\vspace{1em}
+
+\begin{align}
+    \text{matriz}   &:=  \left\{ 
+                            \begin{array}{lcc}
+                                \text{n},\ \text{m}:\ \mathbb{N} \\
+                                \text{datos}: vector<vector< \text{par} := \left\{
+                                                                                \begin{array}{lcc}    
+                                                                                    \text{posición}: \mathbb{N}_0, \\
+                                                                                    \text{elemento}: \mathbb{R}
+                                                                                \end{array}
+                                                                            \right. >> \\
+                                \\
+                                \text{at}: \mathbb{N}\ i \times\ \mathbb{N}\ j\ \longrightarrow\ \mathbb{R} 
+                                    \ \ \ \qquad \qquad \qquad \qquad \{0 \leq i < n \wedge 0 \leq j < m\}\\
+                                \text{set}: \mathbb{N}\ i \times\ \mathbb{N}\ j\ \times \mathbb{R} \longrightarrow\ \text{matriz} 
+                                    \ \ \qquad \qquad \{0 \leq i < n \wedge 0 \leq j < m\}
+                            \end{array}
+                        \right.\
+\\ \nonumber
+\\
+    \text{iterador}   &:=    \left\{ 
+                                \begin{array}{lcc}
+                                    \text{i},\ \text{j},\ \text{pos}:\ \mathbb{N}_0 \\
+                                    \text{p}: *matriz \\
+                                    \\
+                                    \text{at}: \longrightarrow\ \mathbb{R}                      
+                                        & \qquad \qquad \{\text{en\_rango}()\} \\
+                                    \text{set}: \mathbb{R} \longrightarrow\ \text{iterador}     
+                                        & \qquad \qquad \{\text{en\_rango}()\} \\
+                                    % \text{fila}: \longrightarrow\ \mathbb{N} 
+                                    %     & \qquad \qquad \{\text{en\_rango}()\} \\
+                                    % \text{col}: \longrightarrow\ \mathbb{N} 
+                                    %     & \qquad \qquad \{\text{en\_rango}()\} \\
+                                    \text{proximo\_fila}: \longrightarrow\ \text{iterador} \\
+                                    \text{proximo\_columna}: \longrightarrow\ \text{iterador} \\
+                                    \text{en\_rango}: \longrightarrow\ \text{bool}  
+                                \end{array}
+                            \right.\
+\end{align}
+\vspace{1em}
+
+\noindent donde $vector$ se refiere a un arreglo de tamaño variable en memoria contigua y $*$ designa un puntero.
+\vspace{1em}
+
+Esta estructura de matríz garantizará que el tamaño del vector externo siempre equivaldrá a $n$, que el tamaño de cada vector interno estará acotado por $m$, que los pares internos estarán ordenados por posición y que para cada uno se satisfará que $0 \leq \text{posición} < n$ y que el elemento es no nulo.
+
+La estructura asociada al iterador, por su parte, satisfará que el iterador es válido si y sólo si $0 \leq i < n$ y $0 \leq pos < largo(datos[i])$, y que un iterador válido siempre estará sobre un elemento no nulo\footnote{Sobre el iterador, debemos aclarar que éste se situará en la columna no nula más cercana a la pedida, que el método \textsc{proximo\_columna} situará al iterador sobre la columna no nula más próxima (en relación a la que se usó para inicializar el iterador originalmente) de la siguiente fila, o continuará si esta es vacía, y \textsc{proximo\_fila} situará al iterador sobre el próximo elemento no nulo en la misma fila.}.
+\vspace{1em}
+
+Entre ambas podremos iterar por los elementos no nulos de cada fila en $\Theta(1)$ ---ya que estarán en orden sucesivo en el vector interno--- y será eficiente en espacio\footnote{En relación a nuestras expectativas sobre la ralidad de PageRank.}. Como contrapartida, no será eficiente en la inserción: en el peor caso requerirá mover todos los elementos en una fila (por un costo en $\Theta(m)$). 
+
+%Sin embargo, esta estructura demostró el mejor funcionamiento entre las diversas que se probaron.
+
+
+
+
+
+\vspace{3em}
+\subsubsection{Construir(g, p)} Dada nuestra representación de matríz, el siguiente paso será construir, a partir de un conjunto de páginas web $g$ y un valor $p$, la matríz $\mathbf{I} - p\mathbf{W}\mathbf{D}$. Para ello, vamos a adoptar una repesentación particular de $g$:
+
+\begin{equation}
+    g \in G_n := \left\{
+        \begin{array}{lcc}    
+            \text{\#páginas}: n, \\
+            \text{relaciones}: vector< \text{eje} := \left\{
+                                                        \begin{array}{lcc}    
+                                                            \text{i, j}: \mathbb{N}
+                                                        \end{array}   
+                                                    \right. >
+        \end{array}
+    \right.\
+\end{equation}
+\vspace{1em}
+
+\noindent donde cada eje representa un hipervínculo de la página $j$ a la página $i$ y se satisface que $0 \leq i,\ j < n$. 
+\vspace{1em}
+
+\noindent Proponemos el siguiente algoritmo:
+\vspace{1em}
+
+\lstinputlisting[language=pseudo, caption={Pseudocódigo para $construir$.}, label=construir]{files/src/code/construir.pseudo}
+\vspace{1em}
+
+Notamos que la matríz $\mathbf{D}$ es diagonal y, por ende, la multiplicación a derecha con $\mathbf{W}$ equivaldrá a escalar los elementos de cada columna $W_j$ por $d_{jj}$. En el caso de los elementos nulos, la operación será invariante ---algo que también sucederá con la multiplación escalar por $-p$---.
+\vspace{1em}
+
+\pagebreak
+\noindent Tenemos entonces:
+\vspace{1em}
+
+\lstinputlisting[language=pseudo, caption={Pseudocódigo para $identidad$.}, label=identidad]{files/src/code/identidad.pseudo}
+\vspace{1em}
+
+\lstinputlisting[language=pseudo, caption={Pseudocódigo para $ponderar$.}, label=ponderar]{files/src/code/ponderar.pseudo}
+\vspace{1em}
+
+De ambos algoritmos podemos notar que la complejidad de \textsc{construir} estará en $\Theta(n + r \cdot c)$ donde $r$ representa la cantidad total de relaciones y $c$ es el costo de \textsc{set}. Para nuestra representación, esto equivaldrá a $\Theta(n + r \cdot n)$ y, como $r \leq n^2$, tendremos un peor caso en $\Theta(n^3)$. Sin embargo, si $r << n^2$, se puede esperar un comportamiento mejor que el método `directo' (cuyo costo fijo es $\Theta(n^3)$ por el producto de matrices).     
+
+    
+\vspace{3em}
+\subsubsection{Eliminación gaussiana} El siguiente paso será triangular $(\mathbf{I} - p\mathbf{W}\mathbf{D} \ |\ e)$ para obtener un sistema fácil de resolver. Proponemos una versión optimizada de la eliminación gaussiana ---para nuestro uso--- que se vale de las siguientes observaciones: 
+
+\vspace{1em}
+\begin{itemize}
+    \item Dada una matríz $\mathbf{A}$ que permite la eg., el paso i-ésimo del algoritmo, que modifica la fila $j$ ($j > i$), es necesario sólo si $a_{ji} \neq 0$, ya que sino la operación $A_j \leftarrow A_j - \frac{a_{ji}}{a_{ii}}\cdot A_i$ es invariante. 
+    \item Similarmente, $A_j \leftarrow A_j - \frac{a_{ji}}{a_{ii}}\cdot A_i$, requiere operar sólo sobre los elementos no nulos de $A_i$.
+\end{itemize}
+\vspace{1em}
+
+\lstinputlisting[language=pseudo, caption={Pseudocódigo para $eliminacion\_gaussiana$.}, label=eg]{files/src/code/eg.pseudo}
+\vspace{1em}
+
+\lstinputlisting[language=pseudo, caption={Pseudocódigo para $sumar\_fila$.}, label=sumar_fila]{files/src/code/sumar_fila.pseudo}
+\vspace{1em}
+
+Para no complicar el análisis, podemos estimar que el algoritmo costará $O(n^2 \cdot k^2)$ en el caso promedio. El $n^2$ corresponde a la iteración de cada fila $j$ sobre cada fila $i$, dado $0 \leq i < j < n$, y $k$ corresponde a la cantidad de elementos no nulos en la matríz\footnote{Se estima $k^2$ por \textsc{sumar\_fila}, que itera sobre los elementos no nulos de una fila e incluye una operación de \textsc{set}.}. Dado $k \leq n$, el costo de peor caso será $O(n^4)$. Sin embargo, mientras $k < \sqrt{n}$ este método funcionará mejor que la forma tradicional de la eliminación (cuyo costo teórico es $\Theta(n^3)$).     
+
+
+
+
+
+\vspace{2em}
+\subsubsection{Sustitución inversa} Al igual que en la eliminación gaussiana, aprovecharemos el hecho que $A_j \leftarrow A_j - \frac{a_{ji}}{a_{ii}}\cdot A_i$ requiere operar sólo sobre los elementos no nulos de $A_i$, para lograr un algorítmo en $\Theta(n \cdot k)$, con $k$ la cantidad de elementos no nulos de la matríz:
+\vspace{1em}
+
+\pagebreak
+\lstinputlisting[language=pseudo, caption={Pseudocódigo para $sustitucion\_inversa$.}, label=sinversa]{files/src/code/sinversa.pseudo}
+\vspace{1em}
+
+\noindent Nuevamente, el peor caso se dará cuando $k = n$. 
+
+
+
+\vspace{2em}
+\subsubsection{normalizar} Por último, presentaremos un algóritmo estándar para normalizar un vector de tamaño n en $\Theta(n)$:
+\vspace{1em}
+
+\lstinputlisting[language=pseudo, caption={Pseudocódigo para $normalizar$.}, label=normalizar]{files/src/code/normalizar.pseudo}
+
+
+\vspace{3em}
+\subsection{Análisis cuantitativo} Se procederá a evaluar una implementación de PageRank en C++ acorde a los algoritmos propuestos. Se realizarán los siguientes experimentos: 
+\vspace{1em}
+
+\begin{enumerate}
+    \item Se medirá el tiempo de ejecución y el error relativo: $|Ax' - x'|$ %donde $x'$ es el resultado de PageRank sin normalizar, 
+    a través del resultado promedio de cien experimentos sobre una web de mil páginas en la que se variará la cantidad de links entre $0$ (sin links) y $1000^2 - 1000$ (toda página conecta con toda otra) ---Los mismos se seleccionarán de manera aleatoria en cada experimento--- y el valor p también será aleatorio.
+    \item Se evaluará el error absoluto y relativo de los resultados de PageRank respecto a los tests provistos por la cátedra.
+\end{enumerate}
+\vspace{1em}
+

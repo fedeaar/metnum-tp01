@@ -1,0 +1,13 @@
+proc normalizar(inout x: vector<n>) {
+    s := 0
+    i := 0
+    while i < largo(x) {
+        s += x[i]
+        i := i + 1
+    }
+    i := 0
+    while i < largo(x) {
+        x[i] = x[i] / s
+        i := i + 1
+    }
+}

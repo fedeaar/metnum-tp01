@@ -257,7 +257,6 @@ R::const_iterator matriz<R>::begin(size_t i, size_t j) const {
 
 template<class R>
 ostream &matriz<R>::print(ostream &os) const {
-    os << '\n';
     for (size_t i = 0; i < n(); ++i) {
         for (size_t j = 0; j < m(); ++j) {
             os << at(i, j) << (j == m() - 1 ? "\n" : ", ");
