@@ -4,32 +4,25 @@ import base
 IO = base.IO
 print('\n')
 def todosConTodos(t):
-    pathIn, pathOut = base.createInOut("todos_con_todos")
+    pathIn, pathOut, pathRes = base.createInOut("todos_con_todos")
     typeIn = ".txt"
     typeOut = ".out"
 
-    p = 1
+    p = 1 - 1e-4
+    resultFile = open(pathRes + "res.txt", "w")
     result = []
-    for i in range(1, t):
-        experiment = "nodos_"+ str(i)
+    for i in range(1, t+1):
+        experiment = "t_"+ str(i)
 
-        # creo IpWD
-        unos = np.full((i, i), 1)
-        I = np.eye(i)
-        W = unos - I
-        IpWD = base.W_to_IpWD(W, i, p)
+        W = np.ones((i,i)) - np.eye(i)
 
-        IO.run(IpWD, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
+        IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
-        esperado = solucion[0]
-        result.append(esperado)
-        # compruebo que todos los elementos son iguales
-        for x in solucion:
-            if(abs(esperado-x) > base.EPSILON) :
-                print("NO ES EL RESULTADO ESPERADO")
-    
-    print(result)
-    return result
+        resultFile.write(str(solucion[0]) + '\n')
+        result.append(solucion[0])
+
+    resultFile.close()
+    base.plot(1, t+1, result)
 
 todosConTodos(100)

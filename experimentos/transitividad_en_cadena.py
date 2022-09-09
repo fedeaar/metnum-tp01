@@ -1,17 +1,20 @@
 import numpy as np
 import base
+import matplotlib.pyplot as plt
+
 
 IO = base.IO
 print('\n')
 def transitividad_en_cadena(n):
-    pathIn, pathOut = base.createInOut("transitividad_en_cadena")
+    pathIn, pathOut, pathRes = base.createInOut("transitividad_en_cadena")
     typeIn = ".txt"
     typeOut = ".out"
 
-    p = 1
+    p = 1 - 1e-4
+    resultFile = open(pathRes + "res.txt", "w")
     result = []
     for i in range(n):
-        experiment = "nodos_"+ str(i)
+        experiment = "t_"+ str(i)
 
         # creo IpWD
         W = np.full((2*n, 2*n), 0)
@@ -20,14 +23,14 @@ def transitividad_en_cadena(n):
         for j in range(n, 2*n):
             W[0][j] = 1
 
-        IpWD = base.W_to_IpWD(W, 2*n, p)
 
-        IO.run(IpWD, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
+        IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
         result.append(solucion[i])
+        resultFile.write(str(solucion[i]) + '\n')
     
-    print(result)
-    return result
+    resultFile.close()
+    base.plot(0, n, result)
 
 transitividad_en_cadena(100)

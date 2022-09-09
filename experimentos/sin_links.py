@@ -3,32 +3,27 @@ import base
 
 IO = base.IO
 print('\n')
-def todosConTodos(t):
-    pathIn, pathOut = base.createInOut("sin_links")
+def sin_links(t):
+    pathIn, pathOut, pathRes = base.createInOut("sin_links")
     typeIn = ".txt"
     typeOut = ".out"
 
-    p = 1
+    resultFile = open(pathRes + "res.txt", "w")
     result = []
-    for i in range(1, t):
-        experiment = "nodos_"+ str(i)
+    p = 1 - 1e-4
+    for i in range(1, t+1):
+        experiment = "t_"+ str(i)
 
         # creo IpWD
-        W = np.full((i, i), 0)
-        IpWD = base.W_to_IpWD(W, i, p)
+        W = np.zeros((i, i))
 
-        IO.run(IpWD, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
+        IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
-        esperado = solucion[0]
-        result.append(esperado)
+        result.append(solucion[0])
+        resultFile.write(str(solucion[0]) + '\n')
 
-        # compruebo que todos los resultados son iguales
-        for x in solucion:
-            if(abs(esperado-x) > base.EPSILON) :
-                print("NO ES EL RESULTADO ESPERADO")
+    resultFile.close()
+    base.plot(1, t+1, result)
     
-    print(result)
-    return result
-    
-todosConTodos(100)
+sin_links(100)

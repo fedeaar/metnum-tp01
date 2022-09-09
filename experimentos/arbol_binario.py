@@ -1,31 +1,32 @@
-from unittest import result
 import numpy as np
 import base
 
 IO = base.IO
 print('\n')
 def arbol_binario(pisos):
-    pathIn, pathOut = base.createInOut("arbol_binario")
+    pathIn, pathOut, pathRes = base.createInOut("arbol_binario")
     typeIn = ".txt"
     typeOut = ".out"
 
     n = 2**pisos-1
-    p = 1
+    p = 1 - 1e-4
     result = []
-    experiment = "nodos"
+    resultFile = open(pathRes + "res.txt", "w")
+    experiment = "t"
 
     # creo IpWD
-    W = np.full((n, n), 0)
+    W = np.zeros((n, n))
     for j in range(1, n):
         W[(j+1)//2-1][j] = 1
 
-    IpWD = base.W_to_IpWD(W, n, p)
 
-    IO.run(IpWD, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
+    IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
     p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
     for j in range(pisos):
         result.append(solucion[(1 << j)-1])
-    print(result)
-    return result
+        resultFile.write(str(solucion[(1 << j)-1]) + '\n')
 
-arbol_binario(13)
+    resultFile.close()
+    base.plot(0, pisos, result)
+
+arbol_binario(6)
