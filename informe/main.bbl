@@ -10,6 +10,11 @@ Kurt Bryan and Tanya Leise.
 \newblock The \$25,000,000,000 eigenvector: The linear algebra behind google.
 \newblock {\em T SIAM review, 48 (3):569–581}, 2006.
 
+\bibitem{Langville04}
+Amy~N Langville and Carl~D Meyer.
+\newblock Deeper inside pagerank.
+\newblock {\em Internet Mathematics, 1(3):335–380}, 2004.
+
 \bibitem{Kamvar03}
 Sepandar D Kamvar; Taher H Haveliwala; Christopher~D Manning and Gene~H Golub.
 \newblock Extrapolation methods for accelerating pagerank computations.

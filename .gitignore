@@ -1,14 +1,12 @@
-.idea
-.vscode
-venv
+**/.idea
+**/.vscode
+**/venv
+**/__pycache__
+**/build
+**/cmake-build-debug
 
-experimentos/build
-experimentos/__pycache__
-experimentos/pagerank_scripts/__pycache__
-
-implementacion/build
-implementacion/.idea
-implementacion/cmake-build-debug
+**/in/
+**/out/
 
 informe/*.aux
 informe/*.fdb_latexmk
@@ -17,8 +15,7 @@ informe/*.log
 informe/*.out
 informe/*.synctex.gz
 informe/*.toc
+informe/*.blg
+informe/*.bbl
 
 *.exe
-informe/main.bbl
-*.blg
-*.bbl
