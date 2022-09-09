@@ -1,12 +1,13 @@
+import pagerank_scripts.IO as IO
+import pagerank_scripts.utils as utils
+
 import numpy as np
-import base
 import matplotlib.pyplot as plt
 
 
-IO = base.IO
 print('\n')
 def transitividad_en_cadena(n):
-    pathIn, pathOut, pathRes = base.createInOut("transitividad_en_cadena")
+    pathIn, pathOut, pathRes = IO.createInOut("transitividad_en_cadena")
     typeIn = ".txt"
     typeOut = ".out"
 
@@ -23,14 +24,15 @@ def transitividad_en_cadena(n):
         for j in range(n, 2*n):
             W[0][j] = 1
 
+        IO.createFileIn(pathIn + experiment + typeIn, W)
+        IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
 
-        IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
         result.append(solucion[i])
         resultFile.write(str(solucion[i]) + '\n')
     
     resultFile.close()
-    base.plot(0, n, result)
+    utils.plot(0, n, result)
 
 transitividad_en_cadena(100)

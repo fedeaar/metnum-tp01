@@ -1,11 +1,12 @@
+import pagerank_scripts.IO as IO
+import pagerank_scripts.utils as utils
+
 from turtle import circle
 import numpy as np
-import base
 
-IO = base.IO
 print('\n')
 def circular(n):
-    pathIn, pathOut, pathRes = base.createInOut("circular")
+    pathIn, pathOut, pathRes = IO.createInOut("circular")
     typeIn = ".txt"
     typeOut = ".out"
 
@@ -21,7 +22,9 @@ def circular(n):
             W[j][(j+1)%i] = 1
 
 
-        IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
+        IO.createFileIn(pathIn + experiment + typeIn, W)
+        IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
+        
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
         resultFile.write(str(solucion[0]) + '\n')
@@ -29,6 +32,6 @@ def circular(n):
 
     
     resultFile.close()
-    base.plot(1, n+1, result)
+    utils.plot(1, n+1, result)
 
 circular(100)

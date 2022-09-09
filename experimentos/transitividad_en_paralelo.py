@@ -1,10 +1,12 @@
-import numpy as np
-import base
+import pagerank_scripts.IO as IO
+import pagerank_scripts.utils as utils
 
-IO = base.IO
+import numpy as np
+
+
 print('\n')
 def transitividad_en_paralelo(n):
-    pathIn, pathOut, pathRes = base.createInOut("transitividad_en_paralelo")
+    pathIn, pathOut, pathRes = IO.createInOut("transitividad_en_paralelo")
     typeIn = ".txt"
     typeOut = ".out"
 
@@ -20,7 +22,9 @@ def transitividad_en_paralelo(n):
         for j in range(2, i):
             W[0][j] = 1
 
-        IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
+        IO.createFileIn(pathIn + experiment + typeIn, W)
+        IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
+
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
         thisRes = solucion[1] - solucion[0]
         print(solucion[0], solucion[1])
@@ -28,7 +32,7 @@ def transitividad_en_paralelo(n):
         resultFile.write(str(thisRes) + '\n')
 
     resultFile.close()
-    base.plot(2, n+2, result)
+    utils.plot(2, n+2, result)
     
 
 transitividad_en_paralelo(100)

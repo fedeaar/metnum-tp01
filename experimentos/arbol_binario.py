@@ -1,10 +1,12 @@
-import numpy as np
-import base
+import pagerank_scripts.IO as IO
+import pagerank_scripts.utils as utils
 
-IO = base.IO
+import numpy as np
+
+
 print('\n')
 def arbol_binario(pisos):
-    pathIn, pathOut, pathRes = base.createInOut("arbol_binario")
+    pathIn, pathOut, pathRes = IO.createInOut("arbol_binario")
     typeIn = ".txt"
     typeOut = ".out"
 
@@ -19,14 +21,16 @@ def arbol_binario(pisos):
     for j in range(1, n):
         W[(j+1)//2-1][j] = 1
 
+    IO.createFileIn(pathIn + experiment + typeIn, W)
+    IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
 
-    IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
     p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
+    
     for j in range(pisos):
         result.append(solucion[(1 << j)-1])
         resultFile.write(str(solucion[(1 << j)-1]) + '\n')
 
     resultFile.close()
-    base.plot(0, pisos, result)
+    utils.plot(0, pisos, result)
 
 arbol_binario(6)
