@@ -53,6 +53,10 @@ def norma_inf(x):
     return np.linalg.norm(x, np.inf)
 
 
+def norma_uno(x):
+    return np.linalg.norm(x, 1)
+
+
 def solve(A, b):
     x = np.linalg.solve(A, b)
     

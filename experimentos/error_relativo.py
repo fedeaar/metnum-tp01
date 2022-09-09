@@ -101,15 +101,15 @@ def correr_pagerank():
 
 def medir_errores():
 
-    for x in range(XLIM):
+    for _p in range(XLIM):
         for c in range(CASOS):
 
-            p, x    = IO.readFileOut(FMT_O.format(x=x, caso=c))
+            p, x    = IO.readFileOut(FMT_O.format(x=_p, caso=c))
             n, l, W = IO.readFileIn(FMT_I.format(caso=c))
             
             A = utils.W_to_A(W, p)
             Ax = A @ x.T
-            error = utils.norma_inf(Ax - x) # tomamos el error máximo
+            error = utils.norma_uno(Ax - x) # tomamos el error máximo
     
             with open(RESULTADOS, 'a', encoding="utf-8") as file:
                 file.write(FMT_COLS.format(p, error, c))
@@ -128,9 +128,9 @@ def graficar(df):
 
 if __name__ == "__main__":
 
-    crear_csv()
-    crear_casos()
-    correr_pagerank()
+    # crear_csv()
+    # crear_casos()
+    # correr_pagerank()
     medir_errores()
 
     res = pd.read_csv(RESULTADOS)
