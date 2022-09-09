@@ -1,0 +1,15 @@
+ESTRUCTURA - UNO A TODOS -
+
+EXPLICACIÓN
+Para esta estructura, una única página, que será referenciada como 'uno', tendrá enlaces salientes hacia todas las demás. Además, cualquier otro tipo de relación será nula. Los enlaces de 'uno' serán únicamente salientes, por lo que no recibirá ningún enlace más que el suyo propio.
+
+GRÁFICO
+Ver uno_a_todos.png
+
+HIPÓTESIS
+Como suposición para esta estructura tenemos la idea de que se comportará de la siguiente forma:
+1. La 'uno' tendrá un ranking significativamente menor que todas las demás páginas, disminuyendo a medida que aumenta el número de páginas. Estimamos que el decrecimiento adopte una curva similar al 1/n.
+2. Las demás páginas tendrán progresivamente un ranking mayor, aunque el crecimiento será de manera mucho más pausada. Para gran cantidad de páginas esperamos un crecimiento casi nulo. Estimamos que el crecimiento adopte una curva logarítmica.
+
+
+RESULTADOS
