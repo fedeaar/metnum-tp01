@@ -193,7 +193,10 @@ matriz<R> matriz<R>::gauss_elim() const {
 
 template<class R>
 matriz<R> matriz<R>::gauss_elim(vector<double> &b) const {
-    /** pre: A_ii != 0 para i: 0 ... N. hasta el final de la eliminación y b.size() == N. */
+    matriz res {*this};
+    res._rep.gauss_elim(b);
+    return res;
+    /** pre: A_ii != 0 para i: 0 ... N. hasta el final de la eliminación y b.size() == N. *//*
     matriz res {*this};
     for (size_t i = 0; i < n() - 1; ++i) {
         for (auto jt = res.begin(i + 1, i); jt.in_range(); jt.next(false)) {
@@ -209,7 +212,7 @@ matriz<R> matriz<R>::gauss_elim(vector<double> &b) const {
             }
         }
     }
-    return res;
+    return res;*/
 }
 
 

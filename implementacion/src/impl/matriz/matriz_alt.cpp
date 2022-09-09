@@ -7,8 +7,8 @@
 
 size_t alt::search(size_t row, size_t col) const {
     assert(0 <= row && row < _n && 0 <= col && col < _m);
-    if(_last[row].from <= col && col <= _last[row].to)   return _last[row].pos;
-    if(_last[row].to+1 <= col && col <= _last[row].next) return _last[row].pos + 1;
+    //if(_last[row].from <= col && col <= _last[row].to)   return _last[row].pos;
+    //if(_last[row].to+1 <= col && col <= _last[row].next) return _last[row].pos + 1;
     size_t i = 0, j = _mat[row].size();
     while(i < j) {
         size_t k = (i+j)/2;
@@ -58,7 +58,7 @@ double alt::at(size_t row, size_t col) const {
    assert(0 <= row && row < _n && 0 <= col && col < _m);
    if(!_mat[row].size()) return {};
    size_t pos = search(row, col);
-   updateLast(row, pos);
+   //updateLast(row, pos);
    if(pos < _mat[row].size() && _mat[row][pos].col == col)
        return _mat[row][pos].val;
    else
@@ -72,12 +72,10 @@ void alt::set(size_t row, size_t col, double val) {
    if(pos < _mat[row].size() && _mat[row][pos].col == col)
        _mat[row][pos].val = val;
    else if(std::abs(val) >= EPSILON) {
-       elem* newVal = new elem;
-       newVal->col = col;
-       newVal->val = val;
-       _mat[row].insert(_mat[row].begin() + pos, *newVal);
+       elem newVal = {col, val};
+       _mat[row].insert(_mat[row].begin() + pos, newVal);
    }
-   updateLast(row, pos);
+   //updateLast(row, pos);
 }
 
 
@@ -152,4 +150,45 @@ alt::iterator::iterator(alt &p, size_t row, size_t col): const_iterator(p, row, 
 
 void alt::iterator::set(double elem) {
     _p.set(row(), col(), elem);
+}
+
+
+void alt::gauss_elim(vector<double> &b) {
+    /** pre: A_ii != 0 para i: 0 ... N y b.size() == N. */
+    assert(b.size() ==_n);
+    auto A = &(_mat);
+    for (size_t i = 0; i < _n - 1; i++) {
+        double mii = (*A)[i][0].val;
+        for (size_t j = i + 1; j < _n; j++) {
+            auto col_i = &((*A)[j][0]);
+            if(col_i->col != i) continue;
+            double mij = col_i->val / mii;
+            size_t pos = 1;
+            vector<elem> newRow = {};
+            for (size_t k = 1; k < (*A)[i].size(); k++) {
+                while(pos < (*A)[j].size() && (*A)[j][pos].col < (*A)[i][k].col) {
+                    if(abs((*A)[j][pos].val) > 1e-5) newRow.push_back((*A)[j][pos]);
+                    pos++;
+                }
+
+                // m[j][pos].col >= m[k].col
+                alt::elem x;
+                if(pos < (*A)[j].size() && (*A)[j][pos].col == (*A)[i][k].col) {
+                    x.val = (*A)[j][pos].val;
+                    pos++;
+                }
+                x.val -= mij * (*A)[i][k].val;
+                x.col = (*A)[i][k].col;
+                if(abs(x.val) > 1e-5) newRow.push_back(x);
+            }
+
+            for(size_t k = pos; k < (*A)[j].size(); ++k) {
+                if(abs((*A)[j][k].val) > 1e-5) newRow.push_back((*A)[j][k]);
+            }
+
+            (*A)[j] = newRow;
+
+            b[j] = b[j] - mij * b[i];
+        }
+    }
 }

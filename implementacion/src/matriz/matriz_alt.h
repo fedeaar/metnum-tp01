@@ -41,6 +41,8 @@ public:
 
     iterator begin(size_t i, size_t j);
     const_iterator begin(size_t i, size_t j) const;
+
+    void gauss_elim(vector<double> &b);
 };
 
 
