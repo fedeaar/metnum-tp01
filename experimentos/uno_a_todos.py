@@ -1,13 +1,11 @@
-import pagerank_scripts.IO as IO
-import pagerank_scripts.utils as utils
-
 import numpy as np
+import base
 
-
+IO = base.IO
 print('\n')
 
-def todos_a_uno(n, p = 1 - 1e-4):
-    pathIn, pathOut, pathRes = IO.createInOut("todos_a_uno")
+def uno_a_todos(n, p = 1 - 1e-4):
+    pathIn, pathOut, pathRes = base.createInOut("uno_a_todos")
     typeIn = ".txt"
     typeOut = ".out"
     resultFile = open(pathRes + "res.txt", "w")
@@ -17,10 +15,9 @@ def todos_a_uno(n, p = 1 - 1e-4):
 
         W = np.zeros((i,i))
         half = int(np.floor(i/2))
-        W[:,half] = W[:,half] + 1
+        W[half] = W[half] + 1
 
-        IO.createFileIn(pathIn + "todos_a_uno" + ".txt", W)
-        IO.run(pathIn + "todos_a_uno" + ".txt", p, out_dir=pathOut)
+        IO.run(W, p, filename= pathIn + experiment + typeIn, out_dir= pathOut, debug=False)
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
         resultFile.write(str(solucion[0]) + '\n')
@@ -29,4 +26,4 @@ def todos_a_uno(n, p = 1 - 1e-4):
     resultFile.close()
     base.plot(1, n + 1, result)
 
-todos_a_uno(100)
+uno_a_todos(100)
