@@ -6,7 +6,7 @@ import numpy as np
 
 print('\n')
 def uno_a_todos(n, p = 1 - 1e-4):
-    pathIn, pathOut, pathRes = base.createInOut("uno_a_todos")
+    pathIn, pathOut, pathRes = IO.createInOut("uno_a_todos")
     typeIn = ".txt"
     typeOut = ".out"
     resultFile = open(pathRes + "res.txt", "w")
@@ -14,9 +14,8 @@ def uno_a_todos(n, p = 1 - 1e-4):
     for i in range(1, n + 1):
         experiment = "t_"+ str(i)
 
-        W = np.zeros((i,i))
-        half = int(np.floor(i/2))
-        W[half] = W[half] + 1
+        W = np.zeros((n,n))
+        W[:,1:i] = 1
 
         IO.createFileIn(pathIn + experiment + typeIn, W)
         IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)

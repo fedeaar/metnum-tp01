@@ -14,19 +14,18 @@ def todos_a_uno(n, p = 1 - 1e-4):
     result = []
     for i in range(1, n + 1):
         experiment = "t_"+ str(i)
+ 
+        W = np.zeros((n,n))
+        W[1:i] = 1
 
-        W = np.zeros((i,i))
-        half = int(np.floor(i/2))
-        W[:,half] = W[:,half] + 1
-
-        IO.createFileIn(pathIn + "todos_a_uno" + ".txt", W)
-        IO.run(pathIn + "todos_a_uno" + ".txt", p, out_dir=pathOut)
+        IO.createFileIn(pathIn + experiment + typeIn, W)
+        IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
         resultFile.write(str(solucion[0]) + '\n')
         result.append(solucion[0])
 
     resultFile.close()
-    base.plot(1, n + 1, result)
+    utils.plot(1, n + 1, result)
 
 todos_a_uno(100)
