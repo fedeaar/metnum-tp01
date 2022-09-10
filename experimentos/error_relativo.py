@@ -5,7 +5,8 @@ import os
 import numpy as np
 import pandas as pd
 import seaborn as sns
-sns.set(rc={'figure.figsize':(14, 7)})
+import matplotlib.pyplot as plt
+sns.set(rc={'figure.figsize':(14, 7)}, font="Times New Roman")
 
 
 """
@@ -44,6 +45,7 @@ EXPERIMENTO = "error_relativo_x_p_val"
 DIR_IN, DIR_OUT, DIR = IO.createInOut(EXPERIMENTO)    
 RESULTADOS = f"{DIR}{EXPERIMENTO}.csv"
 SUMMARY    = f"{DIR}{EXPERIMENTO}_summary.csv"
+MINMAX     = f"{DIR}{EXPERIMENTO}_picos.csv"
 GRAFICO    = f"{DIR}{EXPERIMENTO}.png"
 
 # fmt
@@ -118,10 +120,25 @@ def medir_errores():
 def graficar(df):
 
     plot = sns.lineplot(data=df, x="p_val", y="error")
-    plot.set_xlabel("valor de 'p'", fontsize=16, labelpad=16)
-    plot.set_ylabel("error relativo |Ax - x|", fontsize=16, labelpad=16)    
+    plot.set_xlabel("VALOR DE P", fontsize=18, labelpad=12)
+    plot.set_ylabel("ERROR   RELATIVO", fontsize= 18, labelpad=20) 
+    plt.tick_params(axis='both', which='major', labelsize=16)
     fig  = plot.get_figure()
     fig.savefig(GRAFICO) 
+
+
+def minmax(df):
+
+    local = res.groupby("p_val").mean()
+    local['min'] =  local.error[(local.error.shift(1) > local.error) & (local.error.shift(-1) > local.error)]
+    local['max'] =  local.error[(local.error.shift(1) < local.error) & (local.error.shift(-1) < local.error)]
+    minmax = local.query("not min.isna() or not max.isna()", engine='python')
+    minmax['pico'] = minmax['min'].apply(lambda x: 'min' if not pd.isna(x) else 'max')
+    minmax[['error', 'pico']].rename(columns={"error":"error_avg"}).to_csv(MINMAX)
+
+
+def summary(df):
+    res["error"].describe().to_csv(SUMMARY)
 
 
 
@@ -131,9 +148,9 @@ if __name__ == "__main__":
     # crear_csv()
     # crear_casos()
     # correr_pagerank()
-    medir_errores()
+    # medir_errores()
 
     res = pd.read_csv(RESULTADOS)
-    res["error"].describe().to_csv(SUMMARY)
-    
-    graficar(res)
+    # graficar(res)
+    minmax(res)
+    # summary(res)

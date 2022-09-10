@@ -187,15 +187,92 @@ Para no complicar el análisis, podemos estimar que el algoritmo costará $O(n^2
 
 \lstinputlisting[language=pseudo, caption={Pseudocódigo para $normalizar$.}, label=normalizar]{files/src/code/normalizar.pseudo}
 
+\newpage
+\subsection{Análisis cuantitativo} Se procederá a evaluar una implementación de PageRank en C++ acorde a los algoritmos propuestos.
 
-\vspace{3em}
-\subsection{Análisis cuantitativo} Se procederá a evaluar una implementación de PageRank en C++ acorde a los algoritmos propuestos. Se realizarán los siguientes experimentos: 
+\vspace{2em}
+\subsubsection{Error relativo} Medimos el error $|\mathbf{A}x - x|_1$ en función del valor de $p$ para cien grafos generados aleatoriamente. En total, obtuvimos 10,000 mediciones\footnote{El script asociado se puede encontrar en $./experimentos/error\_relativo.py$}.  
+\vspace{1em}
+
+\noindent \textsc{Metodología}. Se calculó  $x = PageRank(g,\ p)$ y se midió el error relativo $|\mathbf{A}x - x|_1$ para cada uno de los grafos sobre cada valor de $p$ en en el intervalo $(0, 1)$ de a saltos de $0.01$.
+\vspace{1em}
+
+\noindent Cada caso, representable por una matriz de conectividad W $\in \{0,\ 1\}^{100 \times 100}$, se generó a través del siguiente procedimiento\footnote{Se utilizó un valor semilla para facilitar la reproducibilidad.}:
 \vspace{1em}
 
 \begin{enumerate}
-    \item Se medirá el tiempo de ejecución y el error relativo: $|Ax' - x'|$ %donde $x'$ es el resultado de PageRank sin normalizar, 
-    a través del resultado promedio de cien experimentos sobre una web de mil páginas en la que se variará la cantidad de links entre $0$ (sin links) y $1000^2 - 1000$ (toda página conecta con toda otra) ---Los mismos se seleccionarán de manera aleatoria en cada experimento--- y el valor p también será aleatorio.
-    \item Se evaluará el error absoluto y relativo de los resultados de PageRank respecto a los tests provistos por la cátedra.
+    \item Se eligió  la cantidad de ejes (e) del sistema de manera uniforme sobre el intervalo $[0,\ R \cdot T)$, donde $T = 100^2 - 100$ representa el máximo de ejes posibles en un grafo de cien nodos sin auto-direccionamiento y $R = 1/4$ es un valor arbitrario definido para imitar las carácteristicas de ralidad esperables en un conjunto de páginas web.
+    \item Se pobló una matriz $W_0 \in \{0,\ 1\}^{99 \times 100} = 0$ con unos en las primeras `e' posiciones y se utilizó el algoritmo de shuffle de numpy, sobre el rng \textsc{PCG64}, para generar una permutación aleatoria.
+    \item Se expandió la misma con ceros en la diagonal para lograr la matríz $W \in \{0, 1\}^{100 \times 100}$. 
 \end{enumerate}
 \vspace{1em}
 
+
+\noindent \textsc{Observaciones}. El experimento tiene como limitaciones principales el tamaño de la muestra (cien grafos distintos) y el método de generación de casos ---los mismos no provienen de muestras reales---, que incluye la elección arbitraria del valor $R$. Sin embargo, contempla con cierta granularidad todo el expectro de valores posibles para $p$, tal que permite conocer el error relativo de los resultados en función de su parámetro `libre'.
+\vspace{1em}
+
+
+\noindent \textsc{Resultados}. El cuadro 1. resume los resultados obtenidos. 
+\vspace{1.5em}
+
+\begin{center}
+    \begin{tabular}{ |l|c| } 
+     \hline
+    mediciones              & 10000         \\
+    error relativo promedio & 0.00084646    \\
+    desviación estándar     & 0.00063764    \\
+    mínimo                  & 1.7347e-16    \\
+    25\%                    & 0.00034960    \\
+    50\%                    & 0.00075431    \\
+    75\%                    & 0.00121044    \\
+    máximo                  & 0.00376671    \\
+    \hline
+    \end{tabular} \\
+    \bigskip
+    Cuadro 1. datos de resumen del experimento. 
+\end{center}
+\vspace{1em}
+
+Podemos observar que el error relativo fue en promedio menor a $1e-3$. De distribuirse uniformemente, esto nos permite suponer que el error relativo de cada puntaje debe estar en el orden de $1e-5$.
+\vspace{1em}
+
+La Figura \ref{img_error_relativo}. muestra la distribución de los resultados en función del parámetro $p$.
+
+\fig[]{files/src/media/error_relativo_x_p_val.png}{Error relativo promedio -en base a una norma L1- e intervalo de confianza del 95\% para una muestra aleatoria de cien grafos en función de $p$. }{img_error_relativo}
+\vspace{1em}
+
+Notar la progresiva disminución del error a medida que $p$ se aproxima a 1. Los máximos locales se encuentran en $p = 0.16$ y $p = 0.55$, y el mínimo local en $p = 0.26$. 
+
+
+
+\vspace{2em}
+\subsubsection{Error absoluto} Medimos el error $|x - \hat{x}|_1$ para los casos de test provistos por la cátedra\footnote{Los resultados coordenada a coordenada se pueden observar en $./experimentos/resultados/error\_tests$.}. 
+\vspace{1em}
+
+\noindent El Cuadro 2. resume los resultados.
+\vspace{1.5em}
+
+\begin{center}
+    \begin{tabular}{ |l|c| } 
+    \hline
+    test                         & error        \\
+    \hline
+    test\_15\_segundos           & 0.0291137    \\
+    test\_30\_segundos           & 0.0229572    \\
+    test\_aleatorio              & 6.176e-07    \\
+    test\_aleatorio\_desordenado & 6.176e-07    \\
+    test\_completo               & 0.0          \\
+    test\_sin\_links             & 0.0          \\
+    test\_trivial                & 0.0          \\
+    \hline
+    \end{tabular} \\
+    \bigskip
+    Cuadro 2. Error absoluto en base a la -norma L1- de los tests. 
+\end{center}
+\vspace{1em}
+
+Podemos observar que hay cierta correlación entre la cantidad de páginas y el error. Esto tiene sentido dado que la norma L1 es la suma del valor absoluto de las coordenadas. Mientras mayor sea la dimensión, mayor será la cantidad de errores a sumar.
+
+
+\vspace{2em}
+\subsection{Análisis cualitativo}

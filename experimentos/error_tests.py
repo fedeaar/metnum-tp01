@@ -52,16 +52,20 @@ def medir_errores():
         in_file = TESTS_DIR + test + ".txt"
         p, x   = IO.readFileOut(DIR_OUT + test + ".out")
         
-        # error relativo
+        # error absoluto
         _p, xe = IO.readFileOut(in_file + ".out")
         assert(p == _p)
-        error_rel = utils.norma_uno(x - xe) # tomamos el error máximo
-        
-        # error absoluto
+        error_abs = utils.norma_uno(x - xe) # tomamos el error máximo
+
+        with open(DIR + test + "_error_absoluto,txt", 'w', encoding="utf-8") as file:
+            for y in x - xe:
+                file.write(f"{y}\n")
+
+        # error relativo
         _, _, W = IO.readFileIn(in_file)
         A = utils.W_to_A(W, p)
         Ax = A @ x.T
-        error_abs = utils.norma_uno(Ax - x) # tomamos el error máximo
+        error_rel = utils.norma_uno(Ax - x) # tomamos el error máximo
         
         with open(RESULTADOS, 'a', encoding="utf-8") as file:
             file.write(FMT_COLS.format(test, error_abs, error_rel))
@@ -70,6 +74,6 @@ def medir_errores():
 
 
 if __name__ == "__main__":
-    # crear_csv()
-    # correr_pagerank()
+    crear_csv()
+    correr_pagerank()
     medir_errores()
