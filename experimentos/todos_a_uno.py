@@ -14,9 +14,9 @@ def todos_a_uno(n, p = 1 - 1e-4):
     result = []
     for i in range(1, n + 1):
         experiment = "t_"+ str(i)
-
-        W = np.zeros((i,i))
-        W[0] = W[0] + 1
+ 
+        W = np.zeros((n,n))
+        W[1:i] = 1
 
         IO.createFileIn(pathIn + experiment + typeIn, W)
         IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
