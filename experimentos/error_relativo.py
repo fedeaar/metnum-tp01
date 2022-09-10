@@ -150,7 +150,7 @@ if __name__ == "__main__":
     # correr_pagerank()
     # medir_errores()
 
-    res = pd.read_csv(RESULTADOS)
+    # res = pd.read_csv(RESULTADOS)
     # graficar(res)
-    minmax(res)
+    # minmax(res)
     # summary(res)

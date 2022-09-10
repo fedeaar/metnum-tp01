@@ -7,7 +7,7 @@
 \noindent \textsc{Dominio}: \textsc{1.} un conjunto de páginas web interconectadas a través de hipervínculos. Podemos considerar este conjunto como un grafo direccionado, donde los nodos son los sitios y los ejes, los links. \textsc{2.} un parámetro de entrada $p \in (0,\ 1)$, que representa la probabilidad que un usuario decida navegar aleatoriamente a otra página en el grafo. Se puede interpretar como el parámetro de un variable aleatoria de Bernoulli. 
 
 \vspace{1em}
-\noindent \textsc{Imágen}: un vector $x \in [0,\ 1]^{n}$, donde $x_i$ representa el Ranking de Page para la i-ésima página del conjunto de entrada, donde $x$ satisface que $\ x_i \geq 0\ \forall i:0\ ...\ n\ $ y $\ \sum_{i=1}^{n}{x_i} = 1$.
+\noindent \textsc{Imágen}: un vector $x \in [0,\ 1]^{n}$, donde $x_i$ representa el Ranking de Page para la i-ésima página del conjunto de entrada y $x$ satisface que $\ x_i \geq 0\ \forall i:0\ ...\ n\ $ y $\ \sum_{i=1}^{n}{x_i} = 1$.
 
 \vspace{1em}
 \noindent Tenemos entonces:
@@ -51,10 +51,11 @@
 Notemos que $Pr(j \longrightarrow i)$ se puede interpretar de la siguente manera: un navegante situado en la página $j$ decidirá con probabilidad $p$ acceder a uno de los links del sitio y con probabilidad $1 - p$ saltar a otra página del conjunto. En ambos casos, deberá luego decidir uniformemente sobre el total disponible, y terminará eligiendo a $i$ con una probabilidad de $\frac{I_{ij}}{c_j}$ ó $\frac{1}{n}$, respectivamente, acorde a la primer decisión. Si no hay links en la página, siempre saltará de manera uniforme a otra página del conjunto, y eligirá a $i$ con probabilidad $\frac{1}{n}$. 
 
 \vspace{1em}
-$x_i$, por su parte, también recibe una interpretación particular: es la probabilidad que para algún momento $k > K$, el navegante se encuentre situado en la página $i$. Para un $K$ lo suficientemente grande, esta probabilidad es única \cite{Kamvar03}. Notar que esto es equivalente a decir que  $x_i$ representa la fracción de tiempo, al largo plazo, que un navegante permanecerá en la página $i$.
+$x_i$, por su parte, también recibe una interpretación particular: es la probabilidad que para algún momento $k > K$, el navegante se encuentre situado en la página $i$ \cite{Kamvar03}. %Para un $K$ lo suficientemente grande, esta probabilidad es única. 
+Notar que esto es equivalente a decir que  $x_i$ representa la fracción de tiempo, al largo plazo, que un navegante permanecerá en la página $i$.
 
 \vspace{1em}
-A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El mismo asume lo siguiente: Dado un link de la página $j$ a la página $i$, la página $j$ le conferirá importancia a la página $i$ de manera proporcional a la relevancia de $j$ e inversamente proporcional al número de páginas a las que apunta $j$ \cite{Kamvar03}. Esto se puede ver en que $x_i$ es la suma de toda otra importancia $x_j$ ponderada por $Pr(j \longrightarrow i)$, que incluye en su definición una división sobre la cantidad de links salientes $c_j$. 
+\noindent A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. %El mismo asume lo siguiente: Dado un link de la página $j$ a la página $i$, la página $j$ le conferirá importancia a la página $i$ de manera proporcional a la relevancia de $j$ e inversamente proporcional al número de páginas a las que apunta $j$ \cite{Kamvar03}. Esto se puede ver en que $x_i$ es la suma de toda otra importancia $x_j$ ponderada por $Pr(j \longrightarrow i)$, que incluye en su definición una división sobre la cantidad de links salientes $c_j$. 
 
 
 
@@ -74,7 +75,7 @@ A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El m
 \end{equation}
 
 \vspace{1em}
-\noindent donde, $\forall i,\ j:\ 1\ ...\ n$, se satisface que:
+\noindent donde $\textbf{A} \in [0,\ 1]^{n \times n}\ $ y $\ \forall i,\ j:\ 1\ ...\ n$ se satisface que:
 
 \begin{align*}
     e_i     &=  1
@@ -108,7 +109,7 @@ A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El m
 \noindent La notación $j \stackrel{l}{\longrightarrow} i$ representa que existe un link de la página $j$ a la página $i$, y las filas y columnas de $\textbf{W}$, denominada \textit{matriz de conectividad}, representan ---indexadas por posición--- las páginas de una web $g \in G_n$.
 \vspace{1em}
 
-\noindent A partir de la ecuación (\ref{E.1}) podemos ver que:
+\noindent A partir de la Ecuación \ref{E.1} podemos ver que:
 
 \begin{align*}
     \textbf{A}x &= x \\
@@ -121,7 +122,8 @@ A este modelo se lo conoce como el \textit{modelo del navegante aleatorio}. El m
 \noindent donde $\gamma = z^tx$ es un escalar.
 \vspace{1em}
 
-Dado que nuestro resultado deberá ser normalizado para cumplir con los requerimientos de la imágen (con la intuición que, si cada $x_i$ representa una probabilidad disjunta, entonces las suma de las $x_i$ deberá ser igual a uno, ya que su unión representa la probabilidad del espacio entero), podemos asumir un $\gamma$ conveniente \cite{Langville04}, $\gamma = 1$, tal que el sistema a resolver sea:
+Dado que nuestro resultado deberá ser normalizado para cumplir con los requerimientos de la imágen, %(con la intuición que, si cada $x_i$ representa una probabilidad disjunta, entonces las suma de las $x_i$ deberá ser igual a uno, ya que su unión representa la probabilidad del espacio entero), 
+podemos asumir un $\gamma$ conveniente \cite{Langville04}, $\gamma = 1$, tal que el sistema a resolver sea:
 \vspace{1em}
 
 \begin{equation}\label{E.2}
@@ -129,4 +131,4 @@ Dado que nuestro resultado deberá ser normalizado para cumplir con los requerim
 \end{equation}
 \vspace{1em}
 
-Notar que La matriz $\textbf{I} - p\textbf{W}\textbf{D}$  permite la aplicación de la eliminación gaussiana sin permutación \footnote{Una demostración de este enunciado se encuentra en \ref{A.2}.}.
+Notar que La matriz $\textbf{I} - p\textbf{W}\textbf{D}$ es `diagonal dominante' en columnas, por lo que permite la aplicación de la eliminación gaussiana sin permutación \footnote{Una demostración de este enunciado se encuentra en \ref{A.2}.}.
