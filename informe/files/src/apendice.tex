@@ -192,7 +192,7 @@ Es decir, para todo paso $k$ de la eliminación gaussiana se satisface que el va
 Dado que todo elemento de cada columna $j$ de $\mathbf{W}\mathbf{D}$ está normalizado por $1/c_j$, tal que su suma da uno, entonces la suma de la columna $(-p\mathbf{W}\mathbf{D})_{j} = -p$, con $0 < p < 1$.
 
 \vspace{1em}
-Observamos también que la diagonal es nula para esta matríz, tal que su suma por $\mathbf{I}$ da $(\mathbf{I} - p\mathbf{W}\mathbf{D})_{jj} = 1$. Este tipo de matríz se conoce como estocástica por columna y su transpuesta es diagonal dominante. 
+Observamos también que la diagonal es nula para esta matríz, tal que su suma por $\mathbf{I}$ da $(\mathbf{I} - p\mathbf{W}\mathbf{D})_{jj} = 1$. Este tipo de matríz se conoce como estocástica en columnas y su transpuesta es diagonal dominante. 
 
 \vspace{1em}
 \noindent En consecuencia, es inmediato que $\ |b^{1}_{jj}| = |b_{jj}| = 1\ >\ \sum_{i = k,\ i \neq j}^{n} |b^{1}_{ij}| = |-p|\ \forall j \in \mathbb{N}: 1 \leq j \leq n$. 
@@ -294,11 +294,11 @@ Observamos también que la diagonal es nula para esta matríz, tal que su suma p
 \noindent Demostramos ahora por absurdo que $b^{k}_{kk} \neq 0\ \ \forall k \in \mathbb{N}: 1 \leq k \leq n\ $.
 
 \vspace{1em}
-\noindent Supongamos que $b^{k}_{kk} = 0$. Entonces:
+\noindent Supongamos que existe algún $k$ tal que $b^{k}_{kk} = 0$. Entonces:
 
 %\vspace{1em}
 \begin{equation*}
-    |b^{k}_{kk}| \ =\ 0\ >\ \sum_{i = k,\ i \neq k}^{n} |b^{k}_{ij}| \qquad \forall k,\ j \in \mathbb{N}: 1 \leq k \leq j \leq n
+    |b^{k}_{kk}| \ =\ 0\ >\ \sum_{i = k,\ i \neq k}^{n} |b^{k}_{ij}| \qquad \forall j \in \mathbb{N}: 1 \leq k \leq j \leq n
 \end{equation*}
 
 \vspace{1em}
@@ -319,4 +319,32 @@ Observamos también que la diagonal es nula para esta matríz, tal que su suma p
 
 \newpage
 % === estructuras alternativas === %
-\subsection{C: Estructuras alternativas}\label{A.3}
+\subsection{C: Evaluación de estructuras}\label{A.3}
+
+A la hora de decidir cómo representar las matrices se evaluaron las siguientes alternativas:
+
+\vspace{1em}
+\begin{itemize}
+    \item Como estructura `base', utilizar un vector de $n$ vectores de tamaño fijo $n$. \textsc{Ventajas}: se puede acceder y modificar los elementos en $\Theta(1)$. \textsc{Desventajas}: requiere iterar sobre todos los elementos de la matríz, es ineficiente en espacio y ---para matrices muy grandes--- probablemente requiera más accesos a disco.\\
+    \item Una estructura `alt' con un vector de $n$ vectores de tamaño variable donde en cada lugar se guarda la tupla $<posicion, elemento>$. \textsc{Ventajas}: es más eficiente en espacio, permite iterar sobre los elementos no nulos de cada fila y acceder a estas en $\Theta(1)$. \textsc{Desventajas} El acceso a cada columna ---con búsqueda binaria--- tiene un peor caso en $\Theta(log(n))$ y la inserción tiene un peor caso en $\Theta(n)$.\\
+    \item La misma estructura pero con listas enlazadas. \textsc{Ventajas}: permite la inserción en $\Theta(1)$ e iterar sobre los elementos no nulos de cada fila con la misma complejidad. \textsc{Desventajas} el acceso es en $\Theta(n)$ y no mantiene memoria contigua, por lo que hay mayor probabilidad de cache-miss.\\
+    \item Una `matriz enlazada' donde cada nodo apunta al próximo elemento no nulo de la misma fila y columna. \textsc{Ventajas}: permite iterar sobre los elementos no nulos de cada fila y columna en $\Theta(1)$. \textsc{Desventajas}: las mismas que la lista enlazada.\\
+    \item Utilizar alguna estructura de diccionario como $<map>$. Las ventajas y desventajas son similares a la de la estructura alternativa si se mantienen las claves en orden y se pueda iterar sobre ellas en $\Theta(1)$.   
+\end{itemize}
+
+\vspace{1em}
+Todas estas posibilidades motivaron la elaboración de un código genérico que permitiera el intercambio de las representaciones. La clase $matriz<R>$ definida en $./implementacion/$ provee una interfáz de matríz completa junto a la implementación de muchos de sus métodos. 
+
+Una representación $R$ deberá definir sólo aquellas operaciones que conciernen el acceso a datos. Para lograr esta modularización se tomaron dos decisiones importantes:
+
+\vspace{1em}
+\begin{itemize}
+    \item Se optó por la transparencia referencial de todas las operaciones. Para las representaciones contempladas, generar una nueva instancia es más rápido que modificar la estructura actual.
+    \item Todos los algoritmos están implementados para evitar las operaciones redundantes. Par ello, se optó por que cada representación implemente iteradores específicos.
+\end{itemize}
+
+\vspace{1em}
+Estas decisiones tienen una clara desventaja: el código provisto por $matriz<r>$ podría ser optimizado para cada representación subyacente. Sin embargo, se priorizó la facilidad de la experimentación sobre la optimalidad del código.
+
+\vspace{1em}
+Siguiendo esta metodología, se implementaron dos de las alternativas propuestas: `base' y `alt'.
