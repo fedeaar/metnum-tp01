@@ -212,15 +212,19 @@ Podemos ver que la influencia de la página `importante' es fuerte al principio,
 
 \vspace{2em}
 \subsubsection{Escenario 6: Referencias Valiosas} Cómo varía el peso de una página a medida que cambia la importancia de las páginas que la referencian.
+\vspace{1em}
+
+Nuestra hipótesis es que inicialmente el peso del nodo `1' va a ser mayor que el del nodo `0', basándonos en que `0' no tiene páginas que la referencien y `1' tiene una referencia por ende va a ser mayor. Pero a medida que más y más nodos apunten a `0' el peso de éste va a superar al del nodo `1'. Sosteniéndonos en los resultados que obtuvimos a partir de ``Transitividad en Cadena" donde se observa que la importancia de un nodo se transmite a los nodos que apunta, consideramos que el peso de ambos va a ser creciente.
 
 \vspace{1em}
 \noindent \textsc{Metodología}. La manera en la que planteamos esta experimentación fue, generar 100 instancias de 102 nodos cada uno. Inicialmente el nodo `0' apunta al nodo `1' y todos los demás nodos permanecían aislados. En cada iteración del test se seleccionó uno de los nodos aislados y se agregó una referencia de este último al nodo `0', siguiendo esta dinámica hasta que no haya mas nodos aislados.
+En cada una de estas iteraciones almacenamos por un lado el peso de `0' y por otro el peso de `1'.
 
 \vspace{1em}
-\noindent \textsc{Resultados}. Los resultados cambiaron nuestra percepción de PageRank ya que nuestra hipótesis era que inicialmente el peso del nodo `1' iba a ser mayor que el del nodo `0', basándonos en que `0' no tenía páginas que la referencien y `1' tenía 1 referencia por ende iba a ser mayor. Pero a medida que más y más nodos apunten a `0' el peso de éste iba a superar al del nodo `1'. Sí consideramos que ambos iban a ir creciendo sosteniéndonos en los resultados que obtuvimos a partir de "Transitividad en Cadena" donde se observa que la importancia de un nodo se transmite a los nodos que apunta.
+\noindent \textsc{Resultados}. 
 
 \vspace{1em}
-El resultado que obtuvimos cumplía parcialmente con lo esperado, ya que inicialmente si se cumplió que el nodo `1' era mayor que `0' y que ambos pesos crecen a medida que `0' toma relevancia. Este comportamiento queda claramente plasmado en el gráfico donde se puede apreciar que el peso de ambos es creciente. 
+El resultado que obtuvimos cumplía parcialmente con lo esperado pero cambio nuestra percepción de PageRank, ya que inicialmente si se cumplió que el nodo `1' era mayor que `0' y que ambos pesos crecen a medida que `0' toma relevancia. Este comportamiento queda claramente plasmado en el gráfico donde se puede apreciar que el peso de ambos es creciente. 
 Por otro lado, lo que no se cumplió y nos tomó por sorpresa, fue que el peso de `0' nunca superó al peso de `1', como se observa en el gráfico la curva que representa a `1' siempre esta por encima de la curva que representa el peso de `0'.
 
 \vspace{1em}
@@ -229,10 +233,14 @@ Concluimos entonces que tener referencias valiosas es esencial para aumentar el 
 
 
 \vspace{2em}
-\subsubsection{Escenario 7: Referenciador Importante} A.
+\subsubsection{Escenario 7: Referenciador Importante} Cómo varía el peso de un nodo importante a medida que referencia a más nodos. 
 
 \vspace{1em}
-\noindent \textsc{Metodología}.  
+\noindent \textsc{Metodología}. Planteamos un test donde había 20 nodos. Inicialmente todos los nodos apuntan a `0' y en cada iteración se agrega un vínculo de `0' a alguno de los nodos. 
+En cada una de estas iteraciones almacenamos el peso de `0'.
 
 \vspace{1em}
-\noindent \textsc{Resultados}.
+\noindent \textsc{Resultados}. El resultado no fue el esperado, ya que como se ve en el gráfico la curva de color xxx, el peso de `0' de no referenciar a nadie a referenciar a un nodo baja pero luego se mantiene constante, como si el impacto que genera en el peso de un nodo particular referenciar a una cantidad arbitraria de nodos fuera comparable con referenciar a un único nodo. 
+
+Pensamos que quizás en un ambiente más `real' con relaciones aleatorias entre los demás nodos del sistema podría alterar nuestros resultados, por ello reestructuramos el test para que además de las relaciones previamente mencionadas los nodos [1 a 20] estén conectados entre sí de manera aleatoria. Para obtener resultados significativos que no esten `contaminados' por la aleatoreidad corrimos el test 10 veces, sumamos el resultado de cada una de las iteraciones y calculamos su promedio.
+El resultado obtenido fue similar al resultado previo por ende deducimos que no referenciar a ningún nodo es la estrategia óptima y que a partir de referenciar a uno o más nodos en un ambiente aleatorio genera, en promedio, el mismo impacto en el peso de la la página que referencia.

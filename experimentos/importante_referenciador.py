@@ -1,4 +1,3 @@
-from imghdr import tests
 import pagerank_scripts.IO as IO
 import pagerank_scripts.utils as utils
 
@@ -14,7 +13,7 @@ def importante_referenciador(n, p = 1 - 1e-4):
     result = [0] * (n-1)
 
 
-    tests = int(20)
+    tests = int(10)
     for t in range(tests) :
         for i in range(1, n):
             experiment = "t_"+ str(i)
@@ -50,4 +49,4 @@ def importante_referenciador(n, p = 1 - 1e-4):
     resultFile.close()
     utils.plot(1, n, result)
 
-importante_referenciador(10)
+importante_referenciador(20)
