@@ -140,32 +140,45 @@ Esto tiene sentido ya que si todos los nodos se apuntan entre sí, el sistema es
 
 
 
-\vspace{2em}
-\subsubsection{Escenario 3: Todos con Uno} Todas las páginas en la web tendrán un enlace dirigido hacia una única otra página.
+\subsubsection{Escenario 3: Todos con uno} Para esta estructura, tal y como su nombre indica, todas las páginas tendrán un enlace con una única página. Para referir a esta página apuntada, se la referirá durante esta subsección como \textit{'uno'}. Además, cualquier otro tipo de relación será nula. Los enlaces que unen al 'uno' serán únicamente enlaces de 'ida', por lo que, si bien el \textit{'uno'} recibirá n enlaces, este no tendrá ninguno señalando a otro.
 
 \vspace{1em}
-\fig[]{files/src/media/conceptuales/todos_a_uno_3.png}{Una web dónde todas lás páginas apuntan a una sola.}{todos_a_una}{0.25}
+\fig[]{files/src/media/conceptuales/todos_con_todos.png}{Una web centralizada, donde todos señalan a la misma página.}{todos_con_todos}{0.26}
 
 \vspace{1em}
-\noindent \textsc{Metodología}. 
+\noindent \textsc{Metodología}. Para analizar esta situación, se generaron cien casos distintos donde se varió la cantidad de enlaces que conectaban con el \textit{'uno'}. De esta forma, veremos la evolución de una web a medida que el \textit{'uno'} va recibiendo todos los enlaces.
 
 \vspace{1em}
-\noindent \textsc{Resultados}.
-
-
-
-
-\vspace{2em}
-\subsubsection{Escenario 4: Uno con Todos} Una única página con enlaces salientes hacia todas las demás.
+\noindent \textsc{Hipótesis}. Como suposición para esta estructura tenemos la idea de que se comportará de la siguiente forma:
+\begin{itemize}
+\item La \textit{'uno'} tendrá un ranking muy cercano a 1, que aumentará de tamaño de manera proporcional a la cantidad de páginas existentes. Estimamos que el crecimiento adopte una curva similar a una logarítmica.
+\item Las demás páginas tendrán un ranking muy cercano a 0, que disminuirá de manera según el número de páginas existentes. Estimamos que el decrecimiento adopte una curva similar a una '\(\frac{1}{n}\)'.
+\end{itemize}
 
 \vspace{1em}
-\fig[]{files/src/media/conceptuales/uno_a_todos_3.png}{Una web dónde una única página apunta a todo el resto.}{una_a_todos}{0.25}
+\noindent \textsc{Resultados}. Observamos que los resultados obtenidos distan un poco de los especulados\footnote{Se puede ver el resultado de los experimentos en $./experimentos/resultados/todos\_con\_todos$.}, ya que, si bien el decrecimiento del resto de páginas fue de la forma que se suponía, el comportamiento del \textit{'uno'} no se comportó de manera logarítmica, sino que parece tener una forma algo distinta. Conversando sobre esta curva concluímos en que simila a alguna variante de $\sqrt{n}$.
+Si bien este podría ser uno de los comportamientos esperados, no es por el que nos habíamos inclinado en primer lugar, por lo que llamó nuestra atención.
+\vspace{1em}
+\noindent Pudimos notar la misma clase de relación con otras estructuras simétricas. Por ejemplo, en estructuras de referencias circulares a la hora de hablar de las demás páginas.\footnote{Ver $./experimentos/resultados/circular$}.
+
+\subsubsection{Escenario 4: Uno con todos} Para esta estructura, veremos el caso inverso de la estructura anterior. En esta ocasión, una única página, que será referenciada como \textit{'uno'}, tendrá enlaces salientes hacia todas las demás. Además, cualquier otro tipo de relación será nula. Los enlaces de \textit{'uno'} serán únicamente salientes, por lo que no recibirá ningún enlace.
 
 \vspace{1em}
-\noindent \textsc{Metodología}.  
+\fig[]{files/src/media/conceptuales/todos_con_todos.png}{Una web muy simétrica, donde todos, excepto \textit{'uno'} poseen el ranking máximo.}{todos_con_todos}{0.26}
 
 \vspace{1em}
-\noindent \textsc{Resultados}.
+\noindent \textsc{Metodología}. Para analizar esta situación, se generaron cien casos distintos donde se varió la cantidad de enlaces que salían del \textit{'uno'}. De esta forma, veremos la evolución de una web a medida que el \textit{'uno'} va conectando con las demás páginas. Para evaluar los resultados de la evolución, graficamos las variaciones de 3 páginas. La \textit{'uno'}, la primer página con la que conecta y la última con la que lo hace. Así, podremos ver la evolución desde ambas perspectivas.
+
+\vspace{1em}
+\noindent \textsc{Hipótesis}. Como suposición para esta estructura tenemos la idea de que se comportará de la siguiente forma:
+\begin{itemize}
+\item La \textit{'uno'} tendrá un ranking significativamente menor que todas las demás páginas, disminuyendo a medida que aumenta el número de páginas. Estimamos que el decrecimiento adopte una curva similar al \(\frac{1}{n}\).
+\item Las demás páginas irán disminuyendo su ranking hasta cierto punto, donde alcanzarán un máximo, cuando \textit{'uno'} las conecte. Luego, seguirán disminuyendo su ranking hasta que todas posean el mismo, excepto \textit{'uno'}.
+\end{itemize}
+
+\vspace{1em}
+\noindent \textsc{Resultados}. Observamos que los resultados difieren en gran manera de lo especulado para lo que es el \textit{'uno'}\footnote{Se puede ver el resultado de los experimentos en $./experimentos/resultados/todos\_con\_todos$.}, la disminución de su ranking fue abrupta ni bien se conecta el primer enlace.
+Por otro lado, las suposiciones hechas para los demás son tal cual se esperaban.
 
 
 
