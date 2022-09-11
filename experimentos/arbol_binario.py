@@ -33,4 +33,4 @@ def arbol_binario(pisos):
     resultFile.close()
     utils.plot(0, pisos, result)
 
-arbol_binario(6)
+arbol_binario(13)
