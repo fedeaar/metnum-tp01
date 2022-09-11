@@ -18,11 +18,11 @@ def transitividad_en_cadena(n):
         experiment = "t_"+ str(i)
 
         # creo IpWD
-        W = np.full((2*n, 2*n), 0)
-        for j in range(i):
-            W[j+1][j] = 1
+        W = np.zeros((2*n, 2*n))
         for j in range(n, 2*n):
             W[0][j] = 1
+        for j in range(i):
+            W[j+1][j] = 1
 
         IO.createFileIn(pathIn + experiment + typeIn, W)
         IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)

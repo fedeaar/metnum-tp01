@@ -29,14 +29,14 @@ Como se ve en el gráfico el peso de cada uno de los nodos en cada escenario era
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 - Escenario 2: "Simetría"
-Otro escenario trivial que nos permitiría obtener una imagen mas completa de como funcion PageRank era que todas las paginas tengan links a todas las demás. 
+Otro escenario trivial que nos permitiría obtener una imagen más completa de como función PageRank era que todas las paginas tengan links a todas las demás. 
 
 Para analizar este escenario, generamos 100 casos distintos de i nodos cada uno.
-En el primero habia un solo nodo aislado ya que los autolinks no estan permitidos, luego 2 nodos que se apuntaban entre si y asi hasta 100.
+En el primero había un solo nodo aislado ya que los autolinks no están permitidos, luego 2 nodos que se apuntaban entre sí y así hasta 100.
 
 Observamos que el peso de todos los nodos en cada caso particular eran iguales pero que iba decrementando a medida que aumentaba la cantidad de nodos, luego de observar el resultado notamos que para cada N era igual al resultado del "Sin Links".
 
-Esto tiene sentido ya que si todos los nodos se apuntan entre si y tenemos un sistema totalmente simétrico sería ilógico que algunos de estos nodos tengan mas importancia que otros.
+Esto tiene sentido ya que si todos los nodos se apuntan entre sí y tenemos un sistema totalmente simétrico sería ilógico que algunos de estos nodos tengan mas importancia que otros.
 
 El mismo resultado obtuvimos en otras estructuras similares donde se cumple la simetría. 
 Como por ejemplo una estructura circular donde 1 apunta a 2 y 2 a 3... n-1 a n y n a 1, se repitió el resultado.
@@ -53,19 +53,18 @@ Como por ejemplo una estructura circular donde 1 apunta a 2 y 2 a 3... n-1 a n y
 ------------------------------------------------------------------------------------------------------------------------------------------
 - Escenario 5: "Transitividad en Cadena"
 
-Una vez que ya experimentamos con varios escenarios sencillos decidimos que para profundizar en el descubrimiento de las propiedades de PageRank, era interesante ver a partir de un nodo A "importante", apuntando a otro B "aislado" como afectaba el peso de B pero a su vez ese B apuntando a otro nodo C "aislado" como afectaba el peso de C, cada test con la misma cantidad de nodos ya que como vimos en el "Sin Links" cambiar la cantidad de paginas afecta el peso de todos los nodos.
+Una vez que ya experimentamos con varios escenarios sencillos decidimos que para profundizar en el descubrimiento de las propiedades de PageRank, era interesante ver a partir de un nodo A "importante", apuntando a otro B "aislado" como afectaba el peso de B pero a su vez ese B apuntando a otro nodo C "aislado" como afectaba el peso de C, cada test con la misma cantidad de nodos ya que como vimos en el "Sin Links" cambiar la cantidad de páginas afecta el peso de todos los nodos.
 
 Para analizar este escenario, generamos 100 casos de 200 nodos c/u. En todos ellos del nodo 100 al nodo 199 todos apuntan al nodo 0 y no son referenciados por nadie. 
 
-En el caso1 el nodo 0 apunta al nodo 1, caso2 (0 a 1, 1 a 2), ... , casoN (0 a 1, 1 a 2, ... , n-1 a n) y en cada caso almacenamos el peso del ultimo nodo apuntado por la cadena.
+En el caso1 el nodo 0 apunta al nodo 1, caso2 (0 a 1, 1 a 2), ... , casoN (0 a 1, 1 a 2, ... , n-1 a n) y en cada caso almacenamos el peso del último nodo apuntado por la cadena.
 La idea de este escenario es ver como se va diluyendo el peso que se transmite a través de la cadena.
 
 -----------------
 ***insertar figura explicativa***
 =-----------------
 
-
-El resultado del 
+Como se ve en el gráfico el peso del último nodo de la cadena se hace más chico a medida que la cadena se hace más larga y cada vez se acerca más a 1/n o sea que la influencia del nodo importante al principio es fuerte pero rápidamente se diluye a través de la cadena, lo cual es un comportamiento deseado ya que si una página importante apunta a otra es necesario que esta otra tome peso pero si a su vez la pagina referenciada apunta a otra el peso que toma la última deberia ir decayendo, como muestra el gráfico.
 
 
 -----------------
@@ -75,6 +74,57 @@ El resultado del
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+- Escenario 6: "Referencias Valiosas"
+
+Otro escenario que nos parecio que podría clarificar nuestro entendimiento de PageRank era plantear el escenario que llamamos "Referencias Valiosas"
+
+En este test hay un invariante que es que siempre existe una pagina 0 que apunta a una pagina 1 y la idea es ver como varía el peso de la pagina 1 a medida que mas y mas paginas referencian a la página 0 y esta va tomando importancia.
+
+Para analizar este escenario planteamos un N = 102 constante(por el resultado de "Sin Links") donde hay inicialmente 100 nodos aislados y el nodo 0 apuntando al 1. 
+En cada iteración (i: 2 a 102) del nodo 2 al nodo i apuntan a 0 y los valores que obtenemos de cada test son el peso del nodo 0 y del nodo 1. 
+
+-----------------
+***insertar figura explicativa***
+=-----------------
+
+
+LLamamos A al nodo referenciador y B al referenciado:
+Este fue un escenario revelador ya que el resultado no cumplió en absoluto con lo esperado intuitivamente. 
+Nuestra Hipótesis era que inicialmente el peso de B iba a ser mayor que el de A, ya que A no tenia páginas que la referencien y B tenia 1 referencia por ende iba a ser mayor, pero a medida que más y más nodos iban referenciando a A el peso de A iba a superar al de B pero ambos iban a ir creciendo por el resultado que obtuvimos en "Transitividad en Cadena" donde se ve que un Nodo importante hace que sus referencias sean importantes.
+
+El resultado que obtuvimos cumplía parcialmente con lo esperado, ya que inicialmente si se cumplió que el nodo B era mayor que A y que ambos pesos crecen a medida de que mas nodos apuntan a A como se ve en el gráfico el peso de A y B ambos son crecientes. 
+Pero lo que no se cumplió y nos sorprendió fue que el peso de A nunca supera al peso de B, como se observa en el gráfico la curva que representa a B siempre esta por encima de la curva que representa el peso de A.
+
+-----------------
+***insertar grafico***
+=-----------------
+=-----------------------------------------------------------------------------------------------------------------------------------------
+
+
 
 ------------------------------------------------------------------------------------------------------------------------------------------
+- Escenario 7: "Importante Referenciador"
 
+Este es un escenario se basa en que hay un Nodo importante y queríamos ver como alteraba su peso a medida que referenciaba a más y más nodos. 
+
+Para ello Inicialmente planteamos un test donde había nodos de 1 a n apuntando a "0" y "0" en cada iteración apuntaba a todos los nodos menores a i con i iterando de [1 a n) sin ninguna otra relación en el sistema. 
+En cada una de estas iteraciones almacenamos como variaba el peso del nodo 0.
+
+-----------------
+***insertar figura explicativa***
+=-----------------
+
+El resultado no fue el esperado, ya que como se ve en el gráfico la curva de color rojo, el peso de "0" de no referenciar a nadie a referenciar a 1 nodo baja pero luego se mantiene constante, como si referenciar a n nodos fuera lo mismo que referenciar a 1 solo nodo.
+
+Pensamos que quizas en un ambiente mas "real" con relaciones aleatorias entre los demás nodos del sistema podría cambiar por ello reestructuramos el test para que además de las relaciones previamente mencionadas los nodos de 1 a n estaban conectados entre sí de manera aleatoria. Para obtener resultados significativos que no esten "contaminados" por la aleatoreidad corrimos el test 20 veces y el resultado de cada una de las iteraciones calculamos su promedio.
+Como se observa en el gráfico el resultado obtenido asemeja al resultado previo por ende deducimos que referenciar a 0 nodos es la estrategia óptima y que a partir de referenciar a 1 o más nodos en un ambiente aleatorio genera el mismo impacto en la página que referencia.
+
+-----------------
+***insertar grafico***
+=-----------------
+
+=-----------------------------------------------------------------------------------------------------------------------------------------
+
+
+otro experimento tener un sistema con 1 nodo importante, y otro nodo menos importante y asi
+y ver como cambia el peso de un noodo si apunta a alguien importante que si apunta a alguien menos importante
