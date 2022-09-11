@@ -18,7 +18,7 @@ def referencias_valiosas(n):
 
         # creo IpWD
         W = np.zeros((n+2, n+2))
-        W[0][1] = 1
+        W[1][0] = 1
         for j in range(2, i):
             W[0][j] = 1
 
@@ -26,7 +26,7 @@ def referencias_valiosas(n):
         IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
 
         p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
-        thisRes = solucion[0]
+        thisRes = solucion[1]
         result.append(thisRes)
         resultFile.write(str(thisRes) + '\n')
     resultFile.close()
