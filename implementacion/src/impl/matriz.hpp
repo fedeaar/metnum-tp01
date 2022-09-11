@@ -62,7 +62,6 @@ matriz<R> &matriz<R>::operator=(const matriz<S> &b) {
     assert(n() == b.n() && m() == b.m());
     if (this != &b) {
         clear();
-        // set
         for (auto it = b.begin(); it.in_range(); it.next()) {
             set(it.row(), it.col(), it.at());
         }
@@ -74,7 +73,6 @@ matriz<R> &matriz<R>::operator=(const matriz<S> &b) {
 template<class R>
 matriz<R> &matriz<R>::operator=(const initializer_list<initializer_list<double>> &b) {
     assert(n() == b.size());
-    // clear
     clear();
     size_t i = 0;
     for (auto it = b.begin(); it != b.end(); ++it, ++i) {
@@ -215,7 +213,7 @@ matriz<R> matriz<R>::gauss_elim(vector<double> &b) const {
 
 template<class R>
 vector<double> matriz<R>::solve(const vector<double> &b) const {
-    /** pre: pre: A_ii != 0 para i: 0 ... N despues de triangular y N == M y b.size() == N. */
+    /** pre: pre: A_ii != 0 para i: 0 ... N despues de triangular, A es cuadrada y b.size() == N. */
     assert(b.size() == n());
     vector<double> b_tri {b};
     matriz<R> m_tri = gauss_elim(b_tri);
@@ -269,6 +267,12 @@ ostream &operator<<(ostream &os, const matriz<R> &mat) {
     return mat.print(os);
 }
 
+
+
+
+//
+// OTROS
+//
 
 template<class R>
 void matriz<R>::clear() {

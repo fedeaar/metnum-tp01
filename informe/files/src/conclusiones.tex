@@ -1,19 +1,22 @@
 \vspace{1em}
 
-A simple vista, PageRank aparenta ser un modelo formal e ideal para categorizar a las páginas con un sustento matemático que la respalda, pero entrando en detalle se puede observar que es un modelo imperfecto.  
+A lo largo de este informe, se articularon una serie de aspectos formales que muestran la solidéz matemática del modelo y el algoritmo de $PageRank$. Se realizó una evaluación en profundidad de la implementación propuesta, y se desarrolló una experimentación respecto a las características cualitativas del mismo. 
+
+Si bien no se pudieron explorar todas las aristas que se hubieran deseado, pudimos formar una imágen amplia de sus cualidades y funcionamiento. 
+\vspace{1em}
+
+A simple vista, PageRank aparenta ser un modelo formal y muy bien desarrollado para categorizar las páginas con un sustento matemático que lo respalda, pero entrando en detalle se puede observar que es un modelo imperfecto. Puede parecer que la metodología que utiliza $PageRank$ imparte un ranking justo, pero hemos visto que, cualitativamente, distintos factores predominan a la hora de generar su jerarquía y en particular, ciertas páginas dominarán las relaciones del resto y podrán ejercer su influencia.  
 
 \vspace{1em}
 
-Si bien tiene varios aspectos positivos y deseados como lo demuestra "Sin links" donde un set de páginas aisladas reciben de manera uniforme el peso que determina la probabilidad de que el navegante aleatorio termine en su página, o la "Simetría" donde dos estructuras que estan formadas por links entrantes y salientes de igual importancia reciben la misma valoración en el ranking, o como es el caso de la "Transitividad en Cadena" donde se deja en claro como afecta el peso de un nodo importante apuntando a tu página de manera directa o indirecta. 
+Si bien hay varios aspectos positivos y deseados como lo demuestran los escenarios de $sin\_links$ ---donde un set de páginas aisladas reciben de manera uniforme su puntaje--- o de $Simetria$ ---donde dos estructuras que están formadas por links entrantes y salientes de igual importancia reciben la misma valoración---, también hay aspectos negativos que permiten manipular el sistema.
 
 \vspace{1em}
 
-El sistema es imperfecto ya que si se diera a conocer al mundo el modo en el que se pondera el peso de cada página, podría ser manipulado, ya sea generando páginas descartables con links a la propia o tener en claro que no poner vínculos a otra página es una buena estrategia para mantener el ranking lo más alto posible. Por ende el crecimiento de una página podría ser totalmente artificial, generando un efecto contraproducente, donde muchas páginas que no ofrecen un contenido valorable posean un ranking elevado, simplemente por conocer el mecanismo de crecimiento, además de causar una navegación en la red para el usuario inorgánica.
+A partir de los casos analizados, se vislumbran ciertas estrategías que permitirían influenciar el ranking: generar páginas descartables con links a la que querrámos inflar artificialmente, no poner vínculos a otras páginas para evitar elevar sus rankings, lograr que páginas importantes nos referencien... es decir: el crecimiento de una página podría ser inorgánico, generando un efecto contraproducente, donde muchas páginas que no ofrecen un contenido valorable posean un ranking elevado, simplemente por conocer el mecanismo de crecimiento.
 
 \vspace{1em}
-
-En conclusión PageRank es un modelo que tiene muchas cualidades positivas para determinar que página es mas relevante, pero también es sencillamente manipulable por lo que para una empresa que lidera el mercado de navegadores web claramente no sería conveniente para ellos implementarlo teniendo en cuenta que las personas con intenciones maliciosas podrían sacar provecho. Aunque es una idea que en la práctica, donde todavía el mundo de la web no estaba muy desarrollado tiene sentido que haya prosperado.
+Un último factor pendiente a mencionar es el del valor $p$. Como vimos, el mismo tiene una influencia notable en las cualidades del ranking. Tanto desde el aspecto del error numérico, como de su influencia en la elaboración de los puntajes. Pudimos notar que sirve como un factor atenuante de las ponderaciones y por ello tiene un rol crucial a la hora de lograr una jerarquía lo más justa posible.  
 
 \vspace{1em}
-
-Fue una idea revolucionaria el hecho de ordenar los resultados y evitarle a la gente filtrar entre mucho contenido poco confiable. Marco la industria y destaco a Google, pero con los avances de la tecnología el sistema quedó obsoleto para la navegación web aunque seguramente se pueda aplicar el modelo a otros ambientes con grafos direccionados.
+Consideramos que $PageRank$ fue una idea revolucionaria, marcó la industria e influenció la forma en que navegamos la web. Pero consideramos que el sistema quedó obsoleto para la internet actual, donde la cantidad de actores que obran para influenciar los resultados y la disparidad de cualquier ranking genérico con los intereses particulares de cada navegante, lo vuelven ---en nuestra opinión--- poco efectivo para jerarquizar los resultados en comparación a métodos más modernos. 

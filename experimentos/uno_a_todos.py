@@ -1,31 +1,76 @@
-import pagerank_scripts.IO as IO
-import pagerank_scripts.utils as utils
+import base.IO as IO
+import base.utils as utils
 
 import numpy as np
+import pandas as pd
 
 
-print('\n')
-def uno_a_todos(n, p = 1 - 1e-4):
-    pathIn, pathOut, pathRes = IO.createInOut("uno_a_todos")
-    typeIn = ".txt"
-    typeOut = ".out"
-    resultFile = open(pathRes + "res.txt", "w")
-    result = []
-    for i in range(1, n + 1):
-        experiment = "t_"+ str(i)
+"""
+descripcion:
+     cómo afecta al puntaje de un nodo particular la variación en la cantidad
+    de referencias que hace y qué sucede con el primer nodo al que apunta y el último.
+"""
 
-        W = np.zeros((i,i))
-        W[:,0] = W[:,0] + 1
+# IO
+EXPERIMENTO          = "uno_a_todos"
+DIR_IN, DIR_OUT, DIR = IO.createInOut(EXPERIMENTO)    
+RESULTADOS           = f"{DIR}{EXPERIMENTO}.csv"
+SUMMARY_UNO          = f"{DIR}{EXPERIMENTO}_summary_uno.csv"
+SUMMARY_TESTIGO1     = f"{DIR}{EXPERIMENTO}_summary_testigo1.csv"
+SUMMARY_TESTIGON     = f"{DIR}{EXPERIMENTO}_summary_testigoN.csv"
+GRAFICO              = f"{DIR}{EXPERIMENTO}.png"
 
-        IO.createFileIn(pathIn + experiment + typeIn, W)
-        IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
+# fmt
+COLS       = 'p_val,q_nodos,q_links,puntaje_uno,puntaje_testigo1,puntaje_testigoN'
+FMT_COLS   = "{0},{1},{2},{3},{4},{5}\n"
 
-        p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
+# variables
+N = 100   # cantidad total de nodos a alcanzar
+p = 0.85  # valor p
 
-        resultFile.write(str(solucion[0]) + '\n')
-        result.append(solucion[0])
 
-    resultFile.close()
-    utils.plot(1, n + 1, result)
+# metodos
+def correr_pagerank():
 
-uno_a_todos(100)
+    for i in range(1, N + 1):
+
+        W = np.zeros((N, N))
+        W[1:i, 0] = 1
+
+        caso = DIR_IN + "c"+ str(i) + ".txt"
+        IO.createFileIn(caso, W)
+        IO.run(caso, p, out_dir=DIR_OUT)
+
+
+def medir():
+
+    with open(RESULTADOS, "a", encoding="utf-8") as file:
+
+        for i in range(1, N+1):
+
+            caso = DIR_OUT + "c" + str(i) + ".out"
+            p, solucion = IO.readFileOut(filename=caso)
+
+            file.write(FMT_COLS.format(p, N, i, solucion[0], solucion[1], solucion[N-1])) 
+            
+ 
+
+
+if __name__ == "__main__":
+
+    IO.createCSV(RESULTADOS, COLS)
+    correr_pagerank()
+    medir()
+
+    res = pd.read_csv(RESULTADOS)
+    res.puntaje_uno.describe().to_csv(SUMMARY_UNO)
+    res.puntaje_testigo1.describe().to_csv(SUMMARY_TESTIGO1)
+    res.puntaje_testigoN.describe().to_csv(SUMMARY_TESTIGON)
+
+    utils.graficar(
+        x=res.q_links.to_list()*3, 
+        y=res.puntaje_uno.to_list() + res.puntaje_testigo1.to_list() + res.puntaje_testigoN.to_list(), 
+        hue=["caso 'uno'"]*N + ["caso testigo 1"]*N + ["caso testigo n"]*N, 
+        xaxis="CANTIDAD DE REFERENCIAS", 
+        yaxis="PUNTAJE", 
+        filename=GRAFICO)

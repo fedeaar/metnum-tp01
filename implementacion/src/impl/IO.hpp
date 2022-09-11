@@ -1,5 +1,5 @@
 //
-// IO
+// PAGERANK
 //
 
 template<class R>

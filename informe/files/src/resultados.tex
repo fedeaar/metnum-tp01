@@ -1,6 +1,6 @@
 \vspace{1em}
 
-\subsection{Análisis cuantitativo}\label{cuantitativo} Se procederá a evaluar una implementación de $PageRank$ en C++ acorde a los algoritmos propuestos.
+\subsection{Análisis cuantitativo}\label{cuantitativo} Procederemos a evaluar nuestra implementación de $PageRank$ en C++ acorde a los algoritmos propuestos.
 
 \vspace{2em}
 \subsubsection{Error relativo} Medimos el error $|\mathbf{A}x - x|_1$ en función del valor de $p$ para cien grafos generados aleatoriamente. En total, obtuvimos 10,000 mediciones\footnote{El script asociado se puede encontrar en $./experimentos/error\_relativo.py$}.  
@@ -50,7 +50,7 @@ Podemos observar que el error relativo fue en promedio menor a $1e-3$. De distri
 
 La Figura \ref{img_error_relativo}. muestra la distribución de los resultados en función del parámetro $p$.
 
-\fig[]{files/src/media/error_relativo_x_p_val.png}{Error relativo promedio -en base a una norma L1- e intervalo de confianza del 95\% para una muestra aleatoria de cien grafos en función de $p$. }{img_error_relativo}{}
+\fig[]{files/src/media/error_relativo.png}{Error relativo promedio -en base a una norma L1- e intervalo de confianza del 95\% para una muestra aleatoria de cien grafos en función de $p$. }{img_error_relativo}{}
 \vspace{1em}
 
 Notar la progresiva disminución del error a medida que $p$ se aproxima a 1. Los máximos locales se encuentran en $p = 0.16$ (0.00101828)  y $p = 0.55$ (0.00117609). El mínimo local en $p = 0.26$ (0.00056232)\footnote{El cálculo de los picos locales se puede encontrar en $./experimentos/resultados/error\_relativo$}. 
@@ -70,21 +70,21 @@ A modo de consideración para futuros análisis, podemos mencionar que nuestro m
 \vspace{1.5em}
 
 \begin{center}
-    \begin{tabular}{ |l|c| } 
+    \begin{tabular}{ |l|c|c| } 
     \hline
-    test                         & error        \\
+    test                         & $L_1$        & $L_\infty$ \\
     \hline
-    test\_15\_segundos           & 0.0291137    \\
-    test\_30\_segundos           & 0.0229572    \\
-    test\_aleatorio              & 6.176e-07    \\
-    test\_aleatorio\_desordenado & 6.176e-07    \\
-    test\_completo               & 0.0          \\
-    test\_sin\_links             & 0.0          \\
-    test\_trivial                & 0.0          \\
+    test\_15\_segundos           & 0.0291137    & 5.015e-05\\
+    test\_30\_segundos           & 0.0229572    & 4.841e-05\\
+    test\_aleatorio              & 6.176e-07    & 2.518e-07\\
+    test\_aleatorio\_desordenado & 6.176e-07    & 2.518e-07\\
+    test\_completo               & 0.0          & 0.0\\
+    test\_sin\_links             & 0.0          & 0.0\\
+    test\_trivial                & 0.0          & 0.0\\
     \hline
     \end{tabular} \\
     \bigskip
-    Cuadro 2. Error absoluto en base a la -norma L1- de los tests. 
+    Cuadro 2. Error absoluto en base a la norma $L_1$ y $L_\infty$ de los tests.
 \end{center}
 \vspace{1em}
 
@@ -118,7 +118,12 @@ Podemos observar que hay cierta correlación entre la cantidad de páginas y el 
 El puntaje obtenido para cada página fue de $\frac{1}{n}$. La figura \ref{resultado_sin_links}. grafica los resultados para un caso testigo. Esto se explica teóricamente: si no hay links en la web, entonces la matriz de conectividad $\mathbf{W}$ es nula y $\mathbf{I} - p\mathbf{W}\mathbf{D} = \mathbf{I}$. Como $\mathbf{I}x = 1 \implies x_i = 1$. Al normalizar nos queda que $x_i = \frac{1}{n}\ \forall i: 1\ ...\ n$. 
 
 \vspace{1em}
-El resultado es coherente con la interpretación intuitiva del ranking: si ninguna página redirige a ninguna otra, entonces un navegante solo podrá acceder a los sitios del conjunto de manera aleatoria. El modelo define esta probabilidad de manera uniforme sobre el total de las páginas. A mayor cantidad de páginas, menor la probabilidad que el navegante aleatorio termine en un sitio en particular.
+El resultado es coherente con la interpretación intuitiva del ranking: si ninguna página redirige a ninguna otra, entonces un navegante sólo podrá acceder a los sitios del conjunto de manera aleatoria. El modelo define esta probabilidad de manera uniforme sobre el total de las páginas. A mayor cantidad de páginas, menor la probabilidad que el navegante aleatorio termine en un sitio en particular.
+
+
+
+
+
 
 
 
@@ -130,41 +135,51 @@ El resultado es coherente con la interpretación intuitiva del ranking: si ningu
 \fig[]{files/src/media/conceptuales/todos_con_todos.png}{Una web simétrica dónde cada nodo apunta al resto.}{todos_con_todos}{0.26}
 
 \vspace{1em}
-\noindent \textsc{Metodología}. Para analizar esta situación, se generaron cien casos distintos donde se varió la cantidad de nodos (entre uno y cien) y se mantuvo la simetría de las relaciones. En el primero caso, se compuso una web con un único nodo. Luego, con dos nodos apuntándose mutuamente y así progresivamente hasta llegar a cien nodos donde cada uno apuntó al resto.
+\noindent \textsc{Metodología}. Para analizar esta situación, se generaron cien casos distintos donde se varió la cantidad de nodos (entre uno y cien) y se mantuvo la simetría de las relaciones. En el primero caso, se compuso una web con un único nodo. Luego, con dos nodos apuntándose mutuamente y así progresivamente hasta llegar a cien nodos donde cada uno apuntó al resto. Se utilizó un valor de $p$ de 0.85\footnote{Según \cite{Langville04} éste es el valor que utiliza Google.}.
 
 \vspace{1em}
-\noindent \textsc{Resultados}. Observamos que el puntaje de cada una de las páginas fue igual para cada caso particular\footnote{Se puede ver el resultado de los experimentos en $./experimentos/resultados/todos\_con\_todos$.} pero que este valor fue decrementando a medida que aumentó la cantidad de sitios. Luego de observar el resultado notamos que para cada $n$ el mismo fue equivalente al escenario "sin links".
+\noindent \textsc{Resultados}. Observamos que el puntaje de cada una de las páginas fue igual para cada caso particular\footnote{Se puede ver el resultado de los experimentos en $./experimentos/resultados/todos\_con\_todos$.} pero que este valor fue decrementando a medida que aumentó la cantidad de sitios. Luego de observar el resultado notamos que para cada $n$ el valor resultante fue exactamente el mismo que en caso "sin links".
 
 Esto tiene sentido ya que si todos los nodos se apuntan entre sí, el sistema es totalmente simétrico, y sería ilógico que alguno tenga más importancia que los demás. 
 
 \vspace{1em}
-\noindent Pudimos notar la misma clase de relación con otras estructuras simétricas. Por ejemplo, en estructuras de referencias circulares\footnote{Ver $./experimentos/resultados/circular$}.
+\noindent Pudimos notar la misma clase de relación, y los exactos mismos resultados, con otras estructuras simétricas. Por ejemplo, en estructuras de referencias circulares\footnote{Ver $./experimentos/resultados/circular$}.
 
 
-
-\vspace{2em}
-\subsubsection{Escenario 3: Todos con uno} Para esta estructura, tal y como su nombre indica, todas las páginas tendrán un enlace con una única página. Se la referirá durante esta subsección como \textit{'uno'}. Además, cualquier otro tipo de relación será nula. Los enlaces que unen al 'uno' serán únicamente enlaces de 'ida', por lo que, si bien el \textit{'uno'} recibirá $n$ enlaces, este no tendrá ninguno señalando a otro.
+\newpage
+\subsubsection{Escenario 3: Todos con uno} Para esta estructura, tal y como su nombre indica, se enlazó a todas las páginas en el conjunto con una única otra. Se referirá a ésta como la página \textit{'uno'}.
 
 \vspace{1em}
 \fig[]{files/src/media/conceptuales/todos_a_uno_3.png}{Una web centralizada, donde todos los nodos señalan a la misma página.}{todos_con_uno}{0.26}
 
 \vspace{1em}
-\noindent \textsc{Metodología}. Se generaron cien casos distintos donde se varió la cantidad de enlaces que conectan con el \textit{'uno'} y se midió su puntaje. Se controló la cantidad de nodos (cien) y se evitaron otros vínculos. De esta forma, veremos la evolución de una web a medida que el \textit{'uno'} va siendo referenciado.
+\noindent \textsc{Metodología}. Se generaron cien casos distintos donde se varió la cantidad de enlaces que conectan con el \textit{'uno'} y se midió su puntaje y el de un segundo nodo testigo. Se controló la cantidad de nodos (cien) y se evitaron otros vínculos. Se usó un valor de $p$ de 0.85.
 
 \vspace{1em}
 \noindent \textsc{Hipótesis}. Consideramos que el puntaje se comportará de la siguiente forma:
 \begin{itemize}
 \item El \textit{'uno'} tendrá un ranking muy cercano a 1, que aumentará de tamaño de manera proporcional a la cantidad de páginas existentes. Estimamos que el crecimiento adoptará una curva similar a una logarítmica.
-\item Las demás páginas tendrán un ranking muy cercano a 0, que disminuirá en relación al numero de enlaces existentes. Estimamos que el decrecimiento adoptará una curva similar a $\frac{1}{n}$.
+\item Las demás páginas tendrán un ranking muy cercano a 0, que disminuirá en relación al numero de enlaces existentes. %Estimamos que el decrecimiento adoptará una curva similar a $\frac{1}{n}$.
 \end{itemize}
 
 \vspace{1em}
-\noindent \textsc{Resultados}. Observamos que los resultados obtenidos distan un poco de los especulados\footnote{Se puede ver el resultado de los experimentos en $./experimentos/resultados/todos\_con\_uno$.}, ya que, si bien el decrecimiento del resto de las páginas fue de la forma descrita, el comportamiento del \textit{'uno'} no se comportó de manera logarítmica. Consideramos que es más parecida a alguna variante de $\sqrt{n}$. Esto nos llamó la atención.
+\fig[]{files/src/media/todos_a_uno.png}{El puntaje del nodo `uno' y de otro sitio testigo para el conjunto, en función de la cantidad de referencias que recibe `uno'.}{todos_a_uno}{}
+
+\vspace{1em}
+\noindent \textsc{Resultados}. Observamos que los resultados obtenidos distan un poco de los especulados\footnote{Se puede ver el resultado de los experimentos en $./experimentos/resultados/todos\_a\_uno$.}, ya que, si bien el decrecimiento del resto de las páginas fue de la forma descrita (es difícil observar en el gráfico), el comportamiento del \textit{`uno'} no se comportó de manera logarítmica. Consideramos que es más parecida a alguna variante de $\sqrt{n}$. Esto nos llamó la atención.
+
+
+
+
+
+
+
+
 
 
 
 \vspace{2em}
-\subsubsection{Escenario 4: Uno con todos} Para esta estructura, veremos el caso inverso de la estructura anterior. En esta ocasión, una única página, que será referenciada nuevamente como \textit{'uno'}, tendrá enlaces salientes hacia todas las demás. Además, cualquier otro tipo de relación será nula. Los enlaces de \textit{'uno'} serán únicamente salientes, por lo que no recibirá ningún enlace.
+\subsubsection{Escenario 4: Uno con todos} Para esta estructura, se propuso el caso inverso al anterior: una única página, que será referenciada nuevamente como \textit{'uno'}, tendráenlaces salientes hacia todas las demás. Además, cualquier otro tipo de relación será nula. Los enlaces de \textit{'uno'} serán únicamente salientes.
 
 \vspace{1em}
 \fig[]{files/src/media/conceptuales/uno_a_todos_3.png}{Una web muy simétrica, donde todos, excepto \textit{'uno'} poseen el ranking máximo.}{uno_con_todos}{0.26}
@@ -180,12 +195,16 @@ Esto tiene sentido ya que si todos los nodos se apuntan entre sí, el sistema es
 \end{itemize}
 
 \vspace{1em}
-\noindent \textsc{Resultados}. Observamos que los resultados difieren en gran forma de lo especulado para lo que es el \textit{'uno'}\footnote{Se puede ver el resultado de los experimentos en $./experimentos/resultados/uno\_con\_todos$.}, la disminución de su ranking fue abrupta ni bien se conectó el primer enlace. Por otro lado, las suposiciones hechas para los demás son tal cual se esperaban.
+\fig[]{files/src/media/uno_a_todos.png}{El puntaje del nodo `uno' y de dos otros sitios testigos para el conjunto, en función de la cantidad de referencias saliente de `uno'.}{uno_a_todos}{}
+
+\vspace{1em}
+\noindent \textsc{Resultados}. Observamos que los resultados difieren en gran forma de lo especulado para lo que es el \textit{'uno'}\footnote{Se puede ver el resultado de los experimentos en $./experimentos/resultados/uno\_a\_todos$.}, la disminución de su ranking fue abrupta ni bien se conectó el primer enlace. Por otro lado, las suposiciones hechas para los demás son tal cual se esperaban. Fue sorpresiva la cantidad de puntaje que recibió el primer testigo al ser el único link referenciado.
 
 
 
 
-\vspace{2em}
+\newpage
+$\\$
 \subsubsection{Escenario 5: Transitividad en Cadena} Cómo se transfiere el puntaje de un sitio a otro a medida que se extiende la cadena de páginas intermedias entre ambos.
 
 \vspace{1em}
@@ -195,7 +214,7 @@ Esto tiene sentido ya que si todos los nodos se apuntan entre sí, el sistema es
 Consideramos de interés ver cómo se ve afectado el puntaje de una página al ser apuntada por otra `importante', y cómo varía a medida que empiezan a haber más intermediarios en la relación. 
 
 \vspace{1em}
-\noindent \textsc{Metodología}. Se generaron cien instancias de test con 200 nodos cada una ---para controlar las variaciones del puntaje relacionadas a la inserción de nuevos nodos\footnote{Como se comprobó sucede en el Escenario 1.}--- y se estableció que las páginas indexadas en el rango (100, 200] apunten a la página $1$ y que el resto esté desvinculada. 
+\noindent \textsc{Metodología}. Se generaron cien instancias de test con 200 nodos cada una ---para controlar las variaciones del puntaje relacionadas a la inserción de nuevos nodos\footnote{Como se comprobó sucede en el Escenario 1.}--- y se estableció que las páginas indexadas en el rango (100, 200] apunten a la página $1$ y que el resto esté desvinculada. Se utilizó un parametro $p$ de 0.85.
 
 \vspace{1em}
 \fig[]{files/src/media/cadena.png}{El puntaje del último eslabón en una cadena de vínculos, en función de su largo. Salvo la primer página, el resto de las páginas en la cadena no tiene otras relaciones.}{resultado_cadena}{}
@@ -212,38 +231,46 @@ Podemos ver que la influencia de la página `importante' es fuerte al principio,
 
 
 
-\vspace{2em}
-\subsubsection{Escenario 6: Referencias Valiosas} Cómo varía el peso de una página a medida que cambia la importancia de las páginas que la referencian.
-\vspace{1em}
-
-Nuestra hipótesis es que inicialmente el peso del nodo `1' va a ser mayor que el del nodo `0', basándonos en que `0' no tiene páginas que la referencien y `1' tiene una referencia por ende va a ser mayor. Pero a medida que más y más nodos apunten a `0' el peso de éste va a superar al del nodo `1'. Sosteniéndonos en los resultados que obtuvimos a partir de ``Transitividad en Cadena" donde se observa que la importancia de un nodo se transmite a los nodos que apunta, consideramos que el peso de ambos va a ser creciente.
-
-\vspace{1em}
-\noindent \textsc{Metodología}. La manera en la que planteamos esta experimentación fue, generar 100 instancias de 102 nodos cada uno. Inicialmente el nodo `0' apunta al nodo `1' y todos los demás nodos permanecían aislados. En cada iteración del test se seleccionó uno de los nodos aislados y se agregó una referencia de este último al nodo `0', siguiendo esta dinámica hasta que no haya mas nodos aislados.
-En cada una de estas iteraciones almacenamos por un lado el peso de `0' y por otro el peso de `1'.
-
-\vspace{1em}
-\noindent \textsc{Resultados}. 
-
-\vspace{1em}
-El resultado que obtuvimos cumplía parcialmente con lo esperado pero cambio nuestra percepción de PageRank, ya que inicialmente si se cumplió que el nodo `1' era mayor que `0' y que ambos pesos crecen a medida que `0' toma relevancia. Este comportamiento queda claramente plasmado en el gráfico donde se puede apreciar que el peso de ambos es creciente. 
-Por otro lado, lo que no se cumplió y nos tomó por sorpresa, fue que el peso de `0' nunca superó al peso de `1', como se observa en el gráfico la curva que representa a `1' siempre esta por encima de la curva que representa el peso de `0'.
-
-\vspace{1em}
-Concluimos entonces que tener referencias valiosas es esencial para aumentar el peso en el ranking y que la influencia que tienen las páginas de mayor importancia puede generar cambios radicales en la valoración de PageRank.
-
-
 
 \vspace{2em}
-\subsubsection{Escenario 7: Referenciador Importante} Cómo varía el peso de un nodo importante a medida que referencia a más nodos. 
+\subsubsection{Escenario 6: Referencias Valiosas} Cómo varía el peso de una página a medida que cambia la importancia de las páginas que la referencian y el valor de $p$.
 
 \vspace{1em}
-\noindent \textsc{Metodología}. Planteamos un test donde había 20 nodos. Inicialmente todos los nodos apuntan a `0' y en cada iteración se agrega un vínculo de `0' a alguno de los nodos. 
-En cada una de estas iteraciones almacenamos el peso de `0'.
+\noindent \textsc{Metodología}. Se generaron cien instancias de 102 nodos cada una y se simuló la siguiente situación: inicialmente, el nodo `1' apunta al nodo `2' y todos los demás nodos están aislados. En cada iteración del test se selecciona uno de los nodos aislados, se lo vincula al nodo `1' (en esta misma dirección) y se mide el puntaje de `1' y de `2'. Se repitió el experimento para cuatro valores de $p$ (0.25, 0.50, 0.75 y 0.9999).
 
 \vspace{1em}
-\noindent \textsc{Resultados}. El resultado no fue el esperado, ya que como se ve en el gráfico la curva de color xxx, el peso de `0' de no referenciar a nadie a referenciar a un nodo baja pero luego se mantiene constante, como si el impacto que genera en el peso de un nodo particular referenciar a una cantidad arbitraria de nodos fuera comparable con referenciar a un único nodo. 
+\fig[]{files/src/media/conceptuales/transitividad_en_paralelo_3.png}{La influencia de un nodo sobre otro, a medida que cambia su importancia.}{paralelo}{0.18}
 
-Pensamos que quizás en un ambiente más `real' con relaciones aleatorias entre los demás nodos del sistema podría alterar nuestros resultados, por ello reestructuramos el test para que además de las relaciones previamente mencionadas los nodos [1 a 20] estén conectados entre sí de manera aleatoria. Para obtener resultados significativos que no esten `contaminados' por la aleatoreidad corrimos el test 10 veces, sumamos el resultado de cada una de las iteraciones y calculamos su promedio.
-El resultado obtenido fue similar al resultado previo por ende deducimos que no referenciar a ningún nodo es la estrategia óptima y que a partir de referenciar a uno o más nodos en un ambiente aleatorio genera, en promedio, el mismo impacto en el peso de la la página que referencia.
-\noindent \textsc{Resultados}.
+\vspace{1em}
+\noindent \textsc{Hipótesis} Inicialmente el peso del nodo `2' va a ser mayor que el del nodo `1'. Nos basamos en la observación que si el nodo `1' no tiene páginas que la referencien y el `2' tiene una referencia, entonces va a ser mayor. A medida que más nodos apunten a `1', el peso de éste va a superar al del nodo `2'\footnote{Dados los resultados que obtuvimos en el escenario `Transitividad en Cadena'.}. De todas maneras, intuímos que la intensidad de está relación dependerá del valor de $p$.
+
+\vspace{1em}
+\noindent \textsc{Resultados}. Se cumplieron nuestras espectativas. Como se puede apreciar en las Figuras \ref{res_paralelo_1}. a  \ref{res_paralelo_4}. el valor de $p$ influenció cómo se transfirió el puntaje de un nodo al otro. 
+
+Concluímos que es esencial tener referencias valiosas para aumentar el puntaje en el ranking. Sin embargo, la relación de transferencia no es lineal y depende de $p$. Notamos que las páginas con mayor puntaje son también más influyentes y pueden generar cambios radicales en las valoraciones del algoritmo.
+
+\vspace{1em}
+\fig[]{files/src/media/referencias_valiosas_p0.25.png}{El puntaje de los nodos `1' y `2', donde el primer sitio vincula al segundo, en función del puntaje del primero, para $p = 0.25$.}{res_paralelo_1}{}
+
+\vspace{1em}
+\fig[]{files/src/media/referencias_valiosas_p0.5.png}{El puntaje de los nodos `1' y `2', donde el primer sitio vincula al segundo, en función del puntaje del primero, para $p = 0.5$.}{res_paralelo_2}{}
+
+\vspace{1em}
+\fig[]{files/src/media/referencias_valiosas_p0.75.png}{El puntaje de los nodos `1' y `2', donde el primer sitio vincula al segundo, en función del puntaje del primero, para $p = 0.75$.}{res_paralelo_3}{}
+
+\vspace{1em}
+\fig[]{files/src/media/referencias_valiosas_p0.9999.png}{El puntaje de los nodos `1' y `2', donde el primer sitio vincula al segundo, en función del puntaje del primero, para $p = 0.9999$.}{res_paralelo_4}{}
+
+\vspace*{10cm}
+% \newpage
+% $\\$
+% \subsubsection{Escenario 7: Referenciador Importante} Cómo varía el peso de un nodo importante a medida que referencia a más nodos. 
+
+% \vspace{1em}
+% \noindent \textsc{Metodología}. Se generaron 25 casos aleatorios de cien nodos cada uno. Simulación: Inicialmente todos los nodos apuntan a `1' y en cada iteración se agrega un vínculo de `1' a alguno de los otros nodos. En cada una de estas iteraciones almacenamos el puntaje de `1'.
+
+% \vspace{1em}
+% \noindent \textsc{Resultados}. El resultado no fue el esperado, ya que como se ve en el gráfico la curva de color xxx, el peso de `0' de no referenciar a nadie a referenciar a un nodo baja pero luego se mantiene constante, como si el impacto que genera en el peso de un nodo particular referenciar a una cantidad arbitraria de nodos fuera comparable con referenciar a un único nodo. 
+
+% Pensamos que quizás en un ambiente más `real' con relaciones aleatorias entre los demás nodos del sistema podría alterar nuestros resultados, por ello reestructuramos el test para que además de las relaciones previamente mencionadas los nodos [1 a 20] estén conectados entre sí de manera aleatoria. Para obtener resultados significativos que no esten `contaminados' por la aleatoreidad corrimos el test 10 veces, sumamos el resultado de cada una de las iteraciones y calculamos su promedio.
+% El resultado obtenido fue similar al resultado previo por ende deducimos que no referenciar a ningún nodo es la estrategia óptima y que a partir de referenciar a uno o más nodos en un ambiente aleatorio genera, en promedio, el mismo impacto en el peso de la la página que referencia.

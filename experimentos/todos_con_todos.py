@@ -1,32 +1,71 @@
-import pagerank_scripts.IO as IO
-import pagerank_scripts.utils as utils
+import base.IO as IO
+import base.utils as utils
 
 import numpy as np
+import pandas as pd
 
 
-print('\n')
-def todosConTodos(t):
-    pathIn, pathOut, pathRes = IO.createInOut("todos_con_todos")
-    typeIn = ".txt"
-    typeOut = ".out"
+"""
+descripcion:
+    cómo afecta al puntaje la variación en la cantidad de nodos, dado que toda
+    página apunta a todo el resto. Se toma un caso testigo.
+"""
 
-    p = 1 - 1e-4
-    resultFile = open(pathRes + "res.txt", "w")
-    result = []
-    for i in range(1, t+1):
-        experiment = "t_"+ str(i)
+# IO
+EXPERIMENTO          = "todos_con_todos"
+DIR_IN, DIR_OUT, DIR = IO.createInOut(EXPERIMENTO)    
+RESULTADOS           = f"{DIR}{EXPERIMENTO}.csv"
+SUMMARY              = f"{DIR}{EXPERIMENTO}_summary.csv"
+GRAFICO              = f"{DIR}{EXPERIMENTO}.png"
+
+# fmt
+COLS       = 'p_val,puntaje_testigo,q_nodos'
+FMT_COLS   = "{0},{1},{2}\n"
+
+# variables
+N = 100   # cantidad total de nodos a alcanzar
+p = 0.85  # valor p
+
+
+# metodos
+def correr_pagerank():
+
+    for i in range(1, N + 1):
 
         W = np.ones((i,i)) - np.eye(i)
+        
+        caso = DIR_IN + "c"+ str(i) + ".txt"
+        IO.createFileIn(caso, W)
+        IO.run(caso, p, out_dir=DIR_OUT)
 
-        IO.createFileIn(pathIn + experiment + typeIn, W)
-        IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
 
-        p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
+def medir():
 
-        resultFile.write(str(solucion[0]) + '\n')
-        result.append(solucion[0])
+    with open(RESULTADOS, "a", encoding="utf-8") as file:
 
-    resultFile.close()
-    utils.plot(1, t+1, result)
+        for i in range(1, N+1):
 
-todosConTodos(100)
+            caso = DIR_OUT + "c" + str(i) + ".out"
+            p, solucion = IO.readFileOut(filename=caso)
+
+            file.write(FMT_COLS.format(p, solucion[0], i)) 
+            
+ 
+
+
+if __name__ == "__main__":
+
+    IO.createCSV(RESULTADOS, COLS)
+    correr_pagerank()
+    medir()
+
+    res = pd.read_csv(RESULTADOS)
+    res.puntaje_testigo.describe().to_csv(SUMMARY)
+    
+    utils.graficar(
+        x=res.q_nodos, 
+        y=res.puntaje_testigo, 
+        hue=["caso testigo"]*N, 
+        xaxis="CANTIDAD DE PÁGINAS", 
+        yaxis="PUNTAJE", 
+        filename=GRAFICO)

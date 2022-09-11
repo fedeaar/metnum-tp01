@@ -1,12 +1,9 @@
-import pagerank_scripts.IO as IO
-import pagerank_scripts.utils as utils
+import base.IO as IO
+import base.utils as utils
 
 import os
 import numpy as np
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-sns.set(rc={'figure.figsize':(14, 7)}, font="Times New Roman")
 
 
 """
@@ -41,7 +38,7 @@ descripcion:
 
 
 # IO
-EXPERIMENTO = "error_relativo_x_p_val"
+EXPERIMENTO = "error_relativo"
 DIR_IN, DIR_OUT, DIR = IO.createInOut(EXPERIMENTO)    
 RESULTADOS = f"{DIR}{EXPERIMENTO}.csv"
 SUMMARY    = f"{DIR}{EXPERIMENTO}_summary.csv"
@@ -64,14 +61,6 @@ SEED    = 1     # para garantizar la reproducibilidad del experimento
 
 
 # metodos
-def crear_csv(): 
-
-    if not os.path.exists(RESULTADOS):
-        with open(RESULTADOS, "w", encoding="utf-8") as file:
-            # columnas
-            file.write(COLS  + '\n')
-
-
 def crear_casos():
 
     max_links = RALIDAD * (N-1) * N
@@ -101,30 +90,20 @@ def correr_pagerank():
                 save_as=out_name)
 
 
-def medir_errores():
+def medir():
 
-    for _p in range(XLIM):
-        for c in range(CASOS):
+    with open(RESULTADOS, 'a', encoding="utf-8") as file:
+        for _p in range(XLIM):
+            for c in range(CASOS):
 
-            p, x    = IO.readFileOut(FMT_O.format(x=_p, caso=c))
-            n, l, W = IO.readFileIn(FMT_I.format(caso=c))
-            
-            A = utils.W_to_A(W, p)
-            Ax = A @ x.T
-            error = utils.norma_uno(Ax - x) # tomamos el error máximo
-    
-            with open(RESULTADOS, 'a', encoding="utf-8") as file:
+                p, x    = IO.readFileOut(FMT_O.format(x=_p, caso=c))
+                n, l, W = IO.readFileIn(FMT_I.format(caso=c))
+                
+                A = utils.W_to_A(W, p)
+                Ax = A @ x.T
+                error = utils.norma_uno(Ax - x) # tomamos el error máximo
+                    
                 file.write(FMT_COLS.format(p, error, c))
-
-
-def graficar(df):
-    hue = ["promedio"]*len(df.error)
-    plot = sns.lineplot(data=df, x="p_val", y="error", hue=hue)
-    plot.set_xlabel("VALOR DE P", fontsize=18, labelpad=12)
-    plot.set_ylabel("ERROR   RELATIVO", fontsize= 18, labelpad=20) 
-    plt.tick_params(axis='both', which='major', labelsize=16)
-    fig  = plot.get_figure()
-    fig.savefig(GRAFICO) 
 
 
 def minmax(df):
@@ -137,20 +116,24 @@ def minmax(df):
     minmax[['error', 'pico']].rename(columns={"error":"error_avg"}).to_csv(MINMAX)
 
 
-def summary(df):
-    res["error"].describe().to_csv(SUMMARY)
-
-
 
 
 if __name__ == "__main__":
 
-    # crear_csv()
-    # crear_casos()
-    # correr_pagerank()
-    # medir_errores()
+    IO.createCSV(RESULTADOS, COLS)
+    crear_casos()
+    correr_pagerank()
+    medir()
 
     res = pd.read_csv(RESULTADOS)
-    graficar(res)
-    # minmax(res)
-    # summary(res)
+    res.error.describe().to_csv(SUMMARY)
+    minmax(res)    
+
+    hue = ["error promedio"]*len(res.error)
+    utils.graficar(
+        x=res.p_val, 
+        y=res.error, 
+        hue=hue, 
+        xaxis="VALOR DE P", 
+        yaxis="ERROR   RELATIVO", 
+        filename=GRAFICO)

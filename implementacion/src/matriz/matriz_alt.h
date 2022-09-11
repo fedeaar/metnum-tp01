@@ -8,6 +8,7 @@ using namespace std;
 
 class alt {
 protected:
+    /** ESTRUCTURA */
     struct elem {
         size_t col = 0;
         double val = 0;
@@ -22,20 +23,20 @@ protected:
     vector<vector<elem>> _mat;   // matriz
     mutable vector<cache> _last; // cache
 
-    // funciones privadas
+    /** PRIVATE */
     void updateLast(size_t row, size_t pos) const;
     size_t search(size_t row, size_t col) const;
     bool count(size_t row, size_t col) const;
 
 public:
-    // constructor
+    /** CONSTRUCTOR */
     alt(size_t n, size_t m);
 
-    // interfaz
+    /** INTERFAZ */
     double at(size_t row, size_t col) const;
     void set(size_t row, size_t col, double val);
 
-    // iter
+    //** ITERADORES */
     class const_iterator;
     class iterator;
 

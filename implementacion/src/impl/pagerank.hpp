@@ -3,7 +3,7 @@
 //
 
 template<class R>
-matriz<R> pagerank::make(const in_file &params) {
+matriz<R> pagerank::make(const in_file &params) {   // equivalente al pseudo construir
     matriz<R> m = identity<R>(params.paginas);
     // m = I
     vector<double> grado(params.paginas);
@@ -21,7 +21,8 @@ matriz<R> pagerank::make(const in_file &params) {
 
 
 template<class R>
-vector<double> pagerank::solve(const matriz<R> &mat) {
+vector<double> pagerank::solve(const matriz<R> &mat) {  
+    // equivalente al pseudo para pagerank, las primeras operaciones las ejecuta solve 
     vector<double> res = mat.solve(vector<double>(mat.n(), 1));
     // normalizar
     double s = {};

@@ -8,18 +8,19 @@ using namespace std;
 
 class base {
 protected:
+    /** ESTRUCTURA */
     const size_t _n, _m;            // tamaño
     vector<vector<double>> _mat;    // matriz
 
 public:
-    // constructor
+    /** CONSTRUCTORES */
     base(size_t n, size_t m);
 
-    // interfaz
+    /** INTERFAZ */
     double at(size_t row, size_t col) const;
     void set(size_t row, size_t col, double elem);
 
-    // iter
+    /** ITERADORES */
     class const_iterator;
     class iterator;
 

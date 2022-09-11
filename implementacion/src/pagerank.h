@@ -5,6 +5,8 @@
 
 
 namespace pagerank {
+
+    /** ESTRUCTURAS DE DATOS */
     struct coords {
         coords(size_t _i, size_t _j) : i(_i), j(_j) {}
 
@@ -26,8 +28,10 @@ namespace pagerank {
         vector<double> solucion;
     };
 
+    /** CONSTRUIR */
     template<class R> matriz<R> make(const in_file &params);
 
+    /** PAGERANK */
     template<class R> vector<double> solve(const matriz<R>& mat);
 };
 

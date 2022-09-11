@@ -1,44 +1,75 @@
-import pagerank_scripts.IO as IO
-import pagerank_scripts.utils as utils
+import base.IO as IO
+import base.utils as utils
 
 import numpy as np
-import matplotlib.pyplot as plt
+import pandas as pd
 
 
-print('\n')
-def transitividad_en_cadena(n):
-    pathIn, pathOut, pathRes = IO.createInOut("transitividad_en_cadena")
-    typeIn = ".txt"
-    typeOut = ".out"
+"""
+descripcion:
+    cómo se diluye el puntaje del ultimo eslabón de una cadena de nodos, 
+    donde el primero es importante. 
+"""
 
-    p = 1 - 1e-4
-    resultFile = open(pathRes + "res.txt", "w")
-    result = []
-    for i in range(n):
-        experiment = "t_"+ str(i)
+# IO
+EXPERIMENTO          = "transitividad_en_cadena"
+DIR_IN, DIR_OUT, DIR = IO.createInOut(EXPERIMENTO)    
+RESULTADOS           = f"{DIR}{EXPERIMENTO}.csv"
+SUMMARY              = f"{DIR}{EXPERIMENTO}_summary.csv"
+GRAFICO              = f"{DIR}{EXPERIMENTO}.png"
 
-        # creo IpWD
-        W = np.zeros((2*n, 2*n))
-        for j in range(n, 2*n):
-            W[0][j] = 1
+# fmt
+COLS       = 'p_val,puntaje_ultimo,largo_cadena'
+FMT_COLS   = "{0},{1},{2}\n"
+
+# variables
+N = 100   # cantidad total de nodos a alcanzar
+p = 0.85  # valor p
+
+
+# metodos
+def correr_pagerank():
+
+    for i in range(1, N + 1):
+
+        W = np.full((2*N, 2*N), 0)
         for j in range(i):
             W[j+1][j] = 1
+        for j in range(N, 2*N):
+            W[0][j] = 1
 
-        IO.createFileIn(pathIn + experiment + typeIn, W)
-        IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
+        caso = DIR_IN + "c"+ str(i) + ".txt"
+        IO.createFileIn(caso, W)
+        IO.run(caso, p, out_dir=DIR_OUT)
 
-        p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
-        result.append(solucion[i])
-        resultFile.write(str(solucion[i]) + '\n')
+def medir():
+
+    with open(RESULTADOS, "a", encoding="utf-8") as file:
+
+        for i in range(1, N + 1):
+
+            caso = DIR_OUT + "c" + str(i) + ".out"
+            p, solucion = IO.readFileOut(filename=caso)
+
+            file.write(FMT_COLS.format(p, solucion[i - 1], i - 1)) 
+            
+ 
+
+
+if __name__ == "__main__":
+
+    IO.createCSV(RESULTADOS, COLS)
+    correr_pagerank()
+    medir()
+
+    res = pd.read_csv(RESULTADOS)
+    res.puntaje_ultimo.describe().to_csv(SUMMARY)
     
-    resultFile.close()
     utils.graficar(
-        x=[x for x in range(0, n)], 
-        y=result, 
-        hue=["puntaje"]*n, 
-        xaxis="largo de la cadena", 
-        yaxis="puntaje del último eslabón", 
-        filename=pathRes + "grafico" + ".png")
-
-transitividad_en_cadena(100)
+        x=res.largo_cadena,
+        y=res.puntaje_ultimo, 
+        hue=["ultimo eslabón"]*N, 
+        xaxis="LARGO DE LA CADENA", 
+        yaxis="PUNTAJE", 
+        filename=GRAFICO)

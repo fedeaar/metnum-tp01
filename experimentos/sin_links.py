@@ -1,39 +1,70 @@
-import pagerank_scripts.IO as IO
-import pagerank_scripts.utils as utils
+import base.IO as IO
+import base.utils as utils
 
 import numpy as np
+import pandas as pd
 
 
-print('\n')
-def sin_links(t):
-    pathIn, pathOut, pathRes = IO.createInOut("sin_links")
-    typeIn = ".txt"
-    typeOut = ".out"
+"""
+descripcion:
+    cómo afecta al puntaje la variación en la cantidad de nodos, dado que se 
+    mantiene nula la cantidad de relaciones. Se toma un caso testigo.
+"""
 
-    resultFile = open(pathRes + "res.txt", "w")
-    result = []
-    p = 1 - 1e-4
-    for i in range(1, t+1):
-        experiment = "t_"+ str(i)
+# IO
+EXPERIMENTO          = "sin_links"
+DIR_IN, DIR_OUT, DIR = IO.createInOut(EXPERIMENTO)    
+RESULTADOS           = f"{DIR}{EXPERIMENTO}.csv"
+SUMMARY              = f"{DIR}{EXPERIMENTO}_summary.csv"
+GRAFICO              = f"{DIR}{EXPERIMENTO}.png"
 
-        # creo IpWD
+# fmt
+COLS       = 'p_val,puntaje_testigo,q_nodos'
+FMT_COLS   = "{0},{1},{2}\n"
+
+# variables
+NMAX    = 100   # cantidad total de nodos a alcanzar
+p       = 0.85  # valor p
+
+
+# metodos
+def correr_pagerank():
+    
+    for i in range(1, NMAX+1):
+
         W = np.zeros((i, i))
 
-        IO.createFileIn(pathIn + experiment + typeIn, W)
-        IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
+        caso = DIR_IN + "c" + str(i) + ".txt"
+        IO.createFileIn(caso, W)
+        IO.run(caso, p, out_dir=DIR_OUT)
 
-        p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
-        result.append(solucion[0])
-        resultFile.write(str(solucion[0]) + '\n')
+def medir():
 
-    resultFile.close()
-    utils.graficar(
-        x=[x for x in range(1, t+1)], 
-        y=result, 
-        hue=["puntaje"]*t, 
-        xaxis="cantidad de páginas", 
-        yaxis="puntaje", 
-        filename=pathRes + "grafico" + ".png")
+    with open(RESULTADOS, "a", encoding="utf-8") as file:
+
+        for i in range(1, NMAX+1):
+
+            caso = DIR_OUT + "c" + str(i) + ".out"
+            p, solucion = IO.readFileOut(filename=caso)
+
+            file.write(FMT_COLS.format(p, solucion[0], i)) # solucion[0] es el caso testigo
+
+
+
     
-sin_links(100)
+if __name__ == "__main__":
+    IO.createCSV(RESULTADOS, COLS)
+    correr_pagerank()
+    medir()
+
+    res = pd.read_csv(RESULTADOS)
+    res.puntaje_testigo.describe().to_csv(SUMMARY)
+    
+    utils.graficar(
+        x=res.q_nodos, 
+        y=res.puntaje_testigo, 
+        hue=["caso testigo"]*NMAX, 
+        xaxis="CANTIDAD DE PÁGINAS", 
+        yaxis="PUNTAJE", 
+        filename=GRAFICO)

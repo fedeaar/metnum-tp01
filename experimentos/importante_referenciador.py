@@ -1,52 +1,88 @@
-import pagerank_scripts.IO as IO
-import pagerank_scripts.utils as utils
+import base.IO as IO
+import base.utils as utils
 
 import numpy as np
+import pandas as pd
 
 
-print('\n')
-def importante_referenciador(n, p = 1 - 1e-4):
-    pathIn, pathOut, pathRes = IO.createInOut("importante_referenciador")
-    typeIn = ".txt"
-    typeOut = ".out"
-    resultFile = open(pathRes + "res.txt", "w")
-    result = [0] * (n-1)
+"""
+descripcion:
+    cómo se comporta el puntaje de un nodo importante a medida que 
+    referencia a más sitios, se realizaron 25 tests aleatorios. 
+"""
 
+# IO
+EXPERIMENTO          = "importante_referenciador"
+DIR_IN, DIR_OUT, DIR = IO.createInOut(EXPERIMENTO)    
+RESULTADOS           = f"{DIR}{EXPERIMENTO}.csv"
+SUMMARY              = f"{DIR}{EXPERIMENTO}_summary.csv"
+GRAFICO              = f"{DIR}{EXPERIMENTO}.png"
 
-    tests = int(10)
-    for t in range(tests) :
-        for i in range(1, n):
-            experiment = "t_"+ str(i)
+# fmt
+COLS       = 'p_val,puntaje,q_refs,caso'
+FMT_COLS   = "{0},{1},{2},{3}\n"
 
-            W = np.zeros((n,n))
-            for j in range(1,n) :
+# variables
+N = 100   # cantidad total de nodos a alcanzar
+p = 0.85  # valor p
+CASOS = 25
+
+# metodos
+def correr_pagerank():
+
+    for t in range(CASOS) :
+        for i in range(1, N):
+            
+            caso = DIR_IN + "x" + str(i) + "_c" + str(t) + ".txt"
+
+            W = np.zeros((N, N))
+            for j in range(1, N):
                 W[0][j] = 1
-            for j in range(1, i) : 
+            for j in range(1, i): 
                 W[j][0] = 1
             
             opciones = []
-            for j in range(1, n):
-                for k in range(1, n):
+            for j in range(1, N):
+                for k in range(1, N):
                     if k == j: continue
                     opciones.append([j, k])
 
-            
-            for j in range(int(0.1 * len(opciones))) :
-                vinculo = opciones.pop(np.random.randint(0,len(opciones)))
+            for j in range(int(0.1 * len(opciones))):
+                vinculo = opciones.pop(np.random.randint(0, len(opciones)))
                 W[vinculo[0]][vinculo[1]] = 1
 
-            IO.createFileIn(pathIn + experiment + typeIn, W)
-            IO.run(pathIn + experiment + typeIn, p, out_dir=pathOut)
+            IO.createFileIn(caso, W)
+            IO.run(caso, p, out_dir=DIR_OUT)
 
-            p, solucion = IO.readFileOut(filename=pathOut + experiment + typeOut)
 
-            result[i-1] += (solucion[0])
-        
+def medir():
 
-    for i in range(1, n):
-        result[i-1] /= tests
-        resultFile.write(str(result[i-1]) + '\n')
-    resultFile.close()
-    utils.plot(1, n, result)
+    with open(RESULTADOS, "a", encoding="utf-8") as file:
 
-importante_referenciador(20)
+        for t in range(CASOS) :
+            for i in range(1, N):
+
+                caso = DIR_OUT + "x" + str(i) + "_c" + str(t) + ".out"
+                p, solucion = IO.readFileOut(filename=caso)
+
+                file.write(FMT_COLS.format(p, solucion[0], i, t)) 
+            
+ 
+
+
+if __name__ == "__main__":
+
+    IO.createCSV(RESULTADOS, COLS)
+    correr_pagerank()
+    medir()
+
+    res = pd.read_csv(RESULTADOS)
+    res.puntaje.describe().to_csv(SUMMARY)
+    
+    utils.graficar(
+        x=res.q_refs,
+        y=res.puntaje, 
+        hue=["referenciador"]*(N-1)*25, 
+        xaxis="CANTIDAD DE REFERENCIAS HECHAS", 
+        yaxis="PUNTAJE", 
+        filename=GRAFICO)

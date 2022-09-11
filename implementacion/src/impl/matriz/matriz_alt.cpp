@@ -72,10 +72,8 @@ void alt::set(size_t row, size_t col, double val) {
    if(pos < _mat[row].size() && _mat[row][pos].col == col)
        _mat[row][pos].val = val;
    else if(std::abs(val) >= EPSILON) {
-       elem* newVal = new elem;
-       newVal->col = col;
-       newVal->val = val;
-       _mat[row].insert(_mat[row].begin() + pos, *newVal);
+       elem newVal {col, val};
+       _mat[row].insert(_mat[row].begin() + pos, newVal);
    }
    updateLast(row, pos);
 }

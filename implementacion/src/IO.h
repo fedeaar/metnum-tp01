@@ -9,6 +9,9 @@
 
 
 namespace IO {
+
+    /** UTILS */
+
     const int PRECISION = 15;
 
     size_t stolcast(const string &val, const string &msg);
@@ -20,7 +23,7 @@ namespace IO {
     string filename(const string& path);
 
 
-    // pagerank
+    /** PAGERANK IO */
 
     pagerank::in_file pagerank_read_in(const string &in, double p_val);
 
