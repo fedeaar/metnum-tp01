@@ -53,7 +53,7 @@ FMT_O      = DIR_OUT + FMT_name + ".time"
 N       = 100   # cantidad de páginas
 P       = 0.85  # valor p
 XLIM    = N * (N - 1)
-CASOS   = 100   # cantidad de casos a considerar por cada valor de la variable independiente     
+CASOS   = 10    # cantidad de casos a considerar por cada valor de la variable independiente     
 SEED    = 1     # para garantizar la reproducibilidad del experimento
 
 
@@ -68,11 +68,10 @@ def crear_csv():
 
 def crear_casos():
 
-    max_links = (N-1) * N
     for c in range(CASOS):
-        for l in range(max_links):
-
-            seed = l + c*max_links                   # para que sea reproducible
+        for l in range(XLIM):
+            seed = l + c*XLIM
+            print("creando caso", seed)              # para que sea reproducible
             W = utils.random_W(N, l, SEED + seed)    # PCG64
 
             IO.createFileIn(FMT_I.format(x=l, caso=c), W)  # guardamos el caso
@@ -82,7 +81,7 @@ def correr_pagerank():
 
     for c in range(CASOS):
         for l in range(XLIM):
-
+            print("corriendo caso", l + c*XLIM)
             file_in  = FMT_I.format(x=l, caso=c)
             IO.run(filename=file_in, 
                 p_value=P,
@@ -90,7 +89,7 @@ def correr_pagerank():
                 time_it=True)
 
 
-def medir_errores():
+def medir_tiempo():
 
     for c in range(CASOS):
         for l in range(XLIM):
@@ -98,7 +97,7 @@ def medir_errores():
             time = IO.readTime(FMT_O.format(x=l, caso=c))
     
             with open(RESULTADOS, 'a', encoding="utf-8") as file:
-                file.write(FMT_COLS.format(x, time, c))
+                file.write(FMT_COLS.format(l, time, c))
 
 
 def graficar(df):
@@ -113,11 +112,10 @@ def graficar(df):
 
 
 if __name__ == "__main__":
-
-    crear_csv()
-    crear_casos()
-    correr_pagerank()
-    medir_errores()
+    # crear_csv()
+    # crear_casos()
+    # correr_pagerank()
+    medir_tiempo()
 
     res = pd.read_csv(RESULTADOS)
     res["tiempo_us"].describe().to_csv(SUMMARY)
