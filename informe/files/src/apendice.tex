@@ -326,8 +326,8 @@ A la hora de decidir cómo representar las matrices se evaluaron las siguientes 
 \vspace{1em}
 \begin{itemize}
     \item Como estructura `base', utilizar un vector de $n$ vectores de tamaño fijo $n$. \textsc{Ventajas}: se puede acceder y modificar los elementos en $\Theta(1)$. \textsc{Desventajas}: requiere iterar sobre todos los elementos de la matríz, es ineficiente en espacio y ---para matrices muy grandes--- probablemente requiera más accesos a disco.\\
-    \item Una estructura `alt' con un vector de $n$ vectores de tamaño variable donde en cada lugar se guarda la tupla $<posicion, elemento>$. \textsc{Ventajas}: es más eficiente en espacio, permite iterar sobre los elementos no nulos de cada fila y acceder a estas en $\Theta(1)$. \textsc{Desventajas} El acceso a cada columna ---con búsqueda binaria--- tiene un peor caso en $\Theta(log(n))$ y la inserción tiene un peor caso en $\Theta(n)$.\\
-    \item La misma estructura pero con listas enlazadas. \textsc{Ventajas}: permite la inserción en $\Theta(1)$ e iterar sobre los elementos no nulos de cada fila con la misma complejidad. \textsc{Desventajas} el acceso es en $\Theta(n)$ y no mantiene memoria contigua, por lo que hay mayor probabilidad de cache-miss.\\
+    \item Una estructura `alt' con un vector de $n$ vectores de tamaño variable donde en cada lugar se guarda la tupla $<posicion, elemento>$. \textsc{Ventajas}: es más eficiente en espacio, permite iterar sobre los elementos no nulos de cada fila y acceder a estas en $\Theta(1)$. \textsc{Desventajas}: El acceso a cada columna ---con búsqueda binaria--- tiene un peor caso en $\Theta(log(n))$ y la inserción tiene un peor caso en $\Theta(n)$.\\
+    \item La misma estructura pero con listas enlazadas. \textsc{Ventajas}: permite la inserción en $\Theta(1)$ e iterar sobre los elementos no nulos de cada fila con la misma complejidad. \textsc{Desventajas}: el acceso es en $\Theta(n)$ y no mantiene memoria contigua, por lo que hay mayor probabilidad de cache-miss.\\
     \item Una `matriz enlazada' donde cada nodo apunta al próximo elemento no nulo de la misma fila y columna. \textsc{Ventajas}: permite iterar sobre los elementos no nulos de cada fila y columna en $\Theta(1)$. \textsc{Desventajas}: las mismas que la lista enlazada.\\
     \item Utilizar alguna estructura de diccionario como $<map>$. Las ventajas y desventajas son similares a la de la estructura alternativa si se mantienen las claves en orden y se pueda iterar sobre ellas en $\Theta(1)$.   
 \end{itemize}
@@ -347,4 +347,4 @@ Una representación $R$ deberá definir sólo aquellas operaciones que concierne
 Estas decisiones tienen una clara desventaja: el código provisto por $matriz<r>$ podría ser optimizado para cada representación subyacente. Sin embargo, se priorizó la facilidad de la experimentación sobre la optimalidad del código.
 
 \vspace{1em}
-Siguiendo esta metodología, se implementaron dos de las alternativas propuestas: `base' y `alt'.
+Siguiendo esta metodología, se implementaron dos de las alternativas propuestas: `base' y `alt' y acorde a los resultados vistos, se optó por `alt'.

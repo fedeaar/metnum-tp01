@@ -42,7 +42,7 @@ Para este procedimiento se asume que trabajaremos en bash. Desde la raiz del rep
     > $ cd build
 
 3. creamos el cmake
-    > $ cmake ./implementacion
+    > $ cmake ../implementacion
 
 4. creamos los ejecutables
     
