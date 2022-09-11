@@ -83,6 +83,7 @@ def plot(desde, hasta, y):
 
 
 def graficar(x, y, hue, xaxis, yaxis, filename, fig=None):
+    plt.figure()
     df = pd.DataFrame({"x":x, "y":y, "hue":hue})
     plot = sns.lineplot(data=df, x="x", y="y", hue="hue")
     plot.set_xlabel(xaxis, fontsize=18, labelpad=12)

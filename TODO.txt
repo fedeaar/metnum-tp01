@@ -10,9 +10,9 @@ EG.h           |         | OK
 pageRank.h*    |         | OK
 tests.cpp      |         | OK
 intro          |         | OK
-desarrollo*    |         |
+desarrollo*    |         | OK
 -------------- | ------- |
-experimentos   | 09/09   |
+experimentos   | 09/09   | 
 resultados*    |         |
 discusion      |         |
 conclusiones   |         |

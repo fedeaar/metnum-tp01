@@ -1,5 +1,19 @@
-## Page Rank
+## TP1: PageRank	
 
+grupo 18 - Arienti, Vekselman, Barcos
+
+
+### Estructura del repo
+
+- catedra: Los archivos de test provistos para el TP
+- implementacion: El código fuente para la solución propuesta, incluye los tests
+- experimentos: El material correspondiente a todos los experimentos. Incluye scripts y archivos resultado
+- el informe
+
+
+### Crear el ejecutable:
+
+1. crear una carpeta para los archivos
 ### Crear el ejecutable para la experimentacion:
 
 desde la raiz del repo:
