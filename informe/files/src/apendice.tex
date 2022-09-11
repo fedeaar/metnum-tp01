@@ -97,7 +97,7 @@ Recordemos que:
 \end{equation*}
 \vspace{1em}
 
-Como $\ I_{ij} = 1\ $ si y sólo si existe un hipervínculo de $j$ a $i$, con $j \neq i$ ---y nulo en caso contrario---, entonces $\ I_{ij} = w_{ij}\ $ y concluímos que $\ a_{ij} = (p\textbf{W}\textbf{D} + ez^t)_{ij}$, $\forall i, j:\ 1\ ...\ n\ $,  lo que implica que:
+Como $\ I_{ij} = 1\ $ si y sólo si existe un hipervínculo de $j$ a $i$, con $j \neq i$ ---y nulo en caso contrario---, entonces $\ I_{ij} = w_{ij}\ $ y concluímos que $\ a_{ij} = (p\textbf{W}\textbf{D} + ez^t)_{ij}$ $\ \forall i, j:\ 1\ ...\ n\ $,  lo que implica que:
 \vspace{1em}
 
 \begin{equation*}
@@ -110,55 +110,241 @@ Como $\ I_{ij} = 1\ $ si y sólo si existe un hipervínculo de $j$ a $i$, con $j
 
 
 % === demo 2 === %
+\newpage
 \subsection{B: $I - pWD$ permite la eliminación gaussiana}\label{A.2}
 
-Definimos la eliminación Gaussiana de la siguiente manera:
+\begin{proof}[Demostración] Demos primero una definición formal del enunciado:  
+    
+\vspace{2em}
+\noindent \textsc{Eliminación Gaussiana}. $\forall \mathbf{A} \in \mathbb{R}^{n \times n},\ \exists!\ m \in \mathbb{N}:\ 1 \leq m \leq n$ tal que: 
+
+\vspace{1em}
+\noindent $\forall k \in \mathbb{N}:\ 1 \leq k < m$
+
+\vspace{0.5em}
+\begin{align*}
+    eg_{1}(\mathbf{A})_{ij}  &= a_{ij}
+    \\
+    eg_{k+1}(\mathbf{A})_{ij} &=  
+        \left\{ 
+            \begin{array}{lcc}
+                eg_{k}(\mathbf{A})_{ij}  &   \text{si}    & i < k+1 \ \vee \  j < k+1 \\
+                eg_{k}(\mathbf{A})_{ij} - \frac {eg_{k}(\mathbf{A})_{ik}}{eg_{k}(\mathbf{A})_{kk}}\cdot \ eg_{k}(\mathbf{A})_{kj} & \text{si no} \\
+            \end{array}
+        \right.\ 
+\end{align*}  
+
+\vspace{1em}    
+\noindent donde $m < n$ es el mínimo valor que satisface que $eg_{m}{(\mathbf{A})}_{mm} = 0$. Si la matríz $\mathbf{A}$ es tal que $m = n$, entonces $\mathbf{A}$ permite la eliminación gaussiana.
+
+\vspace{3em}
+\noindent Probaremos que para la matríz $\ \mathbf{B} \in \mathbb{R}^{n \times n} = \mathbf{I} - p\mathbf{W}\mathbf{D}\ $, $\ \forall k \in \mathbb{N}: 1 \leq k \leq n\ $: 
 
 \begin{equation*}
-\textbf{A} := \textbf{I} - p\textbf{WD}
+eg_{k}{(\mathbf{B})}_{kk} \neq 0
 \end{equation*}
 
-\begin{align*}
-    \textbf{Eg}_{1}(\textbf{A}) \ \ \  &=   \textbf{A}
-                            \\
-    \textbf{Eg}_{k+1}(\textbf{A})_{ij}  &=  \left\{ 
-                                    \begin{array}{lcc}
-                                    \textbf{Eg}_{k}(\textbf{A})_{ij}  &   \text{si}    & i < k+1 \ \vee \  j < k+1 \\
-                                    \textbf{Eg}_{k}(\textbf{A})_{ij} - \frac {\textbf{Eg}_{k}(\textbf{A})_{ik} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}    &  \ \ \ \  \text{si no} &
-                                    \end{array}
-                                \right.\
-\end{align*}
+\vspace{0.5em}
+\noindent y en consecuencia $m = n$.
+
+
+\vspace{2em}
+\noindent Para ello demostraremos el siguiente enunciado:
+
+\begin{equation*}
+    |b^{k}_{jj}| \ > \sum_{i = k,\ i \neq j}^{n} |b^{k}_{ij}| \qquad \forall k,\ j \in \mathbb{N}: 1 \leq k \leq j \leq n
+\end{equation*}
+
+\vspace{0.5em}
+\noindent donde $b^k_{ij} = eg_k(\mathbf{B})_{ij}$.
+
+\vspace{1em}
+Es decir, para todo paso $k$ de la eliminación gaussiana se satisface que el valor absoluto de los elementos de la diagonal mayores o iguales a $k$ son mayor estricto al valor absoluto de la suma de los elementos de su columna desde la posición $k$, descontando la diagonal.
+
+\vspace{1em}
+\noindent Lo demostraremos por inducción:
+
+\vspace{2em}
+\noindent $\forall k,\ j \in \mathbb{N}: 1 \leq k \leq j \leq n$ 
+
+\begin{equation*}
+    |b^{k}_{jj}| \ > \sum_{i = k,\ i \neq j}^{n} |b^{k}_{ij}| \implies |b^{k+1}_{jj}| \ > \sum_{i = k+1,\ i \neq j}^{n} |b^{k+1}_{ij}|
+\end{equation*}
+
+\newpage
+\noindent \textsc{Caso base} ($k = 1$):
+
+\vspace{1em}
+\noindent Notemos primero que 
+
+\begin{equation*}
+    (\mathbf{B})_{ij} = (\mathbf{I} - p\mathbf{W}\mathbf{D})_{ij} =
+    \left\{ 
+        \begin{array}{lcc}
+            1           & \text{si} & i = j   \\
+            -p / c_j    & \text{si} & w_{ij} = 1\ \wedge\ c_j \neq 0 \\
+            0           & \text{si no}   
+        \end{array}
+    \right.\ 
+\end{equation*}
+
+\vspace{2em}
+Dado que todo elemento de cada columna $j$ de $\mathbf{W}\mathbf{D}$ está normalizado por $1/c_j$, tal que su suma da uno, entonces la suma de la columna $(-p\mathbf{W}\mathbf{D})_{j} = -p$, con $0 < p < 1$.
+
+\vspace{1em}
+Observamos también que la diagonal es nula para esta matríz, tal que su suma por $\mathbf{I}$ da $(\mathbf{I} - p\mathbf{W}\mathbf{D})_{jj} = 1$. Este tipo de matríz se conoce como estocástica en columnas y su transpuesta es diagonal dominante. 
+
+\vspace{1em}
+\noindent En consecuencia, es inmediato que $\ |b^{1}_{jj}| = |b_{jj}| = 1\ >\ \sum_{i = k,\ i \neq j}^{n} |b^{1}_{ij}| = |-p|\ \forall j \in \mathbb{N}: 1 \leq j \leq n$. 
+
+\hfill$\square$
+
+
+\vspace{2em}
+\noindent \textsc{Paso inductivo}:
+
+\vspace{1em}
+\noindent $\forall j \in \mathbb{N}: 1 \leq k \leq j \leq n$
 
 \begin{align*}
-    HI: (\forall j \in \mathbb{N}) (k \ \leq \ j \ \leq \ N ) &\longrightarrow_L |\textbf{Eg}_{k}(\textbf{A})_{jj}| \geq \sum_{i=k, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ij}| \\
-    \noindent CB: (k = 1) \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \\
-    (\forall j \in \mathbb{N}) (1 \ \leq \ j \ \leq \ N ) &\longrightarrow_L |\textbf{A}_{jj}| \geq \sum_{i=1, \ i \neq j}^{N} |\textbf{A}_{ij}| \\
-    (\forall j \in \mathbb{N}) (1 \ \leq \ j \ \leq \ N ) &\longrightarrow_L 1 \geq \sum_{i=1, \ i \neq j}^{N} |(1/C_j \vee 0)| \\
-    (\forall j \in \mathbb{N}) (1 \ \leq \ j \ \leq \ N ) &\longrightarrow_L 1 \geq (|p/C_j| \vee 0) \cdot C_j \\
-    (\forall j \in \mathbb{N}) (1 \ \leq \ j \ \leq \ N ) &\longrightarrow_L 1 \geq |p| > (|p/C_j| \vee 0) \cdot C_j \\
-    \text{sabemos : } 0 < p < 1  &\rightarrow 1 \geq |p| \\
-    (\forall j \in \mathbb{N}) (1 \ \leq \ j \ \leq \ N ) &\longrightarrow_L \ \text{True} \\ 
-    \text{QVQ:} (\forall j \in \mathbb{N}) (k+1 \ \leq \ j \ \leq \ N ) &\longrightarrow_L |\textbf{Eg}_{k+1}(\textbf{A})_{jj}| \geq \sum_{i=k+1, \ i \neq j}^{N} |\textbf{Eg}_{k+1}(\textbf{A})_{ij}| \\
-    \longrightarrow_L |\textbf{Eg}_{k}(\textbf{A})_{jj} - \frac {\textbf{Eg}_{k}(\textbf{A})_{jk} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \geq &\sum_{i=k+1, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ij} - \frac {\textbf{Eg}_{k}(\textbf{A})_{ik} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \\
-    \longrightarrow_L |\textbf{Eg}_{k}(\textbf{A})_{jj}| - |\frac {\textbf{Eg}_{k}(\textbf{A})_{jk} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \geq &\sum_{i=k+1, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ij}| +  \sum_{i=k+1, \ i \neq j}^{N} |\frac{\textbf{Eg}_{k}(\textbf{A})_{ik} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \\
-    \sum_{i=k+1, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ij}| = &\sum_{i=k, \ i \neq j}^{N} (|\textbf{Eg}_{k}(\textbf{A})_{ij}|) -  |\textbf{Eg}_{k}(\textbf{A})_{kj}|\\
-    \text{Por HI: } |\textbf{Eg}_{k}(\textbf{A})_{jj}| - |\textbf{Eg}_{k}(\textbf{A})_{kj}| \geq &\sum_{i=k, \ i \neq j}^{N} (|\textbf{Eg}_{k}(\textbf{A})_{ij}|) -  |\textbf{Eg}_{k}(\textbf{A})_{kj}|\\
-    |\textbf{Eg}_{k}(\textbf{A})_{jj}| - |\frac {\textbf{Eg}_{k}(\textbf{A})_{jk} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \geq |\textbf{Eg}_{k}&(\textbf{A})_{jj}| - |\textbf{Eg}_{k}(\textbf{A})_{kj}| +  \sum_{i=k+1, \ i \neq j}^{N} |\frac{\textbf{Eg}_{k}(\textbf{A})_{ik} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \\
-    |\textbf{Eg}_{k}(\textbf{A})_{kj}| - |\frac {\textbf{Eg}_{k}(\textbf{A})_{jk} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \geq  &\frac{ |\textbf{Eg}_{k}(\textbf{A})_{kj}|}{|\textbf{Eg}_{k}(\textbf{A})_{kk}|} \sum_{i=k+1, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ik}|\\
-    \sum_{i=k+1, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ik}| = &\sum_{i=k+1}^{N} (|\textbf{Eg}_{k}(\textbf{A})_{ik}|) -  |\textbf{Eg}_{k}(\textbf{A})_{jk}|\\
-    \text{Por HI: } |\textbf{Eg}_{k}(\textbf{A})_{kk}| -  |\textbf{Eg}_{k}(\textbf{A})_{jk}| \geq &\sum_{i=k+1}^{N} (|\textbf{Eg}_{k}(\textbf{A})_{ik}|) -  |\textbf{Eg}_{k}(\textbf{A})_{jk}|\\
-    |\textbf{Eg}_{k}(\textbf{A})_{kj}| - |\frac {\textbf{Eg}_{k}(\textbf{A})_{jk} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \geq  &\frac{ |\textbf{Eg}_{k}(\textbf{A})_{kj}|}{|\textbf{Eg}_{k}(\textbf{A})_{kk}|} (|\textbf{Eg}_{k}(\textbf{A})_{kk}| -  |\textbf{Eg}_{k}(\textbf{A})_{jk}|)\\
-    |\textbf{Eg}_{k}(\textbf{A})_{kj}| - |\frac {\textbf{Eg}_{k}(\textbf{A})_{jk} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}| \geq  &|\textbf{Eg}_{k}(\textbf{A})_{kj}| - |\frac {\textbf{Eg}_{k}(\textbf{A})_{jk} \ \cdot \ \textbf{Eg}_{k}(\textbf{A})_{kj}}{\textbf{Eg}_{k}(\textbf{A})_{kk}}|\\
-    (\forall j \in 	\mathbb{N}) (1 \ \leq \ j \ \leq \ N ) &\longrightarrow_L \ \text{True} \\ 
+    |b^{k+1}_{jj}|\ 
+        &>\ \sum_{i = k+1,\ i \neq j}^{n} |b^{k+1}_{ij}| \\
+    \iff |b^k_{jj} - \frac {b^k_{jk} \ \cdot \ b^k_{kj}}{b^k_{kk}}|\     
+        &>\ \sum_{i=k+1,\ i \neq j}^{n} |b^k_{ij} - \frac {b^k_{ik} \ \cdot \ b^k_{kj}}{b^k_{kk}}|
 \end{align*}
 
-QED que $(\forall j \in \mathbb{N}) (k \ \leq \ j \ \leq \ N ) \longrightarrow_L |\textbf{Eg}_{k}(\textbf{A})_{jj}| \geq \sum_{i=k, \ i \neq j}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ij}|$\\
-Por ende el elemento $|\textbf{Eg}_{k}(\textbf{A})_{kk}| = 0 \leftrightarrow \sum_{i=k+1}^{N} |\textbf{Eg}_{k}(\textbf{A})_{ik}| = 0$
-O sea que el elemento de la diagonal en cada paso de la eliminacion gaussiana es 0 si y solo si todos los elementos que tiene por debajo en su columna son 0 o sea que se podria saltear ese paso
+\vspace{1em}
+\noindent dado que $|a - b| \geq |a| - |b|\ \wedge\ |a| + |b| \geq |a + b|$ por desigualdad triangular, entonces podemos demostrar equivalentemente, por teorema del sandwich, que:
+
+%\vspace{1em}
+\begin{equation*}
+    |b^k_{jj}| - |\frac {b^k_{jk} \ \cdot \ b^k_{kj}}{b^k_{kk}}|\  
+        >\ \sum_{i=k+1,\ i \neq j}^{n} |b^k_{ij}|\ \ \  +  \sum_{i=k+1,\ i \neq j}^{n} |\frac{b^k_{ik} \ \cdot \ b^k_{kj}}{b^k_{kk}}| \\
+\end{equation*} 
+
+\vspace{1em}
+\noindent Como:
+
+%\vspace{1em}
+\begin{equation*}
+    \sum_{i=k+1,\ i \neq j}^{n} |b^k_{ij}|\ 
+        =\ (\sum_{i=k, \ i \neq j}^{n} |b^k_{ij}|) -  |b^k_{kj}|
+\end{equation*}
+
+\vspace{1em}
+\noindent y por hipótesis inductiva:
+
+%\vspace{1em}
+\begin{equation*}
+    |b^k_{jj}|\
+        >\ \sum_{i=k, \ i \neq j}^{n} |b^k_{ij}|\
+    \implies\
+    |b^k_{jj}| - |b^k_{kj}|\
+        >\ (\sum_{i=k, \ i \neq j}^{n} |b^k_{ij}|) -  |b^k_{kj}|
+\end{equation*}
+
+\vspace{1em}
+\noindent entonces podemos volver a acotar tal que:
+
+%\vspace{1em}
+\begin{equation*}
+    |b^k_{jj}| - |b^k_{kj}|\ +  \sum_{i=k+1, \ i \neq j}^{n} |\frac{b^k_{ik} \ \cdot \ b^k_{kj}}{b^k_{kk}}|\
+        >_{hi}\ \sum_{i=k+1,\ i \neq j}^{n} |b^k_{ij}|\ +  \sum_{i=k+1,\ i \neq j}^{n} |\frac{b^k_{ik} \ \cdot \ b^k_{kj}}{b^k_{kk}}| \\
+\end{equation*}
+
+\vspace{1em}
+\noindent y considerar que:
+
+%\vspace{1em}
+\begin{align*}
+    |b^k_{jj}| - |\frac {b^k_{jk} \ \cdot \ b^k_{kj}}{b^k_{kk}}|\ 
+        &\geq\ |b^k_{jj}| - |b^k_{kj}| +  \sum_{i=k+1, \ i \neq j}^{n} |\frac{b^k_{ik} \ \cdot \ b^k_{kj}}{b^k_{kk}}|\ \\  
+    \iff |b^k_{kj}| - |\frac {b^k_{jk}\ \cdot \ b^k_{kj}}{b^k_{kk}}|\ 
+        &\geq\ \frac{ |b^k_{kj}|}{|b^k_{kk}|} \sum_{i=k+1, \ i \neq j}^{N} |b^k_{ik}|
+\end{align*}
+
+\vspace{1em}
+\noindent Podemos acotar una última vez, tal que:
+
+%\vspace{2em}
+\begin{equation*}
+    |b^k_{kj}| - |\frac {b^k_{jk}\ \cdot \ b^k_{kj}}{b^k_{kk}}|\ 
+        \geq\ \frac{|b^k_{kj}|}{|b^k_{kk}|} (|b^k_{kk}| - |b^k_{jk}|)\
+        >_{hi}\ \frac{ |b^k_{kj}|}{|b^k_{kk}|} \sum_{i=k+1, \ i \neq j}^{N} |b^k_{ik}|
+\end{equation*}
+
+\vspace{1em}
+\noindent Pero:
+
+%\vspace{1em}
+\begin{align*}
+    |b^k_{kj}| - |\frac {b^k_{jk}\ \cdot \ b^k_{kj}}{b^k_{kk}}|\ 
+        \geq\ \frac{|b^k_{kj}|}{|b^k_{kk}|} (|b^k_{kk}| - |b^k_{jk}|)\
+    \iff |b^k_{kj}| - |\frac {b^k_{jk}\ \cdot\ b^k_{kj}}{b^k_{kk}}| 
+        &\geq  |b^k_{kj}| - |\frac{b^k_{jk}\ \cdot \ b^k_{kj}}{b^k_{kk}}|\\
+\end{align*}
+
+\vspace{1em}
+\noindent Lo que es trivialmente cierto. 
+
+\hfill$\square$
 
 
+\vspace{2em}
+\noindent Demostramos ahora por absurdo que $b^{k}_{kk} \neq 0\ \ \forall k \in \mathbb{N}: 1 \leq k \leq n\ $.
+
+\vspace{1em}
+\noindent Supongamos que existe algún $k$ tal que $b^{k}_{kk} = 0$. Entonces:
+
+%\vspace{1em}
+\begin{equation*}
+    |b^{k}_{kk}| \ =\ 0\ >\ \sum_{i = k,\ i \neq k}^{n} |b^{k}_{ij}| \qquad \forall j \in \mathbb{N}: 1 \leq k \leq j \leq n
+\end{equation*}
+
+\vspace{1em}
+\noindent Pero $\sum_{i = k,\ i \neq k}^{n} |b^{k}_{ij}|$ es necesariamente una suma de valores positivos ó $0$. Es decir: 
+
+%\vspace{1em}
+\begin{equation*}
+    0\ > \sum_{i = k,\ i \neq k}^{n} |b^{k}_{ij}|\ \geq\ 0\ \implies\ 0 > 0
+\end{equation*}
+
+\vspace{1em}
+\noindent Absurdo! 
+
+\end{proof}
  
 
 
+
+\newpage
 % === estructuras alternativas === %
-\subsection{C: Estructuras alternativas}\label{A.3}
+\subsection{C: Evaluación de estructuras}\label{A.3}
+
+A la hora de decidir cómo representar las matrices se evaluaron las siguientes alternativas:
+
+\vspace{1em}
+\begin{itemize}
+    \item Como estructura `base', utilizar un vector de $n$ vectores de tamaño fijo $n$. \textsc{Ventajas}: se puede acceder y modificar los elementos en $\Theta(1)$. \textsc{Desventajas}: requiere iterar sobre todos los elementos de la matríz, es ineficiente en espacio y ---para matrices muy grandes--- probablemente requiera más accesos a disco.\\
+    \item Una estructura `alt' con un vector de $n$ vectores de tamaño variable donde en cada lugar se guarda la tupla $<posicion, elemento>$. \textsc{Ventajas}: es más eficiente en espacio, permite iterar sobre los elementos no nulos de cada fila y acceder a estas en $\Theta(1)$. \textsc{Desventajas} El acceso a cada columna ---con búsqueda binaria--- tiene un peor caso en $\Theta(log(n))$ y la inserción tiene un peor caso en $\Theta(n)$.\\
+    \item La misma estructura pero con listas enlazadas. \textsc{Ventajas}: permite la inserción en $\Theta(1)$ e iterar sobre los elementos no nulos de cada fila con la misma complejidad. \textsc{Desventajas} el acceso es en $\Theta(n)$ y no mantiene memoria contigua, por lo que hay mayor probabilidad de cache-miss.\\
+    \item Una `matriz enlazada' donde cada nodo apunta al próximo elemento no nulo de la misma fila y columna. \textsc{Ventajas}: permite iterar sobre los elementos no nulos de cada fila y columna en $\Theta(1)$. \textsc{Desventajas}: las mismas que la lista enlazada.\\
+    \item Utilizar alguna estructura de diccionario como $<map>$. Las ventajas y desventajas son similares a la de la estructura alternativa si se mantienen las claves en orden y se pueda iterar sobre ellas en $\Theta(1)$.   
+\end{itemize}
+
+\vspace{1em}
+Todas estas posibilidades motivaron la elaboración de un código genérico que permitiera el intercambio de las representaciones. La clase $matriz<R>$ definida en $./implementacion/$ provee una interfáz de matríz completa junto a la implementación de muchos de sus métodos. 
+
+Una representación $R$ deberá definir sólo aquellas operaciones que conciernen el acceso a datos. Para lograr esta modularización se tomaron dos decisiones importantes:
+
+\vspace{1em}
+\begin{itemize}
+    \item Se optó por la transparencia referencial de todas las operaciones. Para las representaciones contempladas, generar una nueva instancia es más rápido que modificar la estructura actual.
+    \item Todos los algoritmos están implementados para evitar las operaciones redundantes. Par ello, se optó por que cada representación implemente iteradores específicos.
+\end{itemize}
+
+\vspace{1em}
+Estas decisiones tienen una clara desventaja: el código provisto por $matriz<r>$ podría ser optimizado para cada representación subyacente. Sin embargo, se priorizó la facilidad de la experimentación sobre la optimalidad del código.
+
+\vspace{1em}
+Siguiendo esta metodología, se implementaron dos de las alternativas propuestas: `base' y `alt'.

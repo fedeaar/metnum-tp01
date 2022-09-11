@@ -118,8 +118,8 @@ def medir_errores():
 
 
 def graficar(df):
-
-    plot = sns.lineplot(data=df, x="p_val", y="error")
+    hue = ["promedio"]*len(df.error)
+    plot = sns.lineplot(data=df, x="p_val", y="error", hue=hue)
     plot.set_xlabel("VALOR DE P", fontsize=18, labelpad=12)
     plot.set_ylabel("ERROR   RELATIVO", fontsize= 18, labelpad=20) 
     plt.tick_params(axis='both', which='major', labelsize=16)
@@ -151,6 +151,6 @@ if __name__ == "__main__":
     # medir_errores()
 
     res = pd.read_csv(RESULTADOS)
-    # graficar(res)
-    minmax(res)
+    graficar(res)
+    # minmax(res)
     # summary(res)

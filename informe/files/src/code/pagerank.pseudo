@@ -5,5 +5,5 @@ proc PageRank(in g: G<n>, in p: real, out x: vector<n>) {
     eliminacion_gaussiana(B, e)
     x := sustitucion_inversa(B, e) 
     normalizar(x)
-    /* Post: |Bx - x| < 1e-4 */
+    /* Post: x[i] >= 0 para toda i y sum(x) = 1  */
 }
