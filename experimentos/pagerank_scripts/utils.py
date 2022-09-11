@@ -88,5 +88,6 @@ def graficar(x, y, hue, xaxis, yaxis, filename, fig=None):
     plot.set_xlabel(xaxis, fontsize=18, labelpad=12)
     plot.set_ylabel(yaxis, fontsize= 18, labelpad=20) 
     plt.tick_params(axis='both', which='major', labelsize=16)
+    plt.legend(title=None)
     fig  = plot.get_figure()
     fig.savefig(filename)

@@ -61,12 +61,12 @@
 }
 
 % Just one or a list of figures
-\newcommand{\fig}[4][0.4]{
+\newcommand{\fig}[5][0.4]{
   \begin{figure}[hbtp]
     \foreach \elem in {#2} {
       \begin{minipage}{#1\textwidth}\centering
         \subfloat {
-          \includegraphics[width=\linewidth]{\elem}
+          \includegraphics[width=#5\linewidth]{\elem}
         }
       \end{minipage} % minipage for easy centring
     }

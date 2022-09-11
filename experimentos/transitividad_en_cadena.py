@@ -36,9 +36,9 @@ def transitividad_en_cadena(n):
     utils.graficar(
         x=[x for x in range(0, n)], 
         y=result, 
-        hue=["test_base"]*n, 
-        xaxis="cantidad de links en cadena", 
-        yaxis="puntaje", 
+        hue=["puntaje"]*n, 
+        xaxis="largo de la cadena", 
+        yaxis="puntaje del último eslabón", 
         filename=pathRes + "grafico" + ".png")
 
-transitividad_en_cadena(20)
+transitividad_en_cadena(100)
