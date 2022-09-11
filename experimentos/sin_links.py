@@ -28,6 +28,12 @@ def sin_links(t):
         resultFile.write(str(solucion[0]) + '\n')
 
     resultFile.close()
-    utils.plot(1, t+1, result)
+    utils.graficar(
+        x=[x for x in range(1, t+1)], 
+        y=result, 
+        hue=["puntaje"]*t, 
+        xaxis="cantidad de páginas", 
+        yaxis="puntaje", 
+        filename=pathRes + "grafico" + ".png")
     
 sin_links(100)

@@ -33,6 +33,12 @@ def transitividad_en_cadena(n):
         resultFile.write(str(solucion[i]) + '\n')
     
     resultFile.close()
-    utils.plot(0, n, result)
+    utils.graficar(
+        x=[x for x in range(0, n)], 
+        y=result, 
+        hue=["puntaje"]*n, 
+        xaxis="largo de la cadena", 
+        yaxis="puntaje del último eslabón", 
+        filename=pathRes + "grafico" + ".png")
 
 transitividad_en_cadena(100)

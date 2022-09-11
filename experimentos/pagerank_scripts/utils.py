@@ -1,7 +1,11 @@
-import numpy as np
-import matplotlib.pyplot as plt
-
 import pagerank_scripts.IO
+
+import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+sns.set(rc={'figure.figsize':(14, 7)}, font="Times New Roman")
+
 
 
 EPSILON = 1e-4
@@ -76,3 +80,15 @@ def plot(desde, hasta, y):
     plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.1)
 
     plt.show()
+
+
+def graficar(x, y, hue, xaxis, yaxis, filename, fig=None):
+    plt.figure()
+    df = pd.DataFrame({"x":x, "y":y, "hue":hue})
+    plot = sns.lineplot(data=df, x="x", y="y", hue="hue")
+    plot.set_xlabel(xaxis, fontsize=18, labelpad=12)
+    plot.set_ylabel(yaxis, fontsize= 18, labelpad=20) 
+    plt.tick_params(axis='both', which='major', labelsize=16)
+    plt.legend(title=None)
+    fig  = plot.get_figure()
+    fig.savefig(filename)
