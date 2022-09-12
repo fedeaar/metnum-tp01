@@ -18,7 +18,7 @@ protected:
     string basedir;
     double epsilon;
     void SetUp() override {
-        basedir = "../../catedra/";
+        basedir = "../catedra/";
         epsilon = 1e-4;
     }
 
