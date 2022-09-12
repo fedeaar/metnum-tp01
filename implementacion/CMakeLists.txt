@@ -37,5 +37,5 @@ add_executable(TESTS-pagerank-alt ${SOURCE_FILES} tests/pagerank-tests.cpp)
 target_compile_definitions(TESTS-pagerank-alt PUBLIC ESTR=2)
 target_link_libraries(TESTS-pagerank-alt gtest gtest_main)
 
-add_executable(pagerank ${SOURCE_FILES} main.cpp)
-target_compile_definitions(pagerank PUBLIC ESTR=2)
+add_executable(tp1 ${SOURCE_FILES} main.cpp)
+target_compile_definitions(tp1 PUBLIC ESTR=2)

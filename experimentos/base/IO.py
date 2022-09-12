@@ -4,7 +4,7 @@ import numpy as np
 
 
 # GLOBALES
-EXE_PATH = '../build/pagerank' # si se compilo de otra manera o con otro nombre, cambiar por la direccion correcta
+EXE_PATH = '../build/tp1'      # si se compilo de otra manera o con otro nombre, cambiar por la direccion correcta
 WSL = True                     # dejar true solo si se utilizó wsl para compilar el programa, false sino
 
 
