@@ -47,7 +47,7 @@ Para este procedimiento se asume que trabajaremos en bash. Desde la raiz del rep
 4. creamos los ejecutables
     
     i. El ejecutable principal (el mismo se requerirá para los experimentos)
-    > $ make ./pagerank 
+    > $ make ./tp1 
 
     ii. Para correr los tests de la cátedra (con tolerancia máxima 1e-4).
     > $ make ./TESTS-pagerank-alt 
@@ -61,9 +61,9 @@ Para este procedimiento se asume que trabajaremos en bash. Desde la raiz del rep
 
     > $ ./TESTS-pagerank-matriz
 
-    > $ ./pagerank ../catedra/test_15_segundos.txt 0.9
+    > $ ./tp1 ../catedra/test_15_segundos.txt 0.9
 
-Notamos que la ejecución de los experimentos requiere que el ejecutable `./pagerank` se encuentre en `./build`.
+Notamos que la ejecución de los experimentos requiere que el ejecutable `./tp1` se encuentre en `./build`.
 
 
 <br>
