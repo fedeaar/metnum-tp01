@@ -7,7 +7,7 @@ grupo 18 - Arienti, Vekselman, Barcos
 
 ### Estructura del repo
 
-La entra cuenta los siguientes archivos y carpetas:
+El repositorio cuenta con los siguientes archivos y carpetas:
 
 - 'catedra' - Los archivos de test provistos por la cátedra.
 
@@ -33,7 +33,7 @@ Así también, los scripts se pensaron para ser ejecutados por medio de WSL. De 
 
 ### Cómo crear los archivos ejecutables
 
-Para este procedimiento se asume que trabajaremos en bash. Desde la raiz del repo procederémos de la siguiente forma
+Para este procedimiento se asume que trabajaremos en bash. Desde la raiz del repo procederémos de la siguiente forma:
 
 1. creamos la carpeta para los ejecutables
     > $ mkdir build
@@ -49,7 +49,7 @@ Para este procedimiento se asume que trabajaremos en bash. Desde la raiz del rep
     i. El ejecutable principal (el mismo se requerirá para los experimentos)
     > $ make ./tp1 
 
-    ii. Para correr los tests de la cátedra (con tolerancia máxima 1e-4).
+    ii. Para correr los tests de la cátedra (con tolerancia máxima 1e-4)
     > $ make ./TESTS-pagerank-alt 
 
     iii. Para correr otros tests internos
@@ -68,9 +68,9 @@ Notamos que la ejecución de los experimentos requiere que el ejecutable `./tp1`
 
 <br>
 
-### IO ./pagerank
+### IO ./tp1
 
-El ejecutable de pagerank permite trabajar con los siguientes parámetros.
+El ejecutable de PageRank permite trabajar con los siguientes parámetros.
 
 
 Obligatorios (deben estar en orden):
