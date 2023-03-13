@@ -90,14 +90,16 @@ def run(filename, p_value,
         out_dir="./", precision=15, save_as=None, time_it=False, save_m=False, 
         exe_path=EXE_PATH):
 
-    call_params = [
-        "wsl" if WSL else "",   
+    call_params = [ 
         exe_path, 
-        filename, str(p_value), 
+        filename, 
+        str(p_value), 
         f"-out={out_dir}",
-        f'{f"-save_as={save_as}" if save_as else ""}', 
         f"-presicion={precision}", 
-        f'{"-time_it" if time_it else ""}',
-        f'{"-save_m" if save_m else ""}'
     ]
-    sub.check_call(call_params)
+    if WSL: call_params.insert(0, "wsl")
+    if save_as: call_params.extend(["-save_as", save_as])
+    if time: call_params.extend(["-time"])
+    if save_m: call_params.extend(["-save_m"])
+
+    sub.run(call_params)
